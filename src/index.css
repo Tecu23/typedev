@@ -1,9 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Roboto Mono", Inter, system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -11,4 +14,38 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@layer base {
+  :root {
+    --background: #1f2335;
+    --background-2: #24283b;
+    --background-3: #292e42;
+    --background-4: #3b4261;
+    --background-5: #414868;
+
+    --background-6: #545c7e;
+    --background-7: #565f89;
+    --background-8: #737aa2;
+    --foreground: #a9b1d6;
+    --background-10: #c0caf5;
+
+    --background-11: #394b70;
+    --background-12: #3d59a1;
+    --blue: #7aa2f7;
+    --blue-light: #7dcfff;
+    --blue-lightest: #b4f9f8;
+
+    --violet: #bb9af7;
+    --violet-dark: #9d7cd8;
+    --orange: #ff9e64;
+    --yellow: #ffc777;
+    --green: #c3e88d;
+
+    --cyan: #4fd6be;
+    --cyan-dark: #41a6b5;
+    --red-light: #ff757f;
+    --red: #c53b53;
+    --red-bright: #ff007c;
+  }
 }

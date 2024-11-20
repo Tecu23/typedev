@@ -18,3 +18,7 @@ export const calculateAccuracyPercentage = (errors: number, total: number) => {
 
   return 0;
 };
+
+export const formatPercentage = (percentage: number) => {
+  return percentage.toFixed(0) + "%";
+};

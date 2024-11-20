@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { formatPercentage } from "../utilities/format";
 import { State } from "../utilities/hooks/useEngine";
+import { formatPercentage } from "../utilities/helpers";
 
 type Props = {
   state: State;
