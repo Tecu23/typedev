@@ -4,7 +4,22 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "#000000", // TODO
+        primary: "var(--primary-color)",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+
+        grey: {
+          comment: "var(--dark3)",
+        },
+
+        cursor: {
+          DEFAULT: "var(--purple)",
+        },
+
+        error: {
+          DEFAULT: "var(--red1)",
+          space: "var(--red)",
+        },
       },
     },
   },

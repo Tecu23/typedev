@@ -10,7 +10,7 @@ function Home() {
     useEngine();
 
   return (
-    <main className="grid place-items-center w-full tracking-wider h-[calc(100vh-162px)] bg-slate-900">
+    <main className="grid place-items-center w-full tracking-wider h-[calc(100vh-160px)]">
       <div>
         <CountdownTimer timeLeft={timeLeft} />
         <WordsContainer>
@@ -39,18 +39,18 @@ function Home() {
 
 const WordsContainer = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="relative mt-3 max-w-xl text-3xl leading-relaxed break-all">
+    <div className="relative max-w-3xl text-4xl leading-relaxed">
       {children}
     </div>
   );
 };
 
 const GeneratedWords = ({ words }: { words: string }) => {
-  return <p className="text-slate-500">{words}</p>;
+  return <p className="text-grey-comment">{words}</p>;
 };
 
 const CountdownTimer = ({ timeLeft }: { timeLeft: number }) => {
-  return <h2 className="font-medium text-yellow-400">Time: {timeLeft}</h2>;
+  return <h2 className="font-medium text-cursor">Time: {timeLeft}</h2>;
 };
 
 export default Home;

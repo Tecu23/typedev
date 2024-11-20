@@ -21,9 +21,7 @@ const rootRoute = createRootRoute({
   component: () => (
     <>
       <Navbar />
-      <hr />
       <Outlet />
-      <hr />
       <Footer />
       <TanStackRouterDevtools />
     </>

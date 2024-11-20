@@ -37,7 +37,7 @@ const Character = ({
 
   return (
     <span
-      className={`${!isWhiteSpace ? (isCorrect ? "text-yellow-400" : "text-red-500") : isCorrect ? "" : "bg-red-500/50"}`}
+      className={`${!isWhiteSpace ? (isCorrect ? "text-foreground" : "text-error") : isCorrect ? "" : "bg-error-space opacity-70"}`}
     >
       {expected}
     </span>
