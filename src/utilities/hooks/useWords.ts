@@ -1,15 +1,31 @@
-import { faker } from "@faker-js/faker";
+import { words as randomWords } from "../helpers/seeds/words/simple";
 import { useCallback, useState } from "react";
 
-const generatedWords = (count: number) => {
-  return faker.word.words(count).toLowerCase();
-};
+function getRandomSample(array: string[], sampleSize: number): string {
+  if (sampleSize > array.length) {
+    throw new Error("Sample size cannot be larger than the array length.");
+  }
+
+  // Copy the array to avoid mutating the original
+  const shuffled = [...array];
+
+  // Fisher-Yates shuffle
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[i]];
+  }
+
+  // Return the first `sampleSize` elements
+  return shuffled.slice(0, sampleSize).join(" ");
+}
 
 const useWords = (count: number) => {
-  const [words, setWords] = useState<string>(generatedWords(count));
+  const [words, setWords] = useState<string>(
+    getRandomSample(randomWords, count),
+  );
 
   const updateWords = useCallback(() => {
-    setWords(generatedWords(count));
+    setWords(getRandomSample(randomWords, count));
   }, [count]);
 
   return { words, updateWords };

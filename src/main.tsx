@@ -7,7 +7,6 @@ import {
   createRoute,
   createRootRoute,
 } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 import "./index.css";
 
@@ -23,26 +22,25 @@ const rootRoute = createRootRoute({
       <Navbar />
       <Outlet />
       <Footer />
-      <TanStackRouterDevtools />
     </>
   ),
 });
 
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/",
+  path: "/typedev",
   component: Home,
 });
 
 const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/about",
+  path: "/typedev/about",
   component: About,
 });
 
 const profileRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/profile",
+  path: "/typedev/profile",
   component: Profile,
 });
 
