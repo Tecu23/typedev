@@ -1,6 +1,11 @@
+import { LegacyRef, useEffect, useRef } from "react";
+import debounce from "lodash.debounce";
 import Caret from "../../Caret";
 
 const WordsContainer = ({ words, typed }: { words: string; typed: string }) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const cursorRef = useRef<HTMLDivElement | null>(null);
+
   const typedWords = typed.split(" ");
   const generatedWords = words.split(" ");
 
@@ -12,8 +17,74 @@ const WordsContainer = ({ words, typed }: { words: string; typed: string }) => {
     letterIndex: currentLetterIndex,
   };
 
+  const adjustScrollPosition = () => {
+    if (cursorRef.current && containerRef.current) {
+      const cursorElement = cursorRef.current;
+      const containerElement = containerRef.current;
+
+      const cursorRect = cursorElement.getBoundingClientRect();
+      const containerRect = containerElement.getBoundingClientRect();
+
+      const cursorOffset = cursorRect.top - containerRect.top;
+      const containerHeight = containerElement.clientHeight;
+      const cursorHeight = cursorRect.height;
+
+      const centerThreshhold = containerHeight / 2;
+
+      // If the cursor is above the visible area, scroll up
+      if (cursorOffset >= centerThreshhold) {
+        // Cursor has passed the center; adjust scroll to keep it centered
+        const scrollOffset = cursorOffset - centerThreshhold + cursorHeight / 2;
+        const maxScrollTop = containerElement.scrollHeight - containerHeight;
+        const newScrollTop = Math.min(
+          Math.max(containerElement.scrollTop + scrollOffset, 0),
+          maxScrollTop,
+        );
+
+        containerElement.scrollTo({
+          top: newScrollTop,
+          behavior: "smooth",
+        });
+      } else if (cursorElement.offsetTop < containerElement.scrollTop) {
+        containerElement.scrollTo({
+          top: cursorElement.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const debouncedAdjustScrollPosition = debounce(adjustScrollPosition, 50);
+
+    debouncedAdjustScrollPosition();
+
+    return () => {
+      debouncedAdjustScrollPosition.cancel();
+    };
+  }, [typed]);
+
+  useEffect(() => {
+    const handleResize = debounce(() => {
+      if (cursorRef.current && containerRef.current) {
+        // Recalculate and adjust scroll position
+        adjustScrollPosition();
+      }
+    }, 100);
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      handleResize.cancel();
+    };
+  }, []);
+
   return (
-    <div className="flex overflow-hidden relative flex-wrap gap-x-8 max-w-3xl text-4xl leading-relaxed h-[230px]">
+    <div
+      ref={containerRef}
+      className="flex overflow-hidden relative flex-wrap gap-x-8 mx-8 max-w-3xl text-4xl leading-[50px] h-[200px]"
+    >
       {generatedWords.map((_, i) => (
         <Word
           word={generatedWords[i]}
@@ -21,6 +92,7 @@ const WordsContainer = ({ words, typed }: { words: string; typed: string }) => {
           cursorPosition={cursorPositon}
           wordIndex={i}
           isLast={i == typedWords.length - 1}
+          cursorRef={cursorRef}
         />
       ))}
     </div>
@@ -35,12 +107,14 @@ const Word = ({
   isLast,
   cursorPosition,
   wordIndex,
+  cursorRef,
 }: {
   word: string;
   typedWord: string | null;
   wordIndex: number;
   cursorPosition: { wordIndex: number; letterIndex: number };
   isLast: boolean;
+  cursorRef: LegacyRef<HTMLDivElement | null>;
 }) => {
   const tmpLetters: React.JSX.Element[] = [];
   const generatedLetters = word.split("");
@@ -49,10 +123,6 @@ const Word = ({
   let i: number;
 
   for (i = 0; i < generatedLetters.length; i++) {
-    const show_cursor =
-      cursorPosition.wordIndex === wordIndex &&
-      i === cursorPosition.letterIndex;
-
     let className = "";
     if (typedWord == null || (typedWord === "" && isLast)) {
       className = "text-grey-comment";
@@ -72,13 +142,24 @@ const Word = ({
       }
     }
 
-    if (show_cursor) {
-      tmpLetters.push(<Caret />);
+    if (
+      cursorPosition.wordIndex === wordIndex &&
+      0 === cursorPosition.letterIndex &&
+      i === 0
+    ) {
+      tmpLetters.push(<Caret ref={cursorRef} />);
     }
 
     tmpLetters.push(
       <span className={`${className}`}>{generatedLetters[i]}</span>,
     );
+
+    if (
+      cursorPosition.wordIndex === wordIndex &&
+      i === cursorPosition.letterIndex - 1
+    ) {
+      tmpLetters.push(<Caret ref={cursorRef} />);
+    }
   }
 
   if (i < typedLetters.length) {
@@ -92,7 +173,7 @@ const Word = ({
       );
 
       if (show_cursor) {
-        tmpLetters.push(<Caret />);
+        tmpLetters.push(<Caret ref={cursorRef} />);
       }
     }
   }
