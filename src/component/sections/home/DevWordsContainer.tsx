@@ -1,6 +1,4 @@
-// import debounce from "lodash.debounce";
-// import { useRef, useEffect, LegacyRef } from "react";
-// import Caret from "../../Caret";
+import React from "react";
 import { isCharacter, isWhitespace } from "../../../utilities/helpers";
 import { processTypedInput } from "../../../utilities/helpers/processTypedInput";
 import Caret from "../../Caret";
@@ -10,33 +8,39 @@ type Props = {
   typed: string;
 };
 
-const DevWordsContainer = ({ text, typed }: Props) => {
-  const components: React.JSX.Element[] = [];
+const DevWordsContainer = React.forwardRef<HTMLDivElement | null, Props>(
+  ({ text, typed }, ref) => {
+    const components: React.JSX.Element[] = [];
 
-  const elements = processTypedInput(text, typed);
+    const elements = processTypedInput(text, typed);
+    const cursor_idx = getCursorPosition(elements);
 
-  elements.map((el, idx) => {
-    if (idx == typed.length) {
-      components.push(<Caret />);
-    }
-    components.push(
-      <Char
-        key={idx}
-        generatedChar={el.expected}
-        typedChar={el.typed}
-        className={el.className}
-      />,
+    elements.map((el, idx) => {
+      if (idx == cursor_idx) {
+        components.push(<Caret key={"cursor"} />);
+      }
+      components.push(
+        <Char
+          key={idx}
+          generatedChar={el.expected}
+          typedChar={el.typed}
+          className={el.className}
+        />,
+      );
+    });
+
+    return (
+      <div
+        ref={ref}
+        className="overflow-hidden relative mx-8 max-w-3xl text-4xl whitespace-pre-wrap leading-[50px] h-[200px]"
+      >
+        <pre className="whitespace-pre-wrap break-words select-none">
+          {components}
+        </pre>
+      </div>
     );
-  });
-
-  return (
-    <div className="overflow-hidden relative mx-8 max-w-3xl text-4xl whitespace-pre-wrap leading-[50px] h-[200px]">
-      <pre className="whitespace-pre-wrap break-words select-none">
-        {components}
-      </pre>
-    </div>
-  );
-};
+  },
+);
 
 export default DevWordsContainer;
 
@@ -57,7 +61,6 @@ const Char = ({
   //  If we expect an whitespace, but we get the wrong whitespace:
   //    expect \n but get \t or \s => show the space/tab (error)
   //    expect \t or \s but get \n => show the new line (error)
-  //
 
   let char = null;
 
@@ -82,4 +85,16 @@ const Char = ({
   }
 
   return <span className={`${className}`}>{char}</span>;
+};
+
+const getCursorPosition = (elements: Array<{ className: string }>): number => {
+  let idx = 0;
+
+  for (let i = 0; i < elements.length; i++) {
+    if (elements[i].className !== "untyped") {
+      idx++;
+    }
+  }
+
+  return idx;
 };

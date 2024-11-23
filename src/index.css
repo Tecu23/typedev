@@ -87,4 +87,8 @@
   .incorrect-space {
     @apply bg-error-space;
   }
+
+  .untyped {
+    @apply text-grey-comment;
+  }
 }
