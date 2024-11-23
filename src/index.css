@@ -72,4 +72,19 @@
   .flex-center {
     @apply flex flex-row justify-center items-center;
   }
+
+  .correct {
+    @apply text-foreground;
+  }
+
+  .incorrect {
+    @apply text-error;
+  }
+  .extra {
+    @apply text-error-space;
+  }
+
+  .incorrect-space {
+    @apply bg-error-space;
+  }
 }

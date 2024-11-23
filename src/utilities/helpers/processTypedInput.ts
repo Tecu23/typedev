@@ -6,11 +6,11 @@ type Output = {
   className: string;
 };
 
-export function processTypedInput(
-  generatedChars: string[],
-  typedChars: string[],
-): Output[] {
+export function processTypedInput(generated: string, typed: string): Output[] {
   const output: Output[] = [];
+
+  const generatedChars = generated.split("");
+  const typedChars = typed.split("");
 
   let i = 0; // Index for generatedChars
   let j = 0; // Index for typedChars

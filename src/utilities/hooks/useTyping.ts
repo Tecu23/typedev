@@ -4,9 +4,15 @@ const isKeyboardCodeAllowed = (code: string) => {
   return (
     code.startsWith("Key") ||
     code.startsWith("Digit") ||
+    code.startsWith("Bracket") ||
     code === "Backspace" ||
     code === "Enter" ||
     code === "Tab" ||
+    code === "Comma" ||
+    code === "Period" ||
+    code === "Equal" ||
+    code === "Semicolor" ||
+    code === "Slash" ||
     code === "Space"
   );
 };
