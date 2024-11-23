@@ -1,11 +1,16 @@
 import { isWhitespace, isCharacter } from ".";
-import { log } from "console";
+
+type Output = {
+  expected: string;
+  typed: string | null;
+  className: string;
+};
 
 export function processTypedInput(
   generatedChars: string[],
   typedChars: string[],
-): { expected: string | null; typed: string | null }[] {
-  const output: { expected: string | null; typed: string | null }[] = [];
+): Output[] {
+  const output: Output[] = [];
 
   let i = 0; // Index for generatedChars
   let j = 0; // Index for typedChars
@@ -14,11 +19,13 @@ export function processTypedInput(
     const genChar = generatedChars[i];
     const typedChar = typedChars[j];
 
-    // log(genChar, typedChar, typeof genChar, typeof typedChar);
-
     // Case 1: Expected character, got character
     if (isCharacter(genChar) && isCharacter(typedChar)) {
-      output.push({ expected: genChar, typed: typedChar });
+      output.push({
+        expected: genChar,
+        typed: typedChar,
+        className: genChar === typedChar ? "correct" : "incorrect",
+      });
       i++;
       j++;
       continue;
@@ -28,7 +35,11 @@ export function processTypedInput(
     if (isCharacter(genChar) && isWhitespace(typedChar)) {
       // Send remaining characters in word as char + whitespace
       while (i < generatedChars.length && isCharacter(generatedChars[i])) {
-        output.push({ expected: generatedChars[i], typed: typedChar });
+        output.push({
+          expected: generatedChars[i],
+          typed: typedChar,
+          className: "incorrect",
+        });
         i++;
       }
 
@@ -39,7 +50,11 @@ export function processTypedInput(
     if (isWhitespace(genChar) && isCharacter(typedChar)) {
       // Send characters in typed until whitespace as whitespace + char
       while (j < typedChars.length && isCharacter(typedChars[j])) {
-        output.push({ expected: genChar, typed: typedChars[j] });
+        output.push({
+          expected: genChar,
+          typed: typedChars[j],
+          className: "extra",
+        });
         j++;
       }
 
@@ -52,7 +67,11 @@ export function processTypedInput(
       isWhitespace(typedChar) &&
       genChar == typedChar
     ) {
-      output.push({ expected: genChar, typed: typedChar });
+      output.push({
+        expected: genChar,
+        typed: typedChar,
+        className: "correct",
+      });
       i++;
       j++;
 
@@ -66,7 +85,11 @@ export function processTypedInput(
       genChar != typedChar
     ) {
       while (j < typedChars.length && typedChars[j] != genChar) {
-        output.push({ expected: genChar, typed: typedChars[j] });
+        output.push({
+          expected: genChar,
+          typed: typedChars[j],
+          className: isCharacter(typedChars[j]) ? "extra" : "incorrect-space",
+        });
         j++;
       }
 
@@ -78,7 +101,7 @@ export function processTypedInput(
   while (i < generatedChars.length) {
     const genChar = generatedChars[i];
 
-    output.push({ expected: genChar, typed: null });
+    output.push({ expected: genChar, typed: null, className: "untyped" });
     i++;
   }
 

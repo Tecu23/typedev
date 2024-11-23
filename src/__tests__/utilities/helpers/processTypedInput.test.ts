@@ -8,6 +8,7 @@ describe("processTypedInput", () => {
     const expectedOutput = [..."hello world"].map((char) => ({
       expected: char,
       typed: char,
+      className: "correct",
     }));
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -19,11 +20,11 @@ describe("processTypedInput", () => {
     const generated = "hello";
     const typed = "he llo";
     const expectedOutput = [
-      { expected: "h", typed: "h" },
-      { expected: "e", typed: "e" },
-      { expected: "l", typed: " " },
-      { expected: "l", typed: " " },
-      { expected: "o", typed: " " },
+      { expected: "h", typed: "h", className: "correct" },
+      { expected: "e", typed: "e", className: "correct" },
+      { expected: "l", typed: " ", className: "incorrect" },
+      { expected: "l", typed: " ", className: "incorrect" },
+      { expected: "o", typed: " ", className: "incorrect" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -35,22 +36,22 @@ describe("processTypedInput", () => {
     const generated = "hello world";
     const typed = "helloworld";
     const expectedOutput = [
-      { expected: "h", typed: "h" },
-      { expected: "e", typed: "e" },
-      { expected: "l", typed: "l" },
-      { expected: "l", typed: "l" },
-      { expected: "o", typed: "o" },
-      { expected: " ", typed: "w" },
-      { expected: " ", typed: "o" },
-      { expected: " ", typed: "r" },
-      { expected: " ", typed: "l" },
-      { expected: " ", typed: "d" },
-      { expected: " ", typed: null },
-      { expected: "w", typed: null },
-      { expected: "o", typed: null },
-      { expected: "r", typed: null },
-      { expected: "l", typed: null },
-      { expected: "d", typed: null },
+      { expected: "h", typed: "h", className: "correct" },
+      { expected: "e", typed: "e", className: "correct" },
+      { expected: "l", typed: "l", className: "correct" },
+      { expected: "l", typed: "l", className: "correct" },
+      { expected: "o", typed: "o", className: "correct" },
+      { expected: " ", typed: "w", className: "extra" },
+      { expected: " ", typed: "o", className: "extra" },
+      { expected: " ", typed: "r", className: "extra" },
+      { expected: " ", typed: "l", className: "extra" },
+      { expected: " ", typed: "d", className: "extra" },
+      { expected: " ", typed: null, className: "untyped" },
+      { expected: "w", typed: null, className: "untyped" },
+      { expected: "o", typed: null, className: "untyped" },
+      { expected: "r", typed: null, className: "untyped" },
+      { expected: "l", typed: null, className: "untyped" },
+      { expected: "d", typed: null, className: "untyped" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -62,17 +63,17 @@ describe("processTypedInput", () => {
     const generated = "line1\nline2";
     const typed = "line1\nline2";
     const expectedOutput = [
-      { expected: "l", typed: "l" },
-      { expected: "i", typed: "i" },
-      { expected: "n", typed: "n" },
-      { expected: "e", typed: "e" },
-      { expected: "1", typed: "1" },
-      { expected: "\n", typed: "\n" },
-      { expected: "l", typed: "l" },
-      { expected: "i", typed: "i" },
-      { expected: "n", typed: "n" },
-      { expected: "e", typed: "e" },
-      { expected: "2", typed: "2" },
+      { expected: "l", typed: "l", className: "correct" },
+      { expected: "i", typed: "i", className: "correct" },
+      { expected: "n", typed: "n", className: "correct" },
+      { expected: "e", typed: "e", className: "correct" },
+      { expected: "1", typed: "1", className: "correct" },
+      { expected: "\n", typed: "\n", className: "correct" },
+      { expected: "l", typed: "l", className: "correct" },
+      { expected: "i", typed: "i", className: "correct" },
+      { expected: "n", typed: "n", className: "correct" },
+      { expected: "e", typed: "e", className: "correct" },
+      { expected: "2", typed: "2", className: "correct" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -84,23 +85,23 @@ describe("processTypedInput", () => {
     const generated = "line1\nline2";
     const typed = "line1\tline2";
     const expectedOutput = [
-      { expected: "l", typed: "l" },
-      { expected: "i", typed: "i" },
-      { expected: "n", typed: "n" },
-      { expected: "e", typed: "e" },
-      { expected: "1", typed: "1" },
-      { expected: "\n", typed: "\t" },
-      { expected: "\n", typed: "l" },
-      { expected: "\n", typed: "i" },
-      { expected: "\n", typed: "n" },
-      { expected: "\n", typed: "e" },
-      { expected: "\n", typed: "2" },
-      { expected: "\n", typed: null },
-      { expected: "l", typed: null },
-      { expected: "i", typed: null },
-      { expected: "n", typed: null },
-      { expected: "e", typed: null },
-      { expected: "2", typed: null },
+      { expected: "l", typed: "l", className: "correct" },
+      { expected: "i", typed: "i", className: "correct" },
+      { expected: "n", typed: "n", className: "correct" },
+      { expected: "e", typed: "e", className: "correct" },
+      { expected: "1", typed: "1", className: "correct" },
+      { expected: "\n", typed: "\t", className: "incorrect-space" },
+      { expected: "\n", typed: "l", className: "extra" },
+      { expected: "\n", typed: "i", className: "extra" },
+      { expected: "\n", typed: "n", className: "extra" },
+      { expected: "\n", typed: "e", className: "extra" },
+      { expected: "\n", typed: "2", className: "extra" },
+      { expected: "\n", typed: null, className: "untyped" },
+      { expected: "l", typed: null, className: "untyped" },
+      { expected: "i", typed: null, className: "untyped" },
+      { expected: "n", typed: null, className: "untyped" },
+      { expected: "e", typed: null, className: "untyped" },
+      { expected: "2", typed: null, className: "untyped" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -112,9 +113,9 @@ describe("processTypedInput", () => {
     const generated = "\t \n";
     const typed = "\t \n";
     const expectedOutput = [
-      { expected: "\t", typed: "\t" },
-      { expected: " ", typed: " " },
-      { expected: "\n", typed: "\n" },
+      { expected: "\t", typed: "\t", className: "correct" },
+      { expected: " ", typed: " ", className: "correct" },
+      { expected: "\n", typed: "\n", className: "correct" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -126,9 +127,9 @@ describe("processTypedInput", () => {
     const generated = "abc";
     const typed = "abcd";
     const expectedOutput = [
-      { expected: "a", typed: "a" },
-      { expected: "b", typed: "b" },
-      { expected: "c", typed: "c" },
+      { expected: "a", typed: "a", className: "correct" },
+      { expected: "b", typed: "b", className: "correct" },
+      { expected: "c", typed: "c", className: "correct" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -140,10 +141,10 @@ describe("processTypedInput", () => {
     const generated = "abcd";
     const typed = "abc";
     const expectedOutput = [
-      { expected: "a", typed: "a" },
-      { expected: "b", typed: "b" },
-      { expected: "c", typed: "c" },
-      { expected: "d", typed: null },
+      { expected: "a", typed: "a", className: "correct" },
+      { expected: "b", typed: "b", className: "correct" },
+      { expected: "c", typed: "c", className: "correct" },
+      { expected: "d", typed: null, className: "untyped" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -165,15 +166,15 @@ describe("processTypedInput", () => {
     const generated = "abc def";
     const typed = "ab def";
     const expectedOutput = [
-      { expected: "a", typed: "a" },
-      { expected: "b", typed: "b" },
+      { expected: "a", typed: "a", className: "correct" },
+      { expected: "b", typed: "b", className: "correct" },
       // Expected character 'c', got whitespace
-      { expected: "c", typed: " " },
+      { expected: "c", typed: " ", className: "incorrect" },
       // Expected whitespace, got whitespace
-      { expected: " ", typed: " " },
-      { expected: "d", typed: "d" },
-      { expected: "e", typed: "e" },
-      { expected: "f", typed: "f" },
+      { expected: " ", typed: " ", className: "correct" },
+      { expected: "d", typed: "d", className: "correct" },
+      { expected: "e", typed: "e", className: "correct" },
+      { expected: "f", typed: "f", className: "correct" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -185,25 +186,25 @@ describe("processTypedInput", () => {
     const generated = "Hello, world!";
     const typed = "Hello,world!";
     const expectedOutput = [
-      { expected: "H", typed: "H" },
-      { expected: "e", typed: "e" },
-      { expected: "l", typed: "l" },
-      { expected: "l", typed: "l" },
-      { expected: "o", typed: "o" },
-      { expected: ",", typed: "," },
-      { expected: " ", typed: "w" },
-      { expected: " ", typed: "o" },
-      { expected: " ", typed: "r" },
-      { expected: " ", typed: "l" },
-      { expected: " ", typed: "d" },
-      { expected: " ", typed: "!" },
-      { expected: " ", typed: null },
-      { expected: "w", typed: null },
-      { expected: "o", typed: null },
-      { expected: "r", typed: null },
-      { expected: "l", typed: null },
-      { expected: "d", typed: null },
-      { expected: "!", typed: null },
+      { expected: "H", typed: "H", className: "correct" },
+      { expected: "e", typed: "e", className: "correct" },
+      { expected: "l", typed: "l", className: "correct" },
+      { expected: "l", typed: "l", className: "correct" },
+      { expected: "o", typed: "o", className: "correct" },
+      { expected: ",", typed: ",", className: "correct" },
+      { expected: " ", typed: "w", className: "extra" },
+      { expected: " ", typed: "o", className: "extra" },
+      { expected: " ", typed: "r", className: "extra" },
+      { expected: " ", typed: "l", className: "extra" },
+      { expected: " ", typed: "d", className: "extra" },
+      { expected: " ", typed: "!", className: "extra" },
+      { expected: " ", typed: null, className: "untyped" },
+      { expected: "w", typed: null, className: "untyped" },
+      { expected: "o", typed: null, className: "untyped" },
+      { expected: "r", typed: null, className: "untyped" },
+      { expected: "l", typed: null, className: "untyped" },
+      { expected: "d", typed: null, className: "untyped" },
+      { expected: "!", typed: null, className: "untyped" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -215,23 +216,23 @@ describe("processTypedInput", () => {
     const generated = "line1\nline2";
     const typed = "line1 line2";
     const expectedOutput = [
-      { expected: "l", typed: "l" },
-      { expected: "i", typed: "i" },
-      { expected: "n", typed: "n" },
-      { expected: "e", typed: "e" },
-      { expected: "1", typed: "1" },
-      { expected: "\n", typed: " " },
-      { expected: "\n", typed: "l" },
-      { expected: "\n", typed: "i" },
-      { expected: "\n", typed: "n" },
-      { expected: "\n", typed: "e" },
-      { expected: "\n", typed: "2" },
-      { expected: "\n", typed: null },
-      { expected: "l", typed: null },
-      { expected: "i", typed: null },
-      { expected: "n", typed: null },
-      { expected: "e", typed: null },
-      { expected: "2", typed: null },
+      { expected: "l", typed: "l", className: "correct" },
+      { expected: "i", typed: "i", className: "correct" },
+      { expected: "n", typed: "n", className: "correct" },
+      { expected: "e", typed: "e", className: "correct" },
+      { expected: "1", typed: "1", className: "correct" },
+      { expected: "\n", typed: " ", className: "incorrect-space" },
+      { expected: "\n", typed: "l", className: "extra" },
+      { expected: "\n", typed: "i", className: "extra" },
+      { expected: "\n", typed: "n", className: "extra" },
+      { expected: "\n", typed: "e", className: "extra" },
+      { expected: "\n", typed: "2", className: "extra" },
+      { expected: "\n", typed: null, className: "untyped" },
+      { expected: "l", typed: null, className: "untyped" },
+      { expected: "i", typed: null, className: "untyped" },
+      { expected: "n", typed: null, className: "untyped" },
+      { expected: "e", typed: null, className: "untyped" },
+      { expected: "2", typed: null, className: "untyped" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -243,9 +244,9 @@ describe("processTypedInput", () => {
     const generated = "abc";
     const typed = " abc";
     const expectedOutput = [
-      { expected: "a", typed: " " },
-      { expected: "b", typed: " " },
-      { expected: "c", typed: " " },
+      { expected: "a", typed: " ", className: "incorrect" },
+      { expected: "b", typed: " ", className: "incorrect" },
+      { expected: "c", typed: " ", className: "incorrect" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -257,10 +258,10 @@ describe("processTypedInput", () => {
     const generated = "abc ";
     const typed = "abc";
     const expectedOutput = [
-      { expected: "a", typed: "a" },
-      { expected: "b", typed: "b" },
-      { expected: "c", typed: "c" },
-      { expected: " ", typed: null },
+      { expected: "a", typed: "a", className: "correct" },
+      { expected: "b", typed: "b", className: "correct" },
+      { expected: "c", typed: "c", className: "correct" },
+      { expected: " ", typed: null, className: "untyped" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
@@ -272,17 +273,17 @@ describe("processTypedInput", () => {
     const generated = "a\tb\nc d";
     const typed = "a b\nc\td";
     const expectedOutput = [
-      { expected: "a", typed: "a" },
-      { expected: "\t", typed: " " },
-      { expected: "\t", typed: "b" },
-      { expected: "\t", typed: "\n" },
-      { expected: "\t", typed: "c" },
-      { expected: "\t", typed: "\t" },
-      { expected: "b", typed: "d" },
-      { expected: "\n", typed: null },
-      { expected: "c", typed: null },
-      { expected: " ", typed: null },
-      { expected: "d", typed: null },
+      { expected: "a", typed: "a", className: "correct" },
+      { expected: "\t", typed: " ", className: "incorrect-space" },
+      { expected: "\t", typed: "b", className: "extra" },
+      { expected: "\t", typed: "\n", className: "incorrect-space" },
+      { expected: "\t", typed: "c", className: "extra" },
+      { expected: "\t", typed: "\t", className: "correct" },
+      { expected: "b", typed: "d", className: "incorrect" },
+      { expected: "\n", typed: null, className: "untyped" },
+      { expected: "c", typed: null, className: "untyped" },
+      { expected: " ", typed: null, className: "untyped" },
+      { expected: "d", typed: null, className: "untyped" },
     ];
 
     const result = processTypedInput(generated.split(""), typed.split(""));
