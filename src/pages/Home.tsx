@@ -15,8 +15,4 @@ function Home() {
   );
 }
 
-// const CountdownTimer = ({ timeLeft }: { timeLeft: number }) => {
-//   return <h2 className="font-medium text-cursor">Time: {timeLeft}</h2>;
-// };
-
 export default Home;
