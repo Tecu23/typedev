@@ -1,6 +1,7 @@
 import { LegacyRef, useEffect, useRef } from "react";
 import debounce from "lodash.debounce";
 import Caret from "../../Caret";
+import { samples } from "../../../utilities/helpers/seeds/code/typescript";
 
 const WordsContainer = ({ words, typed }: { words: string; typed: string }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -87,6 +88,7 @@ const WordsContainer = ({ words, typed }: { words: string; typed: string }) => {
     >
       {generatedWords.map((_, i) => (
         <Word
+          key={`${generatedWords[i]}_${typedWords}_${i}`}
           word={generatedWords[i]}
           typedWord={typedWords[i]}
           cursorPosition={cursorPositon}
@@ -147,18 +149,23 @@ const Word = ({
       0 === cursorPosition.letterIndex &&
       i === 0
     ) {
-      tmpLetters.push(<Caret ref={cursorRef} />);
+      tmpLetters.push(<Caret key={`${"cursor"}`} ref={cursorRef} />);
     }
 
     tmpLetters.push(
-      <span className={`${className}`}>{generatedLetters[i]}</span>,
+      <span
+        key={`${word}_${wordIndex}_${generatedLetters[i]}_${i}`}
+        className={`${className}`}
+      >
+        {generatedLetters[i]}
+      </span>,
     );
 
     if (
       cursorPosition.wordIndex === wordIndex &&
       i === cursorPosition.letterIndex - 1
     ) {
-      tmpLetters.push(<Caret ref={cursorRef} />);
+      tmpLetters.push(<Caret key={`${"cursor"}`} ref={cursorRef} />);
     }
   }
 
@@ -169,14 +176,23 @@ const Word = ({
         i === cursorPosition.letterIndex - 1;
 
       tmpLetters.push(
-        <span className="text-error-space">{typedLetters[i]}</span>,
+        <span
+          key={`${word}_${wordIndex}_${typedLetters[i]}_${i}`}
+          className="text-error-space"
+        >
+          {typedLetters[i]}
+        </span>,
       );
 
       if (show_cursor) {
-        tmpLetters.push(<Caret ref={cursorRef} />);
+        tmpLetters.push(<Caret key={`${"cursor"}`} ref={cursorRef} />);
       }
     }
   }
 
-  return <div className="word">{tmpLetters}</div>;
+  return (
+    <div key={`${word}_${wordIndex}`} className="word">
+      {tmpLetters}
+    </div>
+  );
 };

@@ -1,6 +1,5 @@
 export const samples = [
-  `
-class Animal {
+  `class Animal {
   private name: string;
 
   constructor(name: string) {
@@ -33,10 +32,8 @@ class Dog extends Animal {
 const dog = new Dog('Buddy');
 dog.move(10);
 dog.makeSound();
-dog.fetch();
-`,
-  `
-class Stack<T> {
+dog.fetch();`,
+  `class Stack<T> {
   private items: T[] = [];
 
   public push(item: T): void {
@@ -72,10 +69,8 @@ console.log(numberStack.size()); // Output: 2
 numberStack.pop();
 console.log(numberStack.peek()); // Output: 1
 numberStack.clear();
-console.log(numberStack.isEmpty()); // Output: true
-`,
-  `
-interface Observer {
+console.log(numberStack.isEmpty()); // Output: true`,
+  `interface Observer {
   update(message: string): void;
 }
 
@@ -120,10 +115,8 @@ subject.attach(observer1);
 subject.attach(observer2);
 subject.notify('Hello Observers!');
 subject.detach(observer1);
-subject.notify('Goodbye Observers!');
-`,
-  `
-function delay(ms: number): Promise<void> {
+subject.notify('Goodbye Observers!');`,
+  `function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -143,10 +136,8 @@ async function processData(): Promise<void> {
   }
 }
 
-processData();
-`,
-  `
-function logMethod(target: any, propertyKey: string, descriptor: PropertyDescriptor): void {
+processData();`,
+  `function logMethod(target: any, propertyKey: string, descriptor: PropertyDescriptor): void {
   const originalMethod = descriptor.value;
 
   descriptor.value = function (...args: any[]) {
@@ -171,10 +162,8 @@ class Calculator {
 
 const calculator = new Calculator();
 calculator.add(2, 3);
-calculator.multiply(4, 5);
-`,
-  `
-interface Repository<T, ID> {
+calculator.multiply(4, 5);`,
+  `interface Repository<T, ID> {
   findById(id: ID): T | null;
   save(entity: T): void;
   delete(id: ID): void;
@@ -205,10 +194,8 @@ const userRepository = new InMemoryRepository<User, number>();
 userRepository.save({ id: 1, name: 'Alice' });
 const user = userRepository.findById(1);
 console.log(user);
-userRepository.delete(1);
-`,
-  `
-// mathUtils.ts
+userRepository.delete(1);`,
+  `// mathUtils.ts
 namespace MathUtils {
   export namespace Algebra {
     export function solveQuadratic(a: number, b: number, c: number): number[] {
@@ -233,10 +220,8 @@ const roots = MathUtils.Algebra.solveQuadratic(1, -3, 2);
 console.log('Quadratic Roots:', roots);
 
 const area = MathUtils.Geometry.areaOfCircle(5);
-console.log('Area of Circle:', area);
-`,
-  `
-type Mutable<T> = {
+console.log('Area of Circle:', area);`,
+  `type Mutable<T> = {
   -readonly [P in keyof T]: T[P];
 };
 
@@ -262,10 +247,8 @@ interface Person {
 
 type PersonPartial = PartialOptional<Person>;
 
-const partialPerson: PersonPartial = { name: 'Bob' };
-`,
-  `
-interface Observer<T> {
+const partialPerson: PersonPartial = { name: 'Bob' };`,
+  `interface Observer<T> {
   update(data: T): void;
 }
 
@@ -302,10 +285,8 @@ const observer = new DataObserver();
 subject.subscribe(observer);
 subject.notify(42);
 subject.unsubscribe(observer);
-subject.notify(100);
-`,
-  `
-class Singleton {
+subject.notify(100);`,
+  `class Singleton {
   private static instance: Singleton;
 
   private constructor() {
@@ -329,10 +310,8 @@ const singleton2 = Singleton.getInstance();
 
 console.log(singleton1 === singleton2); // Output: true
 
-singleton1.doSomething();
-`,
-  `
-import { promises as fs } from 'fs';
+singleton1.doSomething();`,
+  `import { promises as fs } from 'fs';
 
 async function readFileAsync(path: string): Promise<string> {
   try {
@@ -349,10 +328,8 @@ async function main(): Promise<void> {
   console.log('File Content:', content);
 }
 
-main().catch((error) => console.error('Error in main:', error));
-`,
-  `
-// app.ts
+main().catch((error) => console.error('Error in main:', error));`,
+  `// app.ts
 import express, { Request, Response } from 'express';
 
 const app = express();
@@ -364,10 +341,8 @@ app.get('/', (req: Request, res: Response) => {
 
 app.listen(port, () => {
   console.log(\`Server is running at http://localhost:\${port}\`);
-});
-`,
-  `
-type EventHandler = (...args: any[]) => void;
+});`,
+  `type EventHandler = (...args: any[]) => void;
 
 class EventEmitter {
   private events: Map<string, EventHandler[]> = new Map();
@@ -407,10 +382,8 @@ function onFoo(data: any): void {
 
 emitter.on('foo', onFoo);
 emitter.emit('foo', { some: 'data' });
-emitter.off('foo', onFoo);
-`,
-  `
-abstract class Handler {
+emitter.off('foo', onFoo);`,
+  `abstract class Handler {
   private nextHandler?: Handler;
 
   public setNext(handler: Handler): Handler {
@@ -452,10 +425,8 @@ handlerA.setNext(handlerB);
 
 handlerA.handle('A');
 handlerA.handle('B');
-handlerA.handle('C');
-`,
-  `
-interface PaymentStrategy {
+handlerA.handle('C');`,
+  `interface PaymentStrategy {
   pay(amount: number): void;
 }
 
@@ -497,10 +468,8 @@ cart.addItem({ name: 'Book', price: 29.99 });
 cart.addItem({ name: 'Pen', price: 2.49 });
 
 cart.pay(new CreditCardStrategy('1234-5678-9012-3456'));
-cart.pay(new PayPalStrategy('user@example.com'));
-`,
-  `
-interface Component {
+cart.pay(new PayPalStrategy('user@example.com'));`,
+  `interface Component {
   operation(): string;
 }
 
@@ -538,10 +507,8 @@ const component = new ConcreteComponent();
 const decoratorA = new ConcreteDecoratorA(component);
 const decoratorB = new ConcreteDecoratorB(decoratorA);
 
-console.log(decoratorB.operation());
-`,
-  `
-interface Command {
+console.log(decoratorB.operation());`,
+  `interface Command {
   execute(): void;
 }
 
@@ -576,10 +543,8 @@ const receiver = new Receiver();
 const command = new ConcreteCommand(receiver);
 const invoker = new Invoker();
 
-invoker.storeAndExecute(command);
-`,
-  `
-class Product {
+invoker.storeAndExecute(command);`,
+  `class Product {
   public parts: string[] = [];
 
   public listParts(): void {
@@ -647,10 +612,8 @@ product.listParts();
 
 director.buildFullFeaturedProduct();
 product = builder.getResult();
-product.listParts();
-`,
-  `
-interface Subject {
+product.listParts();`,
+  `interface Subject {
   request(): void;
 }
 
@@ -687,10 +650,8 @@ class ProxySubject implements Subject {
 const realSubject = new RealSubject();
 const proxy = new ProxySubject(realSubject);
 
-proxy.request();
-`,
-  `
-interface Mediator {
+proxy.request();`,
+  `interface Mediator {
   notify(sender: object, event: string): void;
 }
 
@@ -754,10 +715,8 @@ const c2 = new Component2();
 const mediator = new ConcreteMediator(c1, c2);
 
 c1.doA();
-c2.doD();
-`,
-  `
-class Context {
+c2.doD();`,
+  `class Context {
   private state: State;
 
   constructor(state: State) {
@@ -816,10 +775,8 @@ class ConcreteStateB extends State {
 
 const context = new Context(new ConcreteStateA());
 context.request1();
-context.request2();
-`,
-  `
-abstract class AbstractClass {
+context.request2();`,
+  `abstract class AbstractClass {
   public templateMethod(): void {
     this.baseOperation1();
     this.requiredOperation1();
@@ -877,10 +834,8 @@ const c1 = new ConcreteClass1();
 c1.templateMethod();
 
 const c2 = new ConcreteClass2();
-c2.templateMethod();
-`,
-  `
-interface Iterator<T> {
+c2.templateMethod();`,
+  `interface Iterator<T> {
   next(): T | null;
   hasNext(): boolean;
 }
@@ -938,10 +893,8 @@ const iterator = collection.createIterator();
 
 while (iterator.hasNext()) {
   console.log(iterator.next());
-}
-`,
-  `
-abstract class Component {
+}`,
+  `abstract class Component {
   protected parent: Component | null = null;
 
   public setParent(parent: Component | null): void {
@@ -1007,10 +960,8 @@ branch2.add(new Leaf());
 tree.add(branch1);
 tree.add(branch2);
 
-console.log(tree.operation());
-`,
-  `
-abstract class Creator {
+console.log(tree.operation());`,
+  `abstract class Creator {
   public abstract factoryMethod(): Product;
 
   public operation(): string {
@@ -1053,10 +1004,8 @@ function clientCode(creator: Creator) {
 }
 
 clientCode(new ConcreteCreatorA());
-clientCode(new ConcreteCreatorB());
-`,
-  `
-class Target {
+clientCode(new ConcreteCreatorB());`,
+  `class Target {
   public request(): string {
     return 'Target: The default target's behavior.';
   }
@@ -1096,10 +1045,8 @@ console.log(\`Adaptee: \${adaptee.specificRequest()}\`);
 
 console.log('Client: But I can work with it via the Adapter:');
 const adapter = new Adapter(adaptee);
-clientCode(adapter);
-`,
-  `
-class SubsystemA {
+clientCode(adapter);`,
+  `class SubsystemA {
   public operationA1(): string {
     return 'SubsystemA: Ready!\n';
   }
@@ -1144,10 +1091,8 @@ function clientCode(facade: Facade) {
 }
 
 const facade = new Facade();
-clientCode(facade);
-`,
-  `
-class Flyweight {
+clientCode(facade);`,
+  `class Flyweight {
   private sharedState: any;
 
   constructor(sharedState: any) {
@@ -1216,10 +1161,8 @@ function addCarToPoliceDatabase(
 addCarToPoliceDatabase(factory, 'CL234IR', 'James Doe', 'BMW', 'M5', 'red');
 addCarToPoliceDatabase(factory, 'CL234IR', 'James Doe', 'BMW', 'X6', 'white');
 
-factory.listFlyweights();
-`,
-  `
-interface AbstractFactory {
+factory.listFlyweights();`,
+  `interface AbstractFactory {
   createProductA(): AbstractProductA;
   createProductB(): AbstractProductB;
 }
@@ -1299,10 +1242,8 @@ console.log('Client: Testing client code with the first factory type:');
 clientCode(new ConcreteFactory1());
 
 console.log('Client: Testing the same client code with the second factory type:');
-clientCode(new ConcreteFactory2());
-`,
-  `
-class Memento {
+clientCode(new ConcreteFactory2());`,
+  `class Memento {
   private state: string;
   private date: string;
 
@@ -1392,6 +1333,5 @@ console.log('Client: Now, let's rollback!');
 caretaker.undo();
 
 console.log('Client: Once more!');
-caretaker.undo();
-`,
+caretaker.undo();`,
 ];

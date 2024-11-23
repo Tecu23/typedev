@@ -1,4 +1,5 @@
-import { words as randomWords } from "../helpers/seeds/words/simple";
+import { samples } from "../helpers/seeds/code/typescript";
+// import { words as randomWords } from "../helpers/seeds/words/simple";
 import { useCallback, useState } from "react";
 
 function getRandomSample(array: string[], sampleSize: number): string {
@@ -19,14 +20,14 @@ function getRandomSample(array: string[], sampleSize: number): string {
   return shuffled.slice(0, sampleSize).join(" ");
 }
 
-const useWords = (count: number) => {
+const useWords = () => {
   const [words, setWords] = useState<string>(
-    getRandomSample(randomWords, count),
+    samples[Math.floor(Math.random() * samples.length)],
   );
 
   const updateWords = useCallback(() => {
-    setWords(getRandomSample(randomWords, count));
-  }, [count]);
+    setWords(samples[Math.floor(Math.random() * samples.length)]);
+  }, []);
 
   return { words, updateWords };
 };

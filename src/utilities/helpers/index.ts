@@ -22,3 +22,10 @@ export const calculateAccuracyPercentage = (errors: number, total: number) => {
 export const formatPercentage = (percentage: number) => {
   return percentage.toFixed(0) + "%";
 };
+
+export const isWhitespace = (s: string) => {
+  const whitespaceRe = /\s/;
+  return whitespaceRe.test(s);
+};
+
+export const isCharacter = (char: string) => !isWhitespace(char);

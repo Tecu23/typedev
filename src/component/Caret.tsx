@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 const Caret = React.forwardRef<HTMLDivElement | null>((_, ref) => {
   return (
     <motion.div
+      key={`${"cursor"}`}
       ref={ref}
       aria-hidden={true}
       className="inline-block relative inset-y-0 -mb-1 w-0.5 h-8 bg-cursor"
