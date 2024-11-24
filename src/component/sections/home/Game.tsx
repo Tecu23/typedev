@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import DevWordsContainer from "./DevWordsContainer";
 import { isKeyboardCodeAllowed } from "../../../utilities/helpers";
 import Result from "../../Result";
-import RestartButton from "../../RestartButton";
+import useCountdownTimer from "../../../utilities/hooks/useCountdownTimer";
+import RestartButton from "../../ui/RestartButton";
 
 type Game = "waiting for input" | "in progress" | "game over";
 
@@ -10,15 +11,13 @@ const Game = () => {
   const [gameState, setGameState] = useState<Game>("waiting for input");
   const [typedLetters, setTypedLetters] = useState("");
 
-  const [timeLeft, setTimeLeft] = useState(30);
-
   const words = "The quick brown fox jumps over the lazy dog";
 
   const gameRef = useRef<HTMLDivElement | null>(null);
   const wordsRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const { timeLeft, startCountdown, resetCountdown } = useCountdownTimer(30);
 
   function startGame() {
     setGameState("in progress");
@@ -36,6 +35,13 @@ const Game = () => {
     if (gameState === "game over" || !isKeyboardCodeAllowed(e.code)) {
       return;
     }
+
+    if (e.ctrlKey && e.code === "Space") {
+      e.preventDefault();
+      restartGame();
+      return;
+    }
+
     switch (e.key) {
       case "Tab":
         e.preventDefault();
@@ -57,30 +63,6 @@ const Game = () => {
     }
   }
 
-  const startCountdown = () => {
-    intervalRef.current = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-    }, 1000);
-  };
-
-  const resetCountdown = () => {
-    clearInterval(intervalRef.current!);
-    intervalRef.current = null;
-    setTimeLeft(30);
-  };
-
-  useEffect(() => {
-    if (timeLeft <= 0) {
-      setGameState("game over");
-      clearInterval(intervalRef.current!);
-      intervalRef.current = null;
-    }
-  }, [timeLeft]);
-
-  useEffect(() => {
-    return () => clearInterval(intervalRef.current!);
-  }, []);
-
   return (
     <div id="game" ref={gameRef}>
       {gameState !== "game over" ? (
@@ -90,14 +72,11 @@ const Game = () => {
           <input
             ref={inputRef}
             type="text"
+            value={typedLetters}
             onKeyDown={handleKeydown}
             className=""
           />
           {/* <WordsContainer words={words} typed={typed} /> */}
-          <RestartButton
-            className="mx-auto mt-10 text-slate-500"
-            onRestart={() => restartGame()}
-          />
         </>
       ) : (
         <Result
@@ -107,6 +86,11 @@ const Game = () => {
           total={20}
         />
       )}
+
+      <RestartButton
+        className="mx-auto mt-10 text-slate-500"
+        onRestart={() => restartGame()}
+      />
     </div>
   );
 };

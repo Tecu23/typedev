@@ -1,7 +1,7 @@
 import React from "react";
 import { isCharacter, isWhitespace } from "../../../utilities/helpers";
 import { processTypedInput } from "../../../utilities/helpers/processTypedInput";
-import Caret from "../../Caret";
+import Cursor from "../../ui/Caret";
 
 type Props = {
   text: string;
@@ -17,7 +17,7 @@ const DevWordsContainer = React.forwardRef<HTMLDivElement | null, Props>(
 
     elements.map((el, idx) => {
       if (idx == cursor_idx) {
-        components.push(<Caret key={"cursor"} />);
+        components.push(<Cursor key={"cursor"} />);
       }
       components.push(
         <Char
