@@ -1,29 +1,17 @@
 import { motion } from "framer-motion";
-import { State } from "../utilities/hooks/useEngine";
 import { formatPercentage } from "../utilities/helpers";
 
 type Props = {
-  state: State;
   errors: number;
   accuracyPercentage: number;
   total: number;
   className?: string;
 };
 
-const Result = ({
-  state,
-  errors,
-  accuracyPercentage,
-  total,
-  className,
-}: Props) => {
+const Result = ({ errors, accuracyPercentage, total, className }: Props) => {
   const initial = { opacity: 0 };
   const animate = { opacity: 1 };
   const duration = { duration: 0.3 };
-
-  if (state !== "finish") {
-    return null;
-  }
 
   return (
     <motion.ul

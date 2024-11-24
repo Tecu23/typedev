@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import DevWordsContainer from "./DevWordsContainer";
 import { isKeyboardCodeAllowed } from "../../../utilities/helpers";
+import Result from "../../Result";
+import RestartButton from "../../RestartButton";
 
 type Game = "waiting for input" | "in progress" | "game over";
-type Word = string;
 
 const Game = () => {
   const [gameState, setGameState] = useState<Game>("waiting for input");
@@ -11,7 +12,7 @@ const Game = () => {
 
   const [timeLeft, setTimeLeft] = useState(30);
 
-  const words: Word = "The quick brown fox jumps over the lazy dog";
+  const words = "The quick brown fox jumps over the lazy dog";
 
   const gameRef = useRef<HTMLDivElement | null>(null);
   const wordsRef = useRef<HTMLDivElement | null>(null);
@@ -23,6 +24,12 @@ const Game = () => {
     setGameState("in progress");
 
     startCountdown();
+  }
+
+  function restartGame() {
+    resetCountdown();
+    setTypedLetters("");
+    setGameState("waiting for input");
   }
 
   function handleKeydown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -56,11 +63,11 @@ const Game = () => {
     }, 1000);
   };
 
-  // const resetCountdown = useCallback(() => {
-  //   clearInterval(intervalRef.current!);
-  //   intervalRef.current = null;
-  //   setTimeLeft(seconds);
-  // }, [seconds]);
+  const resetCountdown = () => {
+    clearInterval(intervalRef.current!);
+    intervalRef.current = null;
+    setTimeLeft(30);
+  };
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -76,19 +83,30 @@ const Game = () => {
 
   return (
     <div id="game" ref={gameRef}>
-      <CountdownTimer timeLeft={timeLeft} />
-      <DevWordsContainer ref={wordsRef} text={words} typed={typedLetters} />
-      <input
-        ref={inputRef}
-        type="text"
-        onKeyDown={handleKeydown}
-        className=""
-      />
-      {/* <WordsContainer words={words} typed={typed} /> */}
-      {/* <RestartButton */}
-      {/*   className="mx-auto mt-10 text-slate-500" */}
-      {/*   onRestart={() => restart()} */}
-      {/* /> */}
+      {gameState !== "game over" ? (
+        <>
+          <CountdownTimer timeLeft={timeLeft} />
+          <DevWordsContainer ref={wordsRef} text={words} typed={typedLetters} />
+          <input
+            ref={inputRef}
+            type="text"
+            onKeyDown={handleKeydown}
+            className=""
+          />
+          {/* <WordsContainer words={words} typed={typed} /> */}
+          <RestartButton
+            className="mx-auto mt-10 text-slate-500"
+            onRestart={() => restartGame()}
+          />
+        </>
+      ) : (
+        <Result
+          className="mt-10"
+          errors={10}
+          accuracyPercentage={10}
+          total={20}
+        />
+      )}
     </div>
   );
 };
