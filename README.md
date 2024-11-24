@@ -1,50 +1,107 @@
-# React + TypeScript + Vite
+# Typing Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fun and interactive typing game built with React
+and TypeScript to improve your typing speed and accuracy.
 
-Currently, two official plugins are available:
+## Table of Contents
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- [Demo](#demo)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running the App](#running-the-app)
+- [Usage](#usage)
+- [Built With](#built-with)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgments](#acknowledgments)
 
-## Expanding the ESLint configuration
+## Demo
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+[Live Demo Link](#) <!-- Replace with the link to your deployed app -->
 
-- Configure the top-level `parserOptions` property like this:
+## Features
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Countdown timer to challenge your typing speed.
+- Visual feedback for correct and incorrect inputs.
+- Displays Words Per Minute (WPM) and accuracy percentage at the end of the game.
+- Restart functionality to play multiple times.
+- Handles special keys like Tab, Enter, and Backspace.
+- Responsive design for various screen sizes.
+
+## Screenshots
+
+<!-- Include screenshots of your app -->
+
+![Typing Game Screenshot](screenshots/typing-game.png)
+
+## Getting Started
+
+Follow these instructions to get a copy of
+the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/en/download/) (v20 or later)
+- [npm](https://www.npmjs.com/get-npm)
+
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone git@github.com:Tecu23/typedev.git
+   ```
+
+2. **Navigate to the project directory:**
+
+   ```bash
+   cd typedev
+   ```
+
+3. **Install dependencies:**
+
+   ```bash
+   npm install
+   ```
+
+### Running the App
+
+Start the development server:
+
+```bash
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Open your browser and navigate to `http://localhost:5173` to see the app running.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Usage
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Click on the **Start Game** button or begin typing to start the game.
+- Type the displayed text as accurately and quickly as possible
+  before the timer runs out.
+- Use the **Restart** button to play again.
+
+## Built With
+
+- [React](https://reactjs.org/) - JavaScript library for building user interfaces.
+- [TypeScript](https://www.typescriptlang.org/) - Typed superset of JavaScript.
+- [Vite](https://vitejs.dev/) - Frontend build tool.
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework.
+- [Framer Motion](https://motion.dev/) - React Animations Library.
+
+## Contributing
+
+Contributions are welcome!
+
+## License
+
+This project is licensed under the MIT License -
+see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Inspiration from popular typing websites like [TypingClub](https://www.typingclub.com/)
+  and [Monkeytype](https://monkeytype.com/).
