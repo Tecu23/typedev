@@ -6,10 +6,11 @@ import Cursor from "../../ui/Caret";
 type Props = {
   text: string;
   typed: string;
+  focused: boolean;
 };
 
 const DevWordsContainer = React.forwardRef<HTMLDivElement | null, Props>(
-  ({ text, typed }, ref) => {
+  ({ text, typed, focused }, ref) => {
     const components: React.JSX.Element[] = [];
 
     const elements = processTypedInput(text, typed);
@@ -32,7 +33,7 @@ const DevWordsContainer = React.forwardRef<HTMLDivElement | null, Props>(
     return (
       <div
         ref={ref}
-        className="overflow-hidden relative mx-8 max-w-3xl text-4xl whitespace-pre-wrap leading-[50px] h-[200px]"
+        className={`overflow-hidden relative mx-8 max-w-3xl text-4xl whitespace-pre-wrap leading-[50px] h-[200px] ${focused ? "blur-0" : "blur-[3px]"}`}
       >
         <pre className="whitespace-pre-wrap break-words select-none">
           {components}

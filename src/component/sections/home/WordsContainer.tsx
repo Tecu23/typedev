@@ -127,7 +127,7 @@ const Word = ({
   for (i = 0; i < generatedLetters.length; i++) {
     let className = "";
     if (typedWord == null || (typedWord === "" && isLast)) {
-      className = "text-grey-comment";
+      className = "text-untyped";
     } else {
       if (typedLetters[i] != null) {
         if (generatedLetters[i] == typedLetters[i]) {
@@ -137,7 +137,7 @@ const Word = ({
         }
       } else {
         if (isLast) {
-          className = "text-grey-comment";
+          className = "text-untyped";
         } else {
           className = "text-error";
         }

@@ -4,21 +4,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "var(--primary-color)",
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-
-        grey: {
-          comment: "var(--dark3)",
+        background: {
+          DEFAULT: "rgb(var(--background))",
+          highlight: "rgb(var(--background-highlight))",
+          dark: "rgb(var(--background-dark))",
+          keybind: "rgb(var(--background-keybind))",
         },
+        foreground: "rgb(var(--foreground))",
+
+        untyped: "rgb(var(--untyped))",
 
         cursor: {
-          DEFAULT: "var(--purple)",
+          DEFAULT: "rgb(var(--cursor))",
         },
 
         error: {
-          DEFAULT: "var(--red1)",
-          space: "var(--red)",
+          DEFAULT: "rgb(var(--error))",
+          space: "rgb(var(--error-space))",
         },
       },
     },
