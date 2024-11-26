@@ -1,6 +1,7 @@
-import { samples } from "../helpers/seeds/code/typescript";
-// import { words as randomWords } from "../helpers/seeds/words/simple";
 import { useCallback, useState } from "react";
+import { words as randomWords } from "../helpers/seeds/words/simple";
+import { samples } from "../helpers/seeds/code/typescript";
+import type { Words, GameConfig } from "../types";
 
 function getRandomSample(array: string[], sampleSize: number): string {
   if (sampleSize > array.length) {
@@ -20,14 +21,19 @@ function getRandomSample(array: string[], sampleSize: number): string {
   return shuffled.slice(0, sampleSize).join(" ");
 }
 
-const useWords = () => {
-  const [words, setWords] = useState<string>(
-    samples[Math.floor(Math.random() * samples.length)],
-  );
+const useWords = (config: GameConfig) => {
+  const getWords = useCallback((): Words => {
+    if (config.type == "normal") {
+      return getRandomSample(randomWords, config.count);
+    } else {
+      return samples[Math.floor(Math.random() * samples.length)];
+    }
+  }, [config]);
 
+  const [words, setWords] = useState<string>(getWords());
   const updateWords = useCallback(() => {
-    setWords(samples[Math.floor(Math.random() * samples.length)]);
-  }, []);
+    setWords(getWords());
+  }, [getWords]);
 
   return { words, updateWords };
 };

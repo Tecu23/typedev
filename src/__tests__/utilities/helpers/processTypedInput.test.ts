@@ -11,7 +11,7 @@ describe("processTypedInput", () => {
       className: "correct",
     }));
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -27,7 +27,7 @@ describe("processTypedInput", () => {
       { expected: "o", typed: " ", className: "incorrect" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -54,7 +54,7 @@ describe("processTypedInput", () => {
       { expected: "d", typed: null, className: "untyped" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -76,7 +76,7 @@ describe("processTypedInput", () => {
       { expected: "2", typed: "2", className: "correct" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -104,7 +104,7 @@ describe("processTypedInput", () => {
       { expected: "2", typed: null, className: "untyped" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -118,7 +118,7 @@ describe("processTypedInput", () => {
       { expected: "\n", typed: "\n", className: "correct" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -132,7 +132,7 @@ describe("processTypedInput", () => {
       { expected: "c", typed: "c", className: "correct" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -147,7 +147,7 @@ describe("processTypedInput", () => {
       { expected: "d", typed: null, className: "untyped" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -157,7 +157,7 @@ describe("processTypedInput", () => {
     const typed = "";
     const expectedOutput: Array<undefined> = [];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -177,7 +177,7 @@ describe("processTypedInput", () => {
       { expected: "f", typed: "f", className: "correct" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -207,7 +207,7 @@ describe("processTypedInput", () => {
       { expected: "!", typed: null, className: "untyped" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -235,7 +235,7 @@ describe("processTypedInput", () => {
       { expected: "2", typed: null, className: "untyped" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -249,7 +249,7 @@ describe("processTypedInput", () => {
       { expected: "c", typed: " ", className: "incorrect" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -264,7 +264,7 @@ describe("processTypedInput", () => {
       { expected: " ", typed: null, className: "untyped" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });
@@ -286,7 +286,7 @@ describe("processTypedInput", () => {
       { expected: "d", typed: null, className: "untyped" },
     ];
 
-    const result = processTypedInput(generated.split(""), typed.split(""));
+    const result = processTypedInput(generated, typed);
 
     expect(result).toEqual(expectedOutput);
   });

@@ -5,11 +5,13 @@ import Result from "../../Result";
 import useCountdownTimer from "../../../utilities/hooks/useCountdownTimer";
 import RestartButton from "../../ui/RestartButton";
 import useWords from "../../../utilities/hooks/useWords";
+import { GameConfig, GameType } from "../../../utilities/types";
 
 type Game = "waiting for input" | "in progress" | "game over";
 
 const Game = () => {
   const [gameState, setGameState] = useState<Game>("waiting for input");
+  const [gameType, _] = useState<GameType>("dev");
   const [typedLetters, setTypedLetters] = useState("");
 
   const gameRef = useRef<HTMLDivElement | null>(null);
@@ -19,7 +21,7 @@ const Game = () => {
   const [isFocused, setIsFocused] = useState(true);
 
   const { timeLeft, startCountdown, resetCountdown } = useCountdownTimer(30);
-  const { words } = useWords();
+  const { words, updateWords } = useWords({ type: gameType } as GameConfig);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -50,6 +52,7 @@ const Game = () => {
   function restartGame() {
     resetCountdown();
     setTypedLetters("");
+    updateWords();
     setGameState("waiting for input");
   }
 
