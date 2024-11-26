@@ -42,6 +42,7 @@ export const isKeyboardCodeAllowed = (code: string) => {
     code === "Period" ||
     code === "Equal" ||
     code === "Semicolon" ||
+    code === "Minus" ||
     code === "Slash" ||
     code === "Space"
   );

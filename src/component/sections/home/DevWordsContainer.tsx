@@ -100,7 +100,7 @@ const DevWordsContainer = React.forwardRef<HTMLDivElement | null, Props>(
     return (
       <div
         ref={ref}
-        className={`overflow-hidden relative mx-8 max-w-3xl text-4xl whitespace-pre-wrap leading-[50px] h-[200px] `}
+        className={`overflow-hidden relative mx-8 max-w-3xl text-4xl whitespace-pre-wrap leading-[40px] h-[200px] `}
       >
         <pre className="whitespace-pre-wrap break-words select-none">
           {components}
