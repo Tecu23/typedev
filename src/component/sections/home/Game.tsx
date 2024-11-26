@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import DevWordsContainer from "./DevWordsContainer";
-import { isKeyboardCodeAllowed } from "../../../utilities/helpers";
+
 import Result from "../../Result";
-import useCountdownTimer from "../../../utilities/hooks/useCountdownTimer";
 import RestartButton from "../../ui/RestartButton";
+import DevWordsContainer from "./DevWordsContainer";
+
 import useWords from "../../../utilities/hooks/useWords";
+import useCountdownTimer from "../../../utilities/hooks/useCountdownTimer";
+
 import { GameConfig, GameType } from "../../../utilities/types";
+import { isKeyboardCodeAllowed } from "../../../utilities/helpers";
 
 type Game = "waiting for input" | "in progress" | "game over";
 
@@ -134,5 +137,7 @@ const Game = () => {
 export default Game;
 
 const CountdownTimer = ({ timeLeft }: { timeLeft: number }) => {
-  return <h2 className={`font-medium text-cursor`}>Time: {timeLeft}</h2>;
+  return (
+    <h2 className={`font-medium text-cursor text-2xl px-2`}>{timeLeft}</h2>
+  );
 };

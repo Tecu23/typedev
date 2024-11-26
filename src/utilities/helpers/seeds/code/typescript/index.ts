@@ -1,64 +1,65 @@
 export const samples = [
   `class Animal {
-  private name: string;
+\tprivate name: string;
 
-  constructor(name: string) {
-    this.name = name;
-  }
+\tconstructor(name: string) {
+\t\tthis.name = name;
+\t}
 
-  public move(distanceInMeters: number = 0): void {
-    console.log(\`\${this.name} moved \${distanceInMeters} meters.\`);
-  }
+\tpublic move(distanceInMeters: number = 0): void {
+\t\tconsole.log(\`\${this.name} moved \${distanceInMeters} meters.\`);
+\t}
 
-  public makeSound(): void {
-    console.log(\`\${this.name} makes a generic sound.\`);
-  }
+\tpublic makeSound(): void {
+\t\tconsole.log(\`\${this.name} makes a generic sound.\`);
+\t}
 }
 
 class Dog extends Animal {
-  constructor(name: string) {
-    super(name);
-  }
+\tconstructor(name: string) {
+\t\tsuper(name);
+\t}
 
-  public makeSound(): void {
-    console.log(\`\${this.name} barks.\`);
-  }
+\tpublic makeSound(): void {
+\t\tconsole.log(\`\${this.name} barks.\`);
+\t}
 
-  public fetch(): void {
-    console.log(\`\${this.name} is fetching!\`);
-  }
+\tpublic fetch(): void {
+\t\tconsole.log(\`\${this.name} is fetching!\`);
+\t}
 }
 
 const dog = new Dog('Buddy');
 dog.move(10);
 dog.makeSound();
 dog.fetch();`,
+
   `class Stack<T> {
-  private items: T[] = [];
+\tprivate items: T[] = [];
 
-  public push(item: T): void {
-    this.items.push(item);
-  }
+\tpublic push(item: T): void {
+\t\tthis.items.push(item);
+\t}
 
-  public pop(): T | undefined {
-    return this.items.pop();
-  }
+\tpublic pop(): T | undefined {
+\t\treturn this.items.pop();
+\t}
 
-  public peek(): T | undefined {
-    return this.items[this.items.length - 1];
-  }
+\tpublic peek(): T | undefined {
+\t\treturn this.items[this.items.length - 1];
+\t}
 
-  public isEmpty(): boolean {
-    return this.items.length === 0;
-  }
+\tpublic isEmpty(): boolean {
+\t\treturn this.items.length === 0;
+\t}
 
-  public size(): number {
-    return this.items.length;
-  }
+\tpublic size(): number {
+\t\treturn this.items.length;
+\t}
 
-  public clear(): void {
-    this.items = [];
-  }
+\tpublic clear(): void {
+\t\tthis.items = [];
+\t}
 }
 
 const numberStack = new Stack<number>();
@@ -70,41 +71,42 @@ numberStack.pop();
 console.log(numberStack.peek()); // Output: 1
 numberStack.clear();
 console.log(numberStack.isEmpty()); // Output: true`,
+
   `interface Observer {
-  update(message: string): void;
+\tupdate(message: string): void;
 }
 
 class Subject {
-  private observers: Observer[] = [];
+\tprivate observers: Observer[] = [];
 
-  public attach(observer: Observer): void {
-    this.observers.push(observer);
-  }
+\tpublic attach(observer: Observer): void {
+\t\tthis.observers.push(observer);
+\t}
 
-  public detach(observer: Observer): void {
-    const index = this.observers.indexOf(observer);
-    if (index !== -1) {
-      this.observers.splice(index, 1);
-    }
-  }
+\tpublic detach(observer: Observer): void {
+\t\tconst index = this.observers.indexOf(observer);
+\t\tif (index !== -1) {
+\t\t\tthis.observers.splice(index, 1);
+\t\t}
+\t}
 
-  public notify(message: string): void {
-    for (const observer of this.observers) {
-      observer.update(message);
-    }
-  }
+\tpublic notify(message: string): void {
+\t\tfor (const observer of this.observers) {
+\t\t\tobserver.update(message);
+\t\t}
+\t}
 }
 
 class ConcreteObserver implements Observer {
-  private name: string;
+\tprivate name: string;
 
-  constructor(name: string) {
-    this.name = name;
-  }
+\tconstructor(name: string) {
+\t\tthis.name = name;
+\t}
 
-  public update(message: string): void {
-    console.log(\`\${this.name} received message: \${message}\`);
-  }
+\tpublic update(message: string): void {
+\t\tconsole.log(\`\${this.name} received message: \${message}\`);
+\t}
 }
 
 const subject = new Subject();
@@ -116,78 +118,81 @@ subject.attach(observer2);
 subject.notify('Hello Observers!');
 subject.detach(observer1);
 subject.notify('Goodbye Observers!');`,
+
   `function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+\treturn new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function fetchData(url: string): Promise<any> {
-  console.log('Fetching data from', url);
-  await delay(2000);
-  // Simulate fetching data
-  return { data: 'Sample Data from ' + url };
+\tconsole.log('Fetching data from', url);
+\tawait delay(2000);
+\t// Simulate fetching data
+\treturn { data: 'Sample Data from ' + url };
 }
 
 async function processData(): Promise<void> {
-  try {
-    const data = await fetchData('https://api.example.com');
-    console.log('Data received:', data);
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
+\ttry {
+\t\tconst data = await fetchData('https://api.example.com');
+\t\tconsole.log('Data received:', data);
+\t} catch (error) {
+\t\tconsole.error('Error fetching data:', error);
+\t}
 }
 
 processData();`,
-  `function logMethod(target: any, propertyKey: string, descriptor: PropertyDescriptor): void {
-  const originalMethod = descriptor.value;
 
-  descriptor.value = function (...args: any[]) {
-    console.log(\`Method \${propertyKey} called with args: \`, args);
-    const result = originalMethod.apply(this, args);
-    console.log(\`Method \${propertyKey} returned: \`, result);
-    return result;
-  };
+  `function logMethod(target: any, propertyKey: string, descriptor: PropertyDescriptor): void {
+\tconst originalMethod = descriptor.value;
+
+\tdescriptor.value = function (...args: any[]) {
+\t\tconsole.log(\`Method \${propertyKey} called with args: \`, args);
+\t\tconst result = originalMethod.apply(this, args);
+\t\tconsole.log(\`Method \${propertyKey} returned: \`, result);
+\t\treturn result;
+\t};
 }
 
 class Calculator {
-  @logMethod
-  public add(a: number, b: number): number {
-    return a + b;
-  }
+\t@logMethod
+\tpublic add(a: number, b: number): number {
+\t\treturn a + b;
+\t}
 
-  @logMethod
-  public multiply(a: number, b: number): number {
-    return a * b;
-  }
+\t@logMethod
+\tpublic multiply(a: number, b: number): number {
+\t\treturn a * b;
+\t}
 }
 
 const calculator = new Calculator();
 calculator.add(2, 3);
 calculator.multiply(4, 5);`,
+
   `interface Repository<T, ID> {
-  findById(id: ID): T | null;
-  save(entity: T): void;
-  delete(id: ID): void;
+\tfindById(id: ID): T | null;
+\tsave(entity: T): void;
+\tdelete(id: ID): void;
 }
 
 class InMemoryRepository<T, ID> implements Repository<T, ID> {
-  private entities: Map<ID, T> = new Map();
+\tprivate entities: Map<ID, T> = new Map();
 
-  public findById(id: ID): T | null {
-    return this.entities.get(id) || null;
-  }
+\tpublic findById(id: ID): T | null {
+\t\treturn this.entities.get(id) || null;
+\t}
 
-  public save(entity: T & { id: ID }): void {
-    this.entities.set(entity.id, entity);
-  }
+\tpublic save(entity: T & { id: ID }): void {
+\t\tthis.entities.set(entity.id, entity);
+\t}
 
-  public delete(id: ID): void {
-    this.entities.delete(id);
-  }
+\tpublic delete(id: ID): void {
+\t\tthis.entities.delete(id);
+\t}
 }
 
 interface User {
-  id: number;
-  name: string;
+\tid: number;
+\tname: string;
 }
 
 const userRepository = new InMemoryRepository<User, number>();
@@ -195,22 +200,23 @@ userRepository.save({ id: 1, name: 'Alice' });
 const user = userRepository.findById(1);
 console.log(user);
 userRepository.delete(1);`,
+
   `// mathUtils.ts
 namespace MathUtils {
-  export namespace Algebra {
-    export function solveQuadratic(a: number, b: number, c: number): number[] {
-      const discriminant = b * b - 4 * a * c;
-      if (discriminant < 0) return [];
-      const rootDisc = Math.sqrt(discriminant);
-      return [(-b + rootDisc) / (2 * a), (-b - rootDisc) / (2 * a)];
-    }
-  }
+\texport namespace Algebra {
+\t\texport function solveQuadratic(a: number, b: number, c: number): number[] {
+\t\t\tconst discriminant = b * b - 4 * a * c;
+\t\t\tif (discriminant < 0) return [];
+\t\t\tconst rootDisc = Math.sqrt(discriminant);
+\t\t\treturn [(-b + rootDisc) / (2 * a), (-b - rootDisc) / (2 * a)];
+\t\t}
+\t}
 
-  export namespace Geometry {
-    export function areaOfCircle(radius: number): number {
-      return Math.PI * radius * radius;
-    }
-  }
+\texport namespace Geometry {
+\t\texport function areaOfCircle(radius: number): number {
+\t\t\treturn Math.PI * radius * radius;
+\t\t}
+\t}
 }
 
 // app.ts
@@ -221,13 +227,14 @@ console.log('Quadratic Roots:', roots);
 
 const area = MathUtils.Geometry.areaOfCircle(5);
 console.log('Area of Circle:', area);`,
+
   `type Mutable<T> = {
-  -readonly [P in keyof T]: T[P];
+\t-readonly [P in keyof T]: T[P];
 };
 
 interface ReadonlyPoint {
-  readonly x: number;
-  readonly y: number;
+\treadonly x: number;
+\treadonly y: number;
 }
 
 type Point = Mutable<ReadonlyPoint>;
@@ -236,47 +243,48 @@ const point: Point = { x: 10, y: 20 };
 point.x = 30; // Now allowed
 
 type PartialOptional<T> = {
-  [P in keyof T]?: T[P];
+\t[P in keyof T]?: T[P];
 };
 
 interface Person {
-  name: string;
-  age: number;
-  address: string;
+\tname: string;
+\tage: number;
+\taddress: string;
 }
 
 type PersonPartial = PartialOptional<Person>;
 
 const partialPerson: PersonPartial = { name: 'Bob' };`,
+
   `interface Observer<T> {
-  update(data: T): void;
+\tupdate(data: T): void;
 }
 
 class Subject<T> {
-  private observers: Observer<T>[] = [];
+\tprivate observers: Observer<T>[] = [];
 
-  public subscribe(observer: Observer<T>): void {
-    this.observers.push(observer);
-  }
+\tpublic subscribe(observer: Observer<T>): void {
+\t\tthis.observers.push(observer);
+\t}
 
-  public unsubscribe(observer: Observer<T>): void {
-    const index = this.observers.indexOf(observer);
-    if (index !== -1) {
-      this.observers.splice(index, 1);
-    }
-  }
+\tpublic unsubscribe(observer: Observer<T>): void {
+\t\tconst index = this.observers.indexOf(observer);
+\t\tif (index !== -1) {
+\t\t\tthis.observers.splice(index, 1);
+\t\t}
+\t}
 
-  public notify(data: T): void {
-    for (const observer of this.observers) {
-      observer.update(data);
-    }
-  }
+\tpublic notify(data: T): void {
+\t\tfor (const observer of this.observers) {
+\t\t\tobserver.update(data);
+\t\t}
+\t}
 }
 
 class DataObserver implements Observer<number> {
-  public update(data: number): void {
-    console.log('DataObserver received:', data);
-  }
+\tpublic update(data: number): void {
+\t\tconsole.log('DataObserver received:', data);
+\t}
 }
 
 const subject = new Subject<number>();
@@ -286,23 +294,24 @@ subject.subscribe(observer);
 subject.notify(42);
 subject.unsubscribe(observer);
 subject.notify(100);`,
+
   `class Singleton {
-  private static instance: Singleton;
+\tprivate static instance: Singleton;
 
-  private constructor() {
-    // Private constructor to prevent instantiation
-  }
+\tprivate constructor() {
+\t\t// Private constructor to prevent instantiation
+\t}
 
-  public static getInstance(): Singleton {
-    if (!Singleton.instance) {
-      Singleton.instance = new Singleton();
-    }
-    return Singleton.instance;
-  }
+\tpublic static getInstance(): Singleton {
+\t\tif (!Singleton.instance) {
+\t\t\tSingleton.instance = new Singleton();
+\t\t}
+\t\treturn Singleton.instance;
+\t}
 
-  public doSomething(): void {
-    console.log('Singleton instance is doing something.');
-  }
+\tpublic doSomething(): void {
+\t\tconsole.log('Singleton instance is doing something.');
+\t}
 }
 
 const singleton1 = Singleton.getInstance();
@@ -311,6 +320,7 @@ const singleton2 = Singleton.getInstance();
 console.log(singleton1 === singleton2); // Output: true
 
 singleton1.doSomething();`,
+
   `import { promises as fs } from 'fs';
 
 async function readFileAsync(path: string): Promise<string> {

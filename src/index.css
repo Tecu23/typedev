@@ -24,7 +24,7 @@
     --background-keybind: 65 72 104; /* #414868 */
 
     --foreground: 192 202 245; /* #c0caf5 */
-
+    --foreground-footer: 115 122 162; /* #737aa2 */
     --untyped: 84 92 126; /* #545c7e */
 
     --error-extra: 247 118 142; /* #f7768e */
@@ -45,8 +45,6 @@
     --blue7: #394b70;
 
     --cyan: #7dcfff;
-
-    --dark5: #737aa2;
 
     --foreground-dark: #a9b1d6;
     --foreground-gutter: #3b4261;

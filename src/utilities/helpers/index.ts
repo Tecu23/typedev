@@ -44,6 +44,7 @@ export const isKeyboardCodeAllowed = (code: string) => {
     code === "Semicolon" ||
     code === "Minus" ||
     code === "Slash" ||
+    code === "Backquote" ||
     code === "Space"
   );
 };

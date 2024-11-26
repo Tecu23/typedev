@@ -10,7 +10,10 @@ export default {
           dark: "rgb(var(--background-dark))",
           keybind: "rgb(var(--background-keybind))",
         },
-        foreground: "rgb(var(--foreground))",
+        foreground: {
+          DEFAULT: "rgb(var(--foreground))",
+          footer: "rgb(var(--foreground-footer))",
+        },
 
         untyped: "rgb(var(--untyped))",
 
