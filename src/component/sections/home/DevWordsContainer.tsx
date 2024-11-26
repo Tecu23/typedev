@@ -1,16 +1,19 @@
-import React from "react";
+import React, { MutableRefObject, useEffect, useRef } from "react";
 import { isCharacter, isWhitespace } from "../../../utilities/helpers";
 import { processTypedInput } from "../../../utilities/helpers/processTypedInput";
-import Cursor from "../../ui/Caret";
+import Cursor from "../../ui/Cursor";
+import debounce from "lodash.debounce";
 
 type Props = {
   text: string;
   typed: string;
-  focused: boolean;
 };
 
 const DevWordsContainer = React.forwardRef<HTMLDivElement | null, Props>(
-  ({ text, typed, focused }, ref) => {
+  ({ text, typed }, ref) => {
+    const cursorRef = useRef<HTMLDivElement | null>(null);
+    const containerRef = ref as MutableRefObject<HTMLInputElement>;
+
     const components: React.JSX.Element[] = [];
 
     const elements = processTypedInput(text, typed);
@@ -18,7 +21,7 @@ const DevWordsContainer = React.forwardRef<HTMLDivElement | null, Props>(
 
     elements.map((el, idx) => {
       if (idx == cursor_idx) {
-        components.push(<Cursor key={"cursor"} />);
+        components.push(<Cursor key={"cursor"} ref={cursorRef} />);
       }
       components.push(
         <Char
@@ -30,10 +33,74 @@ const DevWordsContainer = React.forwardRef<HTMLDivElement | null, Props>(
       );
     });
 
+    const adjustScrollPosition = () => {
+      if (cursorRef.current && containerRef.current) {
+        const cursorElement = cursorRef.current;
+        const containerElement = containerRef.current;
+
+        const cursorRect = cursorElement.getBoundingClientRect();
+        const containerRect = containerElement.getBoundingClientRect();
+
+        const cursorOffset = cursorRect.top - containerRect.top;
+        const containerHeight = containerElement.clientHeight;
+        const cursorHeight = cursorRect.height;
+
+        const centerThreshhold = containerHeight / 2;
+
+        // If the cursor is above the visible area, scroll up
+        if (cursorOffset >= centerThreshhold) {
+          // Cursor has passed the center; adjust scroll to keep it centered
+          const scrollOffset =
+            cursorOffset - centerThreshhold + cursorHeight / 2;
+          const maxScrollTop = containerElement.scrollHeight - containerHeight;
+          const newScrollTop = Math.min(
+            Math.max(containerElement.scrollTop + scrollOffset, 0),
+            maxScrollTop,
+          );
+
+          containerElement.scrollTo({
+            top: newScrollTop,
+            behavior: "smooth",
+          });
+        } else if (cursorElement.offsetTop < containerElement.scrollTop) {
+          containerElement.scrollTo({
+            top: cursorElement.offsetTop,
+            behavior: "smooth",
+          });
+        }
+      }
+    };
+
+    useEffect(() => {
+      const debouncedAdjustScrollPosition = debounce(adjustScrollPosition, 50);
+
+      debouncedAdjustScrollPosition();
+
+      return () => {
+        debouncedAdjustScrollPosition.cancel();
+      };
+    }, [typed]);
+
+    useEffect(() => {
+      const handleResize = debounce(() => {
+        if (cursorRef.current && containerRef.current) {
+          // Recalculate and adjust scroll position
+          adjustScrollPosition();
+        }
+      }, 100);
+
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        handleResize.cancel();
+      };
+    }, []);
+
     return (
       <div
         ref={ref}
-        className={`overflow-hidden relative mx-8 max-w-3xl text-4xl whitespace-pre-wrap leading-[50px] h-[200px] ${focused ? "blur-0" : "blur-[3px]"}`}
+        className={`overflow-hidden relative mx-8 max-w-3xl text-4xl whitespace-pre-wrap leading-[50px] h-[200px] `}
       >
         <pre className="whitespace-pre-wrap break-words select-none">
           {components}

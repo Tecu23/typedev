@@ -1,7 +1,6 @@
 import { LegacyRef, useEffect, useRef } from "react";
 import debounce from "lodash.debounce";
-import Caret from "../../Caret";
-import { samples } from "../../../utilities/helpers/seeds/code/typescript";
+import Cursor from "../../ui/Cursor";
 
 const WordsContainer = ({ words, typed }: { words: string; typed: string }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -149,7 +148,7 @@ const Word = ({
       0 === cursorPosition.letterIndex &&
       i === 0
     ) {
-      tmpLetters.push(<Caret key={`${"cursor"}`} ref={cursorRef} />);
+      tmpLetters.push(<Cursor key={`${"cursor"}`} ref={cursorRef} />);
     }
 
     tmpLetters.push(
@@ -165,7 +164,7 @@ const Word = ({
       cursorPosition.wordIndex === wordIndex &&
       i === cursorPosition.letterIndex - 1
     ) {
-      tmpLetters.push(<Caret key={`${"cursor"}`} ref={cursorRef} />);
+      tmpLetters.push(<Cursor key={`${"cursor"}`} ref={cursorRef} />);
     }
   }
 
@@ -185,7 +184,7 @@ const Word = ({
       );
 
       if (show_cursor) {
-        tmpLetters.push(<Caret key={`${"cursor"}`} ref={cursorRef} />);
+        tmpLetters.push(<Cursor key={`${"cursor"}`} ref={cursorRef} />);
       }
     }
   }

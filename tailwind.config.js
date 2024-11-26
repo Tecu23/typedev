@@ -20,7 +20,7 @@ export default {
 
         error: {
           DEFAULT: "rgb(var(--error))",
-          space: "rgb(var(--error-space))",
+          space: "rgb(var(--error-extra))",
         },
       },
     },

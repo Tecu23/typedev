@@ -89,13 +89,8 @@ const Game = () => {
     <div id="game" ref={gameRef} className={`relative`}>
       {gameState !== "game over" ? (
         <>
-          <CountdownTimer timeLeft={timeLeft} focused={isFocused} />
-          <DevWordsContainer
-            ref={wordsRef}
-            text={words}
-            typed={typedLetters}
-            focused={true}
-          />
+          <CountdownTimer timeLeft={timeLeft} />
+          <DevWordsContainer ref={wordsRef} text={words} typed={typedLetters} />
           <input
             ref={inputRef}
             type="text"
@@ -106,7 +101,7 @@ const Game = () => {
             onFocus={() => setIsFocused(true)}
           />
           {!isFocused && (
-            <div className="absolute top-1/2 left-1/2 z-10 text-lg font-semibold transform -translate-x-1/2 -translate-y-1/2 h-[70vh] w-[90vw] flex-center text-foreground backdrop-blur">
+            <div className="absolute top-1/2 left-1/2 z-10 text-lg font-semibold transform -translate-x-1/2 -translate-y-1/2 h-[70vh] w-[90vw] flex-center text-foreground backdrop-blur-[8px]">
               Press{" "}
               <span className="py-1 px-2 mx-2 rounded bg-background-keybind">
                 Tab
@@ -135,18 +130,6 @@ const Game = () => {
 
 export default Game;
 
-const CountdownTimer = ({
-  timeLeft,
-  focused,
-}: {
-  timeLeft: number;
-  focused: boolean;
-}) => {
-  return (
-    <h2
-      className={`font-medium text-cursor transition-[blur] ${focused ? "blur-0" : "blur-[3px]"}`}
-    >
-      Time: {timeLeft}
-    </h2>
-  );
+const CountdownTimer = ({ timeLeft }: { timeLeft: number }) => {
+  return <h2 className={`font-medium text-cursor`}>Time: {timeLeft}</h2>;
 };
