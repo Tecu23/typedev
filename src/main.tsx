@@ -28,31 +28,25 @@ const rootRoute = createRootRoute({
 
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/typedev",
+  path: "/",
   component: Home,
 });
 
 const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/typedev/about",
+  path: "/about",
   component: About,
 });
 
 const profileRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: "/typedev/profile",
+  path: "/profile",
   component: Profile,
 });
 
 const routeTree = rootRoute.addChildren([indexRoute, aboutRoute, profileRoute]);
 
-const router = createRouter({ routeTree });
-
-// declare module "@tanstack/react-router" {
-//   interface Register {
-//     router: typeof router;
-//   }
-// }
+const router = createRouter({ routeTree, basepath: "/typedev" });
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
