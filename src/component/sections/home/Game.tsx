@@ -2,19 +2,19 @@ import { useEffect, useRef, useState } from "react";
 
 import Result from "../../Result";
 import RestartButton from "../../ui/RestartButton";
+
+import WordsContainer from "./WordsContainer";
 import DevWordsContainer from "./DevWordsContainer";
 
 import useWords from "../../../utilities/hooks/useWords";
 import useCountdownTimer from "../../../utilities/hooks/useCountdownTimer";
 
-import { GameConfig, GameType } from "../../../utilities/types";
+import type { GameConfig, Game } from "../../../utilities/types";
 import { isKeyboardCodeAllowed } from "../../../utilities/helpers";
-
-type Game = "waiting for input" | "in progress" | "game over";
+import { useGameSettings } from "../../../context/GameSettingsContext";
 
 const Game = () => {
   const [gameState, setGameState] = useState<Game>("waiting for input");
-  const [gameType, _] = useState<GameType>("dev");
   const [typedLetters, setTypedLetters] = useState("");
 
   const gameRef = useRef<HTMLDivElement | null>(null);
@@ -23,8 +23,15 @@ const Game = () => {
 
   const [isFocused, setIsFocused] = useState(true);
 
-  const { timeLeft, startCountdown, resetCountdown } = useCountdownTimer(30);
-  const { words, updateWords } = useWords({ type: gameType } as GameConfig);
+  const { gameType, gameSettings } = useGameSettings();
+
+  const { timeLeft, startCountdown, resetCountdown } = useCountdownTimer(
+    gameSettings.time,
+  );
+  const { words, updateWords } = useWords({
+    type: gameType,
+    count: gameSettings.count,
+  } as GameConfig);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -92,11 +99,21 @@ const Game = () => {
   }
 
   return (
-    <div id="game" ref={gameRef} className={`relative`}>
+    <div
+      id="game"
+      ref={gameRef}
+      className={`relative transform -translate-y-20`}
+    >
       {gameState !== "game over" ? (
         <>
           <CountdownTimer timeLeft={timeLeft} />
-          <DevWordsContainer ref={wordsRef} text={words} typed={typedLetters} />
+          {gameType == "dev" && (
+            <DevWordsContainer
+              ref={wordsRef}
+              text={words}
+              typed={typedLetters}
+            />
+          )}
           <input
             ref={inputRef}
             type="text"
@@ -115,7 +132,9 @@ const Game = () => {
               to refocus
             </div>
           )}
-          {/* <WordsContainer words={words} typed={typed} /> */}
+          {gameType == "normal" && (
+            <WordsContainer words={words} typed={typedLetters} />
+          )}
         </>
       ) : (
         <Result
