@@ -13,12 +13,19 @@ export default {
         foreground: {
           DEFAULT: "rgb(var(--foreground))",
           footer: "rgb(var(--foreground-footer))",
+          dark: "rgb(var(--foreground-dark))",
+          gutter: "rgb(var(--foreground-gutter))",
         },
 
         untyped: "rgb(var(--untyped))",
 
         cursor: {
           DEFAULT: "rgb(var(--cursor))",
+        },
+
+        icon: {
+          DEFAULT: "rgb(var(--icon))",
+          dark: "rgb(var(--icon-dark))",
         },
 
         error: {

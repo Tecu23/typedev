@@ -24,6 +24,8 @@
     --background-keybind: 65 72 104; /* #414868 */
 
     --foreground: 192 202 245; /* #c0caf5 */
+    --foreground-dark: 169 177 214; /* #a9b1d6 */
+    --foreground-gutter: 59 66 97; /* #3b4261 */
     --foreground-footer: 115 122 162; /* #737aa2 */
     --untyped: 84 92 126; /* #545c7e */
 
@@ -32,17 +34,18 @@
 
     --cursor: 157 124 216; /* #9d7cd8 */
 
+    --icon: 42 195 222; /* #2ac3de; */
+    --icon-dark: 57 75 112; /* #394b70; */
+
     /* Unused colors */
 
     --comment: #565f89;
 
     --blue: #7aa2f7;
     --blue0: #3d59a1;
-    --blue1: #2ac3de;
     --blue2: #0db9d7;
     --blue5: #89ddff;
     --blue6: #b4f9f8;
-    --blue7: #394b70;
 
     --cyan: #7dcfff;
 

@@ -9,7 +9,7 @@ export type GameConfig = { type: "dev" } | { type: "normal"; count: number };
 export type GameSettings = {
   mode: "words" | "time";
   time: 30 | 60 | 90 | 120;
-  count: 100 | 200;
+  count: 100 | 200 | 300;
 };
 
 export type UpdateSettingsFunction = <T extends keyof GameSettings>(
