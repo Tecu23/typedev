@@ -10,7 +10,11 @@ import useWords from "../../../utilities/hooks/useWords";
 import useCountdownTimer from "../../../utilities/hooks/useCountdownTimer";
 
 import type { GameConfig, Game } from "../../../utilities/types";
-import { isKeyboardCodeAllowed } from "../../../utilities/helpers";
+import {
+  calculateAccuracyPercentage,
+  countErrors,
+  isKeyboardCodeAllowed,
+} from "../../../utilities/helpers";
 import { useGameSettings } from "../../../context/GameSettingsContext";
 
 const Game = () => {
@@ -32,6 +36,12 @@ const Game = () => {
     type: gameType,
     count: gameSettings.count,
   } as GameConfig);
+
+  useEffect(() => {
+    if (timeLeft === 0 && gameState === "in progress") {
+      setGameState("game over");
+    }
+  }, [timeLeft, gameState]);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -98,6 +108,13 @@ const Game = () => {
     }
   }
 
+  const errors =
+    gameState === "game over" ? countErrors(typedLetters, words) : 0;
+  const accuracy =
+    gameState === "game over"
+      ? calculateAccuracyPercentage(errors, typedLetters.length)
+      : 0;
+
   return (
     <div
       id="game"
@@ -139,9 +156,9 @@ const Game = () => {
       ) : (
         <Result
           className="mt-10"
-          errors={10}
-          accuracyPercentage={10}
-          total={20}
+          errors={errors}
+          accuracyPercentage={accuracy}
+          total={typedLetters.length}
         />
       )}
 
