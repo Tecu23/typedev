@@ -1,10 +1,4 @@
-import React, {
-    LegacyRef,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-} from "react";
+import React, { LegacyRef, useCallback, useEffect, useMemo, useRef } from "react";
 
 import Cursor from "../../ui/Cursor";
 
@@ -46,14 +40,9 @@ const WordsContainer = ({ words, typed }: { words: string; typed: string }) => {
             // If the cursor is above the visible area, scroll up
             if (cursorOffset >= centerThreshhold) {
                 // Cursor has passed the center; adjust scroll to keep it centered
-                const scrollOffset =
-                    cursorOffset - centerThreshhold + cursorHeight / 2;
-                const maxScrollTop =
-                    containerElement.scrollHeight - containerHeight;
-                const newScrollTop = Math.min(
-                    Math.max(containerElement.scrollTop + scrollOffset, 0),
-                    maxScrollTop,
-                );
+                const scrollOffset = cursorOffset - centerThreshhold + cursorHeight / 2;
+                const maxScrollTop = containerElement.scrollHeight - containerHeight;
+                const newScrollTop = Math.min(Math.max(containerElement.scrollTop + scrollOffset, 0), maxScrollTop);
 
                 containerElement.scrollTo({
                     top: newScrollTop,
@@ -69,10 +58,7 @@ const WordsContainer = ({ words, typed }: { words: string; typed: string }) => {
     }, []);
 
     // Memoize debounced function
-    const debouncedAdjustScrollPosition = useMemo(
-        () => debounce(adjustScrollPosition, 50),
-        [adjustScrollPosition],
-    );
+    const debouncedAdjustScrollPosition = useMemo(() => debounce(adjustScrollPosition, 50), [adjustScrollPosition]);
 
     const debouncedHandleResize = useMemo(
         () =>
@@ -165,50 +151,33 @@ const Word = React.memo(
                 }
             }
 
-            if (
-                cursorPosition.wordIndex === wordIndex &&
-                0 === cursorPosition.letterIndex &&
-                i === 0
-            ) {
+            if (cursorPosition.wordIndex === wordIndex && 0 === cursorPosition.letterIndex && i === 0) {
                 tmpLetters.push(<Cursor key={`${"cursor"}`} ref={cursorRef} />);
             }
 
             tmpLetters.push(
-                <span
-                    key={`${word}_${wordIndex}_${generatedLetters[i]}_${i}`}
-                    className={`${className}`}
-                >
+                <span key={`${word}_${wordIndex}_${generatedLetters[i]}_${i}`} className={`${className}`}>
                     {generatedLetters[i]}
                 </span>,
             );
 
-            if (
-                cursorPosition.wordIndex === wordIndex &&
-                i === cursorPosition.letterIndex - 1
-            ) {
+            if (cursorPosition.wordIndex === wordIndex && i === cursorPosition.letterIndex - 1) {
                 tmpLetters.push(<Cursor key={`${"cursor"}`} ref={cursorRef} />);
             }
         }
 
         if (i < typedLetters.length) {
             for (i = i + 0; i < typedLetters.length; i++) {
-                const show_cursor =
-                    cursorPosition.wordIndex === wordIndex &&
-                    i === cursorPosition.letterIndex - 1;
+                const show_cursor = cursorPosition.wordIndex === wordIndex && i === cursorPosition.letterIndex - 1;
 
                 tmpLetters.push(
-                    <span
-                        key={`${word}_${wordIndex}_${typedLetters[i]}_${i}`}
-                        className="text-error-space"
-                    >
+                    <span key={`${word}_${wordIndex}_${typedLetters[i]}_${i}`} className="text-error-space">
                         {typedLetters[i]}
                     </span>,
                 );
 
                 if (show_cursor) {
-                    tmpLetters.push(
-                        <Cursor key={`${"cursor"}`} ref={cursorRef} />,
-                    );
+                    tmpLetters.push(<Cursor key={`${"cursor"}`} ref={cursorRef} />);
                 }
             }
         }
