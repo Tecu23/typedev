@@ -5,7 +5,7 @@ import { VariableSizeList as List } from "react-window";
 import Cursor from "../../ui/Cursor";
 
 const WORD_HEIGHT = 50; // Line height from your CSS
-const CONTAINER_HEIGHT = 200; // Container height from your CSS
+const CONTAINER_HEIGHT = 300; // Container height from your CSS
 
 const WordsContainer = ({ words, typed }: { words: string; typed: string }) => {
     const listRef = useRef<List>(null);
@@ -113,7 +113,7 @@ const WordsContainer = ({ words, typed }: { words: string; typed: string }) => {
     };
 
     return (
-        <div ref={containerRef} className="mx-8 w-[768px] relative overflow-hidden h-[200px]">
+        <div ref={containerRef} className="mx-8 w-[768px] relative overflow-hidden h-[300px]">
             <List
                 style={{
                     overflow: "hidden",
