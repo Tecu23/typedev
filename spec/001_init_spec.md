@@ -4,13 +4,18 @@
 
 ### Goal
 
-A high-performance, React-based typing test application that provides users with an accurate assessment of their typing speed and accuracy. The application targets typists of all skill levels, from beginners seeking to improve their typing skills to professionals benchmarking their performance. The platform delivers real-time feedback, comprehensive statistics, and a distraction-free testing environment.
+A high-performance, React-based typing test application that provides users with
+an accurate assessment of their typing speed and accuracy. The application targets
+typists of all skill levels, from beginners seeking to improve their typing skills
+to professionals benchmarking their performance. The platform delivers real-time
+feedback, comprehensive statistics, and a distraction-free testing environment.
 
 ### Key Features
 
 - Real-time typing speed measurement with Words Per Minute (WPM) calculation
 - Character-level accuracy tracking with visual feedback for correct/incorrect inputs
-- Multiple test modes (time-based: 15s, 30s, 60s, 120s; word-based: 10, 25, 50, 100 words)
+- Multiple test modes (time-based: 15s, 30s, 60s, 120s; word-based: 10, 25,
+  50, 100 words)
 - Live statistics display during typing sessions
 - Comprehensive results analysis with error breakdown
 - Customizable test settings (punctuation, numbers, stop on error mode)
@@ -23,7 +28,8 @@ A high-performance, React-based typing test application that provides users with
 
 ### App (Main Container)
 
-The root component serves as the application's orchestrator, managing global state, theme preferences, and component composition.
+The root component serves as the application's orchestrator, managing global state,
+theme preferences, and component composition.
 
 **Responsibilities:**
 
@@ -42,7 +48,8 @@ The root component serves as the application's orchestrator, managing global sta
 
 ### TypingTest
 
-The central component orchestrating the typing test experience, managing test flow, and coordinating between input handling and display components.
+The central component orchestrating the typing test experience, managing test flow,
+and coordinating between input handling and display components.
 
 **State:**
 
@@ -93,7 +100,8 @@ The central component orchestrating the typing test experience, managing test fl
 
 ### WordList
 
-A presentational component responsible for rendering the word list with appropriate visual states for user progress and errors.
+A presentational component responsible for rendering the word list with appropriate
+visual states for user progress and errors.
 
 **Logic:**
 
@@ -138,7 +146,8 @@ A presentational component responsible for rendering the word list with appropri
 
 ### InputBox
 
-The input component capturing user keystrokes and managing input state with appropriate event handling.
+The input component capturing user keystrokes and managing input state with
+appropriate event handling.
 
 **Event Handling:**
 
@@ -265,7 +274,8 @@ The post-test component displaying comprehensive results and performance analysi
 
 When the application loads or a new test begins:
 
-1. **Word Generation:** Fetch or generate a pool of words based on selected difficulty and configuration
+1. **Word Generation:** Fetch or generate a pool of words based on selected
+   difficulty and configuration
 2. **State Reset:** Clear all counters, timers, and input fields
 3. **UI Preparation:** Position cursor at the first character of the first word
 4. **Focus Management:** Automatically focus the input field
@@ -384,7 +394,8 @@ const calculateAccuracy = (
   totalChars: number
 ): number => {
   if (totalChars === 0) return 100;
-  return Math.round((correctChars / totalChars) * 100 * 10) / 10; // One decimal place
+  return Math.round((correctChars / totalChars) * 100 * 10) / 10; // One decimal
+    // place
 };
 ```
 
@@ -438,7 +449,8 @@ const completeTest = () => {
 
 ### Primary State
 
-The application utilizes React Context API for global state management with the following structure:
+The application utilizes React Context API for global state management with the
+following structure:
 
 ```javascript
 const AppContext = {
@@ -608,7 +620,7 @@ useEffect(() => {
 
 **Recommended File Organization:**
 
-```
+```text
 src/
 ├── components/
 │   ├── App/
@@ -733,4 +745,6 @@ interface TestResult {
 
 ---
 
-_This specification document serves as the authoritative reference for the MonkeyType clone implementation. All development decisions should align with the architectures and patterns defined herein._
+_This specification document serves as the authoritative reference for the
+MonkeyType clone implementation. All development decisions should align with the
+architectures and patterns defined herein._
