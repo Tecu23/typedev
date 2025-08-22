@@ -17,3 +17,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+@layer utilities {
+  .flex-center {
+    @apply flex flex-row justify-center items-center;
+  }
+}
