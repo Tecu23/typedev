@@ -4,7 +4,7 @@ type Props = {};
 
 const Footer = (props: Props) => {
   return (
-    <footer className="relative text-center leading-4 text-xs">
+    <footer className="col-[content] relative text-center leading-4 text-xs">
       <div className="mb-8 leading-[2]">
         <div className="bg-red-200 text-blue-500 px-[0.3rem] py-[0.1rem] rounded-[0.1rem] inline-block mx-[0.5rem] leading-3">
           tab
