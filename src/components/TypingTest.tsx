@@ -6,13 +6,10 @@ const TypingTest = (props: Props) => {
   return (
     <div
       id="typing_test"
-      className="relative w-full mx-auto grid px-4 2xl:px-8"
+      className="col-[content] content-grid relative w-full max-w-full mx-auto"
     >
       <div id="test_modes_notice"></div>
-      <div
-        id="words_wrapper"
-        className="grid px-4 2xl:px-8 justify-center w-full"
-      >
+      <div id="words_wrapper" className="content-grid col-[full-width]">
         <input
           id="words_input"
           className="w-[77px] left-2.5 top-[9px] text-[2rem] h-[1rem] opacity-0 mx-auto border-none outline-none block resize-none absolute z-[-1] cursor-default pointer-events-none rounded-none"
@@ -21,7 +18,7 @@ const TypingTest = (props: Props) => {
         <div id="caret"></div>
         <div
           id="words"
-          className="h-fit pb-2 flex flex-wrap w-full content-start"
+          className="col-[full-width] h-fit pb-2 flex flex-wrap w-full content-start select-none"
         >
           {words.split(" ").map((word, wordIndex) => {
             return (

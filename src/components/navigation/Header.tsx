@@ -21,7 +21,7 @@ const Header = (props: Props) => {
         <div className="text-main">
           <CodeXmlIcon size={40} />
         </div>
-        <p className="hidden md:block lg:text-2xl 2xl:text-[2rem] leading-[2rem] text-text">
+        <p className="hidden md:block lg:text-2xl 2xl:text-4xl leading-8 text-text -mt-2">
           typedev
         </p>
       </a>
