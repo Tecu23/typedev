@@ -1,3 +1,5 @@
+import Caret from "./Caret";
+
 type Props = {};
 
 const TypingTest = (props: Props) => {
@@ -9,23 +11,26 @@ const TypingTest = (props: Props) => {
       className="col-[content] content-grid relative w-full max-w-full mx-auto"
     >
       <div id="test_modes_notice"></div>
-      <div id="words_wrapper" className="content-grid col-[full-width]">
+      <div
+        id="words_wrapper"
+        className="content-grid col-[full-width] relative h-[153px] overflow-clip "
+      >
         <input
           id="words_input"
-          className="w-[77px] left-2.5 top-[9px] text-[2rem] h-[1rem] opacity-0 mx-auto border-none outline-none block resize-none absolute z-[-1] cursor-default pointer-events-none rounded-none"
+          className="col-[full-width] w-[77px] left-2.5 top-[9px] text-[2rem] h-[1rem] opacity-0 mx-auto border-none outline-none block resize-none absolute z-[-1] cursor-default pointer-events-none rounded-none"
         />
         <div id="out-of_focus"></div>
-        <div id="caret"></div>
+        <Caret />
         <div
           id="words"
           className="col-[full-width] h-fit pb-2 flex flex-wrap w-full content-start select-none"
         >
           {words.split(" ").map((word, wordIndex) => {
             return (
-              <div className="relative text-[1em] mx-[0.3em] my-[0.25em] border-b-2 border-transparent">
+              <div className="relative text-[32px] leading-[32px] mx-[0.3em] my-[0.25em] border-b-2 border-transparent">
                 {word.split("").map((letter, letterIndex) => {
                   return (
-                    <div className="text-grey-300 inline-block border-b-[0.05em] border-b-transparent">
+                    <div className="text-sub inline-block border-b-[0.05em] border-b-transparent">
                       {letter}
                     </div>
                   );

@@ -17,6 +17,19 @@
   --color-primary-yellow: #f9e2af;
   --color-primary-green: #a6e3a1;
   --color-primary-blue: #89b4fa;
+
+  --animate-caret: caretFlash 1s infinite;
+
+  @keyframes caretFlash {
+    0%,
+    100% {
+      opacity: 0;
+    }
+
+    50% {
+      opacity: 1;
+    }
+  }
 }
 
 :root {
