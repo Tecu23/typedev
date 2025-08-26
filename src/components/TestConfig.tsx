@@ -18,50 +18,50 @@ const TestConfig = (props: Props) => {
     >
       <div className="flex bg-sub-alt rounded-lg">
         <div className="grid grid-flow-col justify-start">
-          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-sm leading-[1.25] gap-2 items-center justify-center py-3 px-2.5">
-            <AtSignIcon className="w-4" />
+          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-xs leading-[1.25] gap-2 items-center justify-center py-2.5 px-2">
+            <AtSignIcon size={14} />
             {" punctuation"}
           </button>
-          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-sm leading-[1.25] gap-2 items-center justify-center py-3 px-2.5">
-            <HashIcon className="w-4" />
+          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-xs leading-[1.25] gap-2 items-center justify-center py-2.5 px-2">
+            <HashIcon size={14} />
             {" numbers"}
           </button>
         </div>
         <div className="h-auto w-2 rounded-sm bg-bg my-3"></div>
         <div className="grid grid-flow-col justify-start">
-          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-sm leading-[1.25] gap-2 items-center justify-center py-3 px-2.5">
-            <TimerIcon className="w-4" />
+          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-xs leading-[1.25] gap-2 items-center justify-center py-2.5 px-2">
+            <TimerIcon size={14} />
             {" time"}
           </button>
-          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-sm leading-[1.25] gap-2 items-center justify-center py-3 px-2.5">
-            <Type className="w-4" />
+          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-xs leading-[1.25] gap-2 items-center justify-center py-2.5 px-2">
+            <Type size={14} />
             {" words"}
           </button>
-          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-sm leading-[1.25] gap-2 items-center justify-center py-3 px-2.5">
-            <QuoteIcon className="w-4" />
+          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-xs leading-[1.25] gap-2 items-center justify-center py-2.5 px-2">
+            <QuoteIcon size={14} />
             {" quote"}
           </button>
-          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-sm leading-[1.25] gap-2 items-center justify-center py-3 px-2.5">
-            <TriangleIcon className="w-4" />
+          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-xs leading-[1.25] gap-2 items-center justify-center py-2.5 px-2">
+            <TriangleIcon size={14} />
             {" zen"}
           </button>
-          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-sm leading-[1.25] gap-2 items-center justify-center py-3 px-2.5">
-            <WrenchIcon className="w-4" />
+          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-xs leading-[1.25] gap-2 items-center justify-center py-2.5 px-2">
+            <WrenchIcon size={14} />
             {" custom"}
           </button>
         </div>
         <div className="h-auto w-2 rounded-sm bg-bg my-3"></div>
         <div className="grid grid-flow-col justify-start">
-          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-sm leading-[1.25] gap-2 items-center justify-center py-3 px-2.5">
+          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-xs leading-[1.25] gap-2 items-center justify-center py-2.5 px-2">
             {" 15"}
           </button>
-          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-sm leading-[1.25] gap-2 items-center justify-center py-3 px-2.5">
+          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-xs leading-[1.25] gap-2 items-center justify-center py-2.5 px-2">
             {" 30"}
           </button>
-          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-sm leading-[1.25] gap-2 items-center justify-center py-3 px-2.5">
+          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-xs leading-[1.25] gap-2 items-center justify-center py-2.5 px-2">
             {" 60"}
           </button>
-          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-sm leading-[1.25] gap-2 items-center justify-center py-3 px-2.5">
+          <button className="inline-flex text-sub cursor-pointer rounded-lg text-center bg-none appearance-none h-min text-xs leading-[1.25] gap-2 items-center justify-center py-2.5 px-2">
             {" 120"}
           </button>
         </div>
