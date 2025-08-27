@@ -38,7 +38,12 @@ const TypingTest = (props: Props) => {
         />
         <div id="out-of_focus"></div>
         <Caret />
-        <WordsContainer words={game.words} />
+        <WordsContainer
+          words={game.words}
+          typedInput={game.currentInput}
+          currentWordIndex={game.currentWordIndex}
+          currentCharIndex={game.currentCharIndex}
+        />
       </div>
       <button
         id="restart_button"

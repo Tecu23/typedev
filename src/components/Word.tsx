@@ -2,17 +2,21 @@ import { useRef } from "react";
 
 import Char from "./Char";
 
+import type { IWord } from "../types";
+
 type Props = {
   // Word data
-  text: { text: string }; // The actual word text to type
+  word: IWord; // The actual word text to type
   id: string; // Unique identifier
   index: number; // Position in the word list
 
   // Current typing state
   typedValue: string; // What the user has typed so far
+
+  currentCharIndex: number;
 };
 
-const Word = ({ text, id, index, typedValue = "" }: Props) => {
+const Word = ({ word, id, index, currentCharIndex, typedValue = "" }: Props) => {
   const wordRef = useRef<HTMLDivElement | null>(null);
 
   return (
@@ -21,8 +25,8 @@ const Word = ({ text, id, index, typedValue = "" }: Props) => {
       ref={wordRef}
       className="relative text-[32px] leading-[32px] mx-[9.6px] my-[8px] border-b-2 border-transparent"
     >
-      {text.text.split("").map((letter, _) => {
-        return <Char expected={letter} typed={typedValue[index]} isPending={false} />;
+      {word.text.split("").map((letter, letterIndex) => {
+        return <Char expected={letter} typed={typedValue[letterIndex]} isPending={false} />;
       })}
     </div>
   );

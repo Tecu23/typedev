@@ -6,7 +6,7 @@ export type Text = string;
 /**
  * Represents a complete word in the test
  */
-export interface Word {
+export interface IWord {
   text: string; // The actual word text
   id: string; // Unique identifier
   status: "pending" | "current" | "correct" | "incorrect" | "skipped";

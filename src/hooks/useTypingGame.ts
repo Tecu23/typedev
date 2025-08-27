@@ -7,11 +7,11 @@ import { useReducer, useCallback } from "react";
 
 import { useKeyboardInput } from "./useKeyboardInput";
 import type { KeyboardEvent } from "./useKeyboardInput";
-import type { Word } from "../types";
+import type { IWord } from "../types";
 
 interface GameState {
   // Words
-  words: Word[];
+  words: IWord[];
   currentWordIndex: number;
   currentCharIndex: number;
   currentInput: string;
