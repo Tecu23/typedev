@@ -79,5 +79,3 @@ export interface DetailedStats {
   wordSpeeds: number[]; // WPM for each word
   keyDurations: Map<string, number[]>; // How long each key is held
 }
-
-export type GameConfig = { type: "normal"; count: number };

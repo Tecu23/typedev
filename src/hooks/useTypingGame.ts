@@ -335,6 +335,7 @@ export const useTypingGame = (initialWords: string[] = []) => {
     disabled: state.status === "finished",
     preventDefault: true,
   });
+
   const initialize = useCallback((words: string[], mode: GameState["mode"] = "time") => {
     dispatch({ type: "INITIALIZE", words, mode });
   }, []);

@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
 import { words as randomWords } from "../data/words";
-import type { GameConfig, Text } from "../types";
+import type { Text } from "../types";
 
 function getRandomSample(array: string[], sampleSize: number): string {
   if (sampleSize > array.length) {
@@ -21,14 +21,14 @@ function getRandomSample(array: string[], sampleSize: number): string {
   return shuffled.slice(0, sampleSize).join(" ");
 }
 
-const useWords = (config: GameConfig) => {
+const useWords = (type: string) => {
   const getWords = useCallback((): Text => {
-    if (config.type == "normal") {
-      return getRandomSample(randomWords, config.count);
+    if (type == "normal") {
+      return getRandomSample(randomWords, 180);
     }
 
     return "";
-  }, [config]);
+  }, [type]);
 
   const [words, setWords] = useState<string>(getWords());
   const updateWords = useCallback(() => {
