@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
-import { words as randomWords } from "../utils/constants/words";
-import type { GameConfig, Text } from "../types/types";
+import { words as randomWords } from "../data/words";
+import type { GameConfig, Text } from "../types";
 
 function getRandomSample(array: string[], sampleSize: number): string {
   if (sampleSize > array.length) {
