@@ -3,30 +3,29 @@ import clsx from "clsx";
 type Props = {
   expected: string;
   typed?: string;
-  isActive: boolean;
   isPending: boolean;
 };
 
 /**
  * Character cmponent - represents a single character within a word
  */
-const Char = ({ expected, typed, isActive, isPending }: Props) => {
+const Char = ({ expected, typed, isPending }: Props) => {
   const getCharacterClass = () => {
     // Character hasn't been removed yet
     if (isPending) {
-      return "char-pending";
+      return "text-sub";
     }
 
     // No input for this position yet
     if (typed === undefined) {
-      return isActive ? "char-waiting" : "char-pending";
+      return "text-sub";
     }
 
     // Character has been typed
     if (typed === expected) {
-      return "char-correct";
+      return "text-text";
     } else {
-      return "char-incorrect";
+      return "text-error";
     }
   };
 
@@ -42,7 +41,6 @@ const Char = ({ expected, typed, isActive, isPending }: Props) => {
       data-typed={typed}
       aria-label={`Expected: ${expected}, Typed: ${typed || "nothing"}`}
     >
-      {/* Show the expected character always */}
       {expected}
     </span>
   );

@@ -1,4 +1,4 @@
-import Char from "./Char";
+import Word from "./Word";
 
 type Props = {};
 
@@ -12,13 +12,15 @@ const WordsContainer = (props: Props) => {
       className="col-[full-width] h-fit w-full pb-2 flex flex-wrap content-start select-none"
     >
       {words.split(" ").map((word, wordIndex) => (
-        <div className="relative text-[32px] leading-[32px] mx-[9.6px] my-[8px] border-b-2 border-transparent">
-          {word.split("").map((letter, _) => {
-            return (
-              <Char expected={letter} isActive={false} isPending={false} />
-            );
-          })}
-        </div>
+        <Word
+          text={word}
+          index={wordIndex}
+          id={`${word}_${wordIndex}`}
+          status="pending"
+          isActive={false}
+          typedValue={""}
+          cursorPosition={0}
+        />
       ))}
     </div>
   );
