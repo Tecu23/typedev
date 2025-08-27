@@ -2,7 +2,7 @@ import { useRef } from "react";
 
 import Char from "./Char";
 
-import type { IWord } from "../types";
+import type { IWord } from "../types/common";
 
 type Props = {
   // Word data

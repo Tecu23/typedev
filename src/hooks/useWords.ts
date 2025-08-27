@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 
 import { words as randomWords } from "../data/words";
-import type { Text } from "../types";
+import type { Text } from "../types/common";
 
 function getRandomSample(array: string[], sampleSize: number): string {
   if (sampleSize > array.length) {

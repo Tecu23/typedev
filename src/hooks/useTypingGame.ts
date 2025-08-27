@@ -7,53 +7,8 @@ import { useReducer, useCallback } from "react";
 
 import { useKeyboardInput } from "./useKeyboardInput";
 import type { KeyboardEvent } from "./useKeyboardInput";
-import type { IWord } from "../types";
 
-interface GameState {
-  // Words
-  words: IWord[];
-  currentWordIndex: number;
-  currentCharIndex: number;
-  currentInput: string;
-
-  // Game status
-  status: "idle" | "ready" | "typing" | "paused" | "finished";
-  mode: "time" | "words" | "quote" | "zen";
-
-  // Timing
-  startTime: number | null;
-  endTime: number | null;
-  pauseStartTime: number | null;
-  totalPausedTime: number;
-
-  // Statistics
-  keystrokes: Array<{
-    key: string;
-    timestamp: number;
-    correct: boolean;
-  }>;
-  errors: number;
-  corrections: number;
-
-  // Live stats
-  wpm: number;
-  accuracy: number;
-  time: number;
-}
-
-// Game actions
-type GameAction =
-  | { type: "INITIALIZE"; words: string[]; mode: GameState["mode"] }
-  | { type: "START" }
-  | { type: "PAUSE" }
-  | { type: "RESUME" }
-  | { type: "TYPE_CHARACTER"; char: string; timestamp: number }
-  | { type: "BACKSPACE"; timestamp: number }
-  | { type: "NEXT_WORD" }
-  | { type: "UPDATE_STATS" }
-  | { type: "FINISH" }
-  | { type: "RESET" }
-  | { type: "SET_MODE"; mode: GameState["mode"] };
+import type { GameState, GameAction } from "../types/game";
 
 // Game reducer - ALL game logic happens here
 function gameReducer(state: GameState, action: GameAction): GameState {

@@ -1,6 +1,6 @@
 import Word from "./Word";
 
-import type { IWord } from "../types";
+import type { IWord } from "../types/common";
 
 type Props = {
   words: IWord[];
