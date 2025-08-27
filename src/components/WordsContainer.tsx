@@ -1,3 +1,5 @@
+import Char from "./Char";
+
 type Props = {};
 
 const WordsContainer = (props: Props) => {
@@ -13,9 +15,7 @@ const WordsContainer = (props: Props) => {
         <div className="relative text-[32px] leading-[32px] mx-[9.6px] my-[8px] border-b-2 border-transparent">
           {word.split("").map((letter, _) => {
             return (
-              <div className="text-sub inline-block border-b-[0.05em] border-b-transparent">
-                {letter}
-              </div>
+              <Char expected={letter} isActive={false} isPending={false} />
             );
           })}
         </div>
