@@ -5,7 +5,7 @@
 
 import { useEffect, useCallback } from "react";
 
-interface KeyboardEvent {
+export interface KeyboardEvent {
   key: string;
   code: string;
   ctrlKey: boolean;

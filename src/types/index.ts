@@ -9,11 +9,8 @@ export type Text = string;
 export interface Word {
   text: string; // The actual word text
   id: string; // Unique identifier
-  startTime?: number; // When user started typing this word
-  endTime?: number; // When user completed completed this word
   status: "pending" | "current" | "correct" | "incorrect" | "skipped";
   typedText?: string; // What the user actually typed
-  corrections: number; // Number of backspaces used
 }
 
 /**
