@@ -11,7 +11,7 @@ import type { GameState } from "../types/game";
 import { useTypingStore } from "../store/typingStore";
 import type { IWord } from "../types/common";
 
-export const useTypingGame = (initialWords: string[] = []) => {
+export const useTypingGame = (initialWords: IWord[] = []) => {
   const testMode = useTypingStore((state) => state.mode);
   const testStatus = useTypingStore((state) => state.status);
 
@@ -38,7 +38,7 @@ export const useTypingGame = (initialWords: string[] = []) => {
 
         if (event.key === "Tab") {
           resetTest();
-          // TODO: NEED TO CREATE WORDS HERE
+          setWords(initialWords);
           initializeTest(testMode);
           return;
         }
@@ -93,7 +93,7 @@ export const useTypingGame = (initialWords: string[] = []) => {
 
   const restart = useCallback(() => {
     resetTest();
-    // TODO: NEED TO CREATE WORDS HERE FROM
+    setWords(initialWords);
     initializeTest(testMode);
   }, [initialWords, testMode]);
 

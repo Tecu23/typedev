@@ -4,15 +4,28 @@ import WordsContainer from "./WordsContainer";
 import useWords from "../hooks/useWords";
 import { useEffect } from "react";
 import { useTypingGame } from "../hooks/useTypingGame";
+import type { IWord } from "../types/common";
+import { useTypingStore } from "../store/typingStore";
 
 type Props = {};
 
 const TypingTest = (props: Props) => {
   const { words } = useWords("normal");
-  const game = useTypingGame(words.split(" "));
+
+  const gameWords = useTypingStore((state) => state.words);
+  const gameCurrentInput = useTypingStore((state) => state.currentInput);
+  const gameCurrentWordIndex = useTypingStore((state) => state.currentWordIndex);
+  const gameCurrentCharIndex = useTypingStore((state) => state.currentCharIndex);
+
+  const game = useTypingGame(
+    words.split(" ").map((word, wordIndex): IWord => ({ text: word, id: `${wordIndex}_${word}`, status: "pending" })),
+  );
 
   useEffect(() => {
-    game.initialize(words.split(" "), "time");
+    game.initialize(
+      words.split(" ").map((word, wordIndex): IWord => ({ text: word, id: `${wordIndex}_${word}`, status: "pending" })),
+      "time",
+    );
   }, []);
 
   return (
@@ -39,10 +52,11 @@ const TypingTest = (props: Props) => {
         <div id="out-of_focus"></div>
         <Caret />
         <WordsContainer
-          words={game.words}
-          typedInput={game.currentInput}
-          currentWordIndex={game.currentWordIndex}
-          currentCharIndex={game.currentCharIndex}
+          words={gameWords}
+          currentInput={gameCurrentInput}
+          currentWordIndex={gameCurrentWordIndex}
+          cursorPosition={gameCurrentCharIndex}
+          showErrors={true}
         />
       </div>
       <button
