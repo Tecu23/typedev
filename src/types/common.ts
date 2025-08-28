@@ -16,8 +16,11 @@ export interface IWord {
 /**
  * Keystroke data for detailed analysis
  */
-export interface Keystroke {
+export interface IKeystroke {
   key: string; // The key pressed
-  timestamp: number; // When it was pressed
+  expected: string;
   correct: boolean;
+  timestamp: number; // When it was pressed
+  wordIndex: number;
+  charIndex: number;
 }
