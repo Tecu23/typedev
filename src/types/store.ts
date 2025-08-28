@@ -21,7 +21,7 @@ export interface ITypingStore {
 
   // Performance Data
   keystrokeHistory: IKeystroke[];
-  wordsResults: IWordResult[];
+  wordResults: IWordResult[];
   finalStats: ITypingStats;
   liveStats: ILiveStats;
 
@@ -43,7 +43,6 @@ export interface ITypingStore {
 
   // Actions - Progress Tracking (called by Visual Engine)
   completeWord: (typedWord: string, keystrokesForWord: IKeystroke[]) => void;
-  recordError: (wordIndex: number, charIndex: number) => void;
 
   // Actions - Statistics
   updateLiveStats: () => void;

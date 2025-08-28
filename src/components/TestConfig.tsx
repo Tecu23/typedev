@@ -1,16 +1,11 @@
-import {
-  AtSignIcon,
-  HashIcon,
-  QuoteIcon,
-  TimerIcon,
-  TriangleIcon,
-  Type,
-  WrenchIcon,
-} from "lucide-react";
+import { AtSignIcon, HashIcon, QuoteIcon, TimerIcon, TriangleIcon, Type, WrenchIcon } from "lucide-react";
+import { useTestConfig } from "../store/typingStore";
 
 type Props = {};
 
 const TestConfig = (props: Props) => {
+  const { config, setConfig, resetConfig } = useTestConfig();
+
   return (
     <div
       id="testConfig"

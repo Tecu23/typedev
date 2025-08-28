@@ -2,33 +2,13 @@ import { GaugeIcon, GlobeIcon, RepeatIcon, RotateCwIcon } from "lucide-react";
 import Caret from "./Caret";
 import WordsContainer from "./WordsContainer";
 import useWords from "../hooks/useWords";
-import { useEffect } from "react";
-import { useTypingGame } from "../hooks/useTypingGame";
-import type { IWord } from "../types/common";
-import { useTypingStore } from "../store/typingStore";
+import { useTestLifecycle } from "../store/typingStore";
 
 type Props = {};
 
 const TypingTest = (props: Props) => {
   const { words } = useWords("normal");
-
-  const gameWords = useTypingStore((state) => state.words);
-  const gameCurrentInput = useTypingStore((state) => state.currentInput);
-  const gameCurrentWordIndex = useTypingStore((state) => state.currentWordIndex);
-  const gameCurrentCharIndex = useTypingStore((state) => state.currentCharIndex);
-
-  const game = useTypingGame(
-    words.split(" ").map((word, wordIndex): IWord => ({ text: word, id: `${wordIndex}_${word}`, status: "pending" })),
-  );
-
-  useEffect(() => {
-    game.initialize(
-      words.split(" ").map((word, wordIndex): IWord => ({ text: word, id: `${wordIndex}_${word}`, status: "pending" })),
-      "time",
-    );
-
-    game.start(30);
-  }, []);
+  const { status, initializeTest, startTest, pauseTest, resumeTest, finishTest, resetTest } = useTestLifecycle();
 
   return (
     <div id="typing_test" className="col-[content] content-grid relative w-full max-w-full mx-auto">
@@ -53,13 +33,7 @@ const TypingTest = (props: Props) => {
         />
         <div id="out-of_focus"></div>
         <Caret />
-        <WordsContainer
-          words={gameWords}
-          currentInput={gameCurrentInput}
-          currentWordIndex={gameCurrentWordIndex}
-          cursorPosition={gameCurrentCharIndex}
-          showErrors={true}
-        />
+        <WordsContainer words={words.split(" ")} />
       </div>
       <button
         id="restart_button"
