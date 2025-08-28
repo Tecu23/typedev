@@ -38,6 +38,7 @@ export interface GameState {
 
 // Define the actions (functions) that can modify the state
 export interface StoreActions {
+  initialize: (mode: GameState["mode"]) => void;
   setWords: (words: IWord[]) => void;
   startTest: (duration: number) => void;
   pauseTest: () => void;
@@ -45,19 +46,7 @@ export interface StoreActions {
   finishTest: () => void;
   resetTest: () => void;
   setTypingValue: (value: string) => void;
+  typeCharacter: (char: string, timestamp: number) => void;
+  typeBackspace: (timestamp: number) => void;
   updateStats: () => void; // A function to recalculate WPM, accuracy, etc.
 }
-
-// Game actions
-export type GameAction =
-  | { type: "INITIALIZE"; words: string[]; mode: GameState["mode"] }
-  | { type: "START" }
-  | { type: "PAUSE" }
-  | { type: "RESUME" }
-  | { type: "TYPE_CHARACTER"; char: string; timestamp: number }
-  | { type: "BACKSPACE"; timestamp: number }
-  | { type: "NEXT_WORD" }
-  | { type: "UPDATE_STATS" }
-  | { type: "FINISH" }
-  | { type: "RESET" }
-  | { type: "SET_MODE"; mode: GameState["mode"] };
