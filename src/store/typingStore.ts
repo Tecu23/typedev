@@ -113,7 +113,7 @@ export const useTypingStore = create<GameState & StoreActions>((set, get) => ({
       newState = { status: "typing", startTime: Date.now() };
     }
 
-    if (newState.status !== "typing") return;
+    if (get().status !== "typing") return;
 
     const currentWord = get().words[get().currentWordIndex];
     if (!currentWord) return;
@@ -140,7 +140,7 @@ export const useTypingStore = create<GameState & StoreActions>((set, get) => ({
             status: "current",
           };
 
-          return {
+          set({
             ...newState,
             words: updatedWords,
             currentWordIndex: nextIndex,
@@ -154,7 +154,7 @@ export const useTypingStore = create<GameState & StoreActions>((set, get) => ({
                 correct: true,
               },
             ],
-          };
+          });
         } else {
           // Test complete
           return get().finishTest();
@@ -174,7 +174,7 @@ export const useTypingStore = create<GameState & StoreActions>((set, get) => ({
             status: "current",
           };
 
-          return {
+          set({
             ...newState,
             words: updatedWords,
             currentWordIndex: nextIndex,
@@ -189,7 +189,7 @@ export const useTypingStore = create<GameState & StoreActions>((set, get) => ({
                 correct: false,
               },
             ],
-          };
+          });
         } else {
           return get().finishTest();
         }
@@ -197,7 +197,7 @@ export const useTypingStore = create<GameState & StoreActions>((set, get) => ({
     }
 
     // Regular character
-    return {
+    set({
       ...newState,
       currentInput: get().currentInput + char,
       currentCharIndex: get().currentCharIndex + 1,
@@ -210,14 +210,14 @@ export const useTypingStore = create<GameState & StoreActions>((set, get) => ({
           correct: isCorrect,
         },
       ],
-    };
+    });
   },
 
   typeBackspace: (timestamp) => {
     if (get().status !== "typing") return;
     if (get().currentCharIndex === 0) return;
 
-    return {
+    set({
       currentInput: get().currentInput.slice(0, -1),
       currentCharIndex: get().currentCharIndex - 1,
       corrections: get().corrections + 1,
@@ -229,7 +229,7 @@ export const useTypingStore = create<GameState & StoreActions>((set, get) => ({
           correct: true,
         },
       ],
-    };
+    });
   },
   updateStats: () => {
     if (get().startTime == null) return;

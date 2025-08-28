@@ -30,6 +30,7 @@ export const useTypingGame = (initialWords: IWord[] = []) => {
 
   const handleKeyEvent = useCallback(
     (event: KeyboardEvent) => {
+      console.log("Key Event");
       if (event.type === "keydown") {
         if (event.key === "Escape") {
           resetTest();
@@ -58,6 +59,7 @@ export const useTypingGame = (initialWords: IWord[] = []) => {
         }
 
         if (event.key.length === 1) {
+          console.log("type character");
           typeCharacter(event.key, event.timestamp);
         }
       }

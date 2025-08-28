@@ -26,6 +26,8 @@ const TypingTest = (props: Props) => {
       words.split(" ").map((word, wordIndex): IWord => ({ text: word, id: `${wordIndex}_${word}`, status: "pending" })),
       "time",
     );
+
+    game.start(30);
   }, []);
 
   return (
