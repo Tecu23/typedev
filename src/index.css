@@ -54,27 +54,219 @@
     @apply flex flex-row justify-center items-center;
   }
 
+  .char {
+    @apply relative inline-block transition-all duration-75 ease-out;
+  }
+
+  .char-pending {
+    @apply text-sub bg-transparent;
+  }
+
+  .char-correct {
+    @apply text-text bg-transparent;
+  }
+
+  .char-incorrect {
+    @apply text-error bg-transparent animate-pulse;
+  }
+
+  .char-extra {
+    @apply text-error-extra bg-transparent;
+  }
+
+  .char-incorrect::after {
+    content: attr(data-typed);
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8em;
+    color: var(--error-color, #ca4754);
+    background-color: var(--bg-color, #323437);
+    padding: 2px 4px;
+    border-radius: 3px;
+    z-index: 10;
+    opacity: 0.9;
+  }
+
+  .char-cursor {
+    @apply relative;
+  }
+
+  .char-cursor::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--caret-color, #e2b714);
+    animation: blink 1s infinite;
+    z-index: 5;
+  }
+
+  .word-space.char-cursor::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--caret-color, #e2b714);
+    animation: blink 1s infinite;
+    z-index: 5;
+  }
+
+  .word {
+    position: relative;
+    display: inline-block;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .word-pending {
+    opacity: 1;
+  }
+
+  .word-current {
+    opacity: 1;
+  }
+
+  .word-correct {
+    opacity: 0.6;
+  }
+
+  .word-incorrect {
+    opacity: 0.6;
+    text-decoration: line-through;
+    text-decoration-color: var(--error-color, #ca4754);
+  }
+
+  .word-space {
+    display: inline-block;
+    width: 0.5ch;
+    position: relative;
+  }
+
+  @keyframes blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+
+    51%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    25% {
+      transform: translateX(-2px);
+    }
+
+    75% {
+      transform: translateX(2px);
+    }
+  }
+
+  .char,
+  .word {
+    will-change: color, background-color, opacity;
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  .char-pending,
+  .char-correct,
+  .char-incorrect {
+    transition:
+      color 0.075s ease-out,
+      background-color 0.075s ease-out;
+  }
+
+  #words_input:focus + #words {
+    /* Visual indication that typing area is focused */
+    opacity: 1;
+  }
+
+  #words_input:not(:focus) + #words {
+    /* Dim when not focused */
+    opacity: 0.5;
+    transition: opacity 0.2s ease-out;
+  }
+
+  @media (max-width: 768px) {
+    .word {
+      font-size: 24px;
+      line-height: 24px;
+      margin: 6px 4px;
+    }
+  }
+
+  @media (prefers-contrast: high) {
+    .char-correct {
+      color: #ffffff;
+    }
+
+    .char-incorrect {
+      background-color: #ff0000;
+      color: #ffffff;
+    }
+
+    .char-cursor::before {
+      background-color: #ffff00;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .char,
+    .word {
+      transition: none;
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes shake {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(0);
+      }
+    }
+  }
+
   .content-grid {
     --padding-inline: 2rem;
     --content-max-width: 1536px;
-    --breakout-size: calc(
-      (calc(var(--content-max-width) + 12rem) - var(--content-max-width)) / 2
-    );
+    --breakout-size: calc((calc(var(--content-max-width) + 12rem) - var(--content-max-width)) / 2);
 
     justify-content: center;
     display: grid;
     grid-template-columns:
-      [full-width-start] var(--padding-inline)
-      [full-width-padding-start] minmax(0, 1fr)
-      [breakout-start] minmax(0, var(--breakout-size))
-      [content-start] min(
-        100% - var(--padding-inline) * 2,
-        var(--content-max-width)
+      [full-width-start] var(--padding-inline) [full-width-padding-start] minmax(0, 1fr) [breakout-start] minmax(
+        0,
+        var(--breakout-size)
       )
-      [content-end] minmax(0, var(--breakout-size))
-      [breakout-end] minmax(0, 1fr)
-      [full-width-padding-end] var(--padding-inline)
-      [full-width-end];
+      [content-start] min(100% - var(--padding-inline) * 2, var(--content-max-width)) [content-end] minmax(
+        0,
+        var(--breakout-size)
+      )
+      [breakout-end] minmax(0, 1fr) [full-width-padding-end] var(--padding-inline) [full-width-end];
   }
 
   @media only screen and (max-width: calc(1536px + 5rem)) {

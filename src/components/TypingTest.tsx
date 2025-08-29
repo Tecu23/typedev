@@ -8,7 +8,7 @@ type Props = {};
 
 const TypingTest = (props: Props) => {
   const { words } = useWords("normal");
-  const { status, initializeTest, startTest, pauseTest, resumeTest, finishTest, resetTest } = useTestLifecycle();
+  // const { status, initializeTest, startTest, pauseTest, resumeTest, finishTest, resetTest } = useTestLifecycle();
 
   return (
     <div id="typing_test" className="col-[content] content-grid relative w-full max-w-full mx-auto">

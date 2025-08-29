@@ -4,17 +4,7 @@
  */
 
 import { useEffect, useCallback } from "react";
-
-export interface KeyboardEvent {
-  key: string;
-  code: string;
-  ctrlKey: boolean;
-  metaKey: boolean;
-  altKey: boolean;
-  shiftKey: boolean;
-  timestamp: number;
-  type: "keydown" | "keyup";
-}
+import type { KeyboardEvent } from "../types/common";
 
 interface UseKeyboardInputOptions {
   preventDefault?: boolean;

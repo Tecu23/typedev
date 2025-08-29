@@ -24,3 +24,14 @@ export interface IKeystroke {
   wordIndex: number;
   charIndex: number;
 }
+
+export interface KeyboardEvent {
+  key: string;
+  code: string;
+  ctrlKey: boolean;
+  metaKey: boolean;
+  altKey: boolean;
+  shiftKey: boolean;
+  timestamp: number;
+  type: "keydown" | "keyup";
+}

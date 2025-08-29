@@ -4,7 +4,7 @@ import { useTestConfig } from "../store/typingStore";
 type Props = {};
 
 const TestConfig = (props: Props) => {
-  const { config, setConfig, resetConfig } = useTestConfig();
+  // const { config, setConfig, resetConfig } = useTestConfig();
 
   return (
     <div
