@@ -2,7 +2,6 @@ import { AlignLeftIcon, ChevronRightIcon, ImageIcon, RotateCw, StepBackIcon, Tri
 
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { linearGradient } from "motion/react-client";
 
 type Props = {};
 
@@ -88,8 +87,8 @@ const Results = (props: Props) => {
                 enabled: false,
               },
               xAxis: {
-                gridLineWidth: 0.5,
-                gridLineColor: "#000",
+                gridLineWidth: 1,
+                gridLineColor: "#181825",
                 labels: {
                   rotation: -45,
                   style: {
@@ -101,8 +100,8 @@ const Results = (props: Props) => {
               yAxis: {
                 endOnTick: false,
                 startOnTick: false,
-                gridLineWidth: 0.5,
-                gridLineColor: "#000",
+                gridLineWidth: 1,
+                gridLineColor: "#181825",
                 tickInterval: 20,
                 title: {
                   text: "Words Per Minute",
@@ -123,7 +122,7 @@ const Results = (props: Props) => {
               },
               plotOptions: {
                 areaspline: {
-                  fillColor: "rgba(0, 0, 0, 0.3)",
+                  fillColor: "#181825AC",
                 },
               },
               series: data.map((s) => {
