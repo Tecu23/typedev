@@ -1,6 +1,7 @@
 import { AtSignIcon, HashIcon, QuoteIcon, TimerIcon, TriangleIcon, Type, WrenchIcon } from "lucide-react";
 import clsx from "clsx";
 import { useTypingStore } from "../store/typingStore";
+import Tooltip from "./standalone/Tooltip";
 
 type Props = {};
 
@@ -61,36 +62,52 @@ const TestConfig = (props: Props) => {
             <Type size={14} />
             {" words"}
           </button>
-          <button
-            onClick={() => setConfig({ mode: "quote" })}
-            className={clsx(
-              "h-min py-[11.2px] px-[6.72px] bg-none inline-flex items-center justify-center gap-2 rounded-lg text-center align-baseline text-xs leading-[1] appearance-none cursor-pointer",
-              config.mode == "quote" ? "text-main" : "text-sub",
-            )}
-          >
-            <QuoteIcon size={14} />
-            {" quote"}
-          </button>
-          <button
-            onClick={() => setConfig({ mode: "zen" })}
-            className={clsx(
-              "h-min py-[11.2px] px-[6.72px] bg-none inline-flex items-center justify-center gap-2 rounded-lg text-center align-baseline text-xs leading-[1] appearance-none cursor-pointer",
-              config.mode == "zen" ? "text-main" : "text-sub",
-            )}
-          >
-            <TriangleIcon size={14} />
-            {" zen"}
-          </button>
-          <button
-            onClick={() => setConfig({ mode: "custom" })}
-            className={clsx(
-              "h-min mr-[6.72px] py-[11.2px] px-[6.72px] bg-none inline-flex items-center justify-center gap-2 rounded-lg text-center align-baseline text-xs leading-[1] appearance-none cursor-pointer",
-              config.mode == "custom" ? "text-main" : "text-sub",
-            )}
-          >
-            <WrenchIcon size={14} />
-            {" custom"}
-          </button>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="bottom">
+              <button
+                onClick={() => setConfig({ mode: "quote" })}
+                className={clsx(
+                  "h-min py-[11.2px] px-[6.72px] bg-none inline-flex items-center justify-center gap-2 rounded-lg text-center align-baseline text-xs leading-[1] appearance-none",
+                  config.mode == "quote" ? "text-main" : "text-sub",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <QuoteIcon size={14} />
+                {" quote"}
+              </button>
+            </Tooltip>
+          </div>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="bottom">
+              <button
+                disabled
+                onClick={() => setConfig({ mode: "zen" })}
+                className={clsx(
+                  "relative h-min py-[11.2px] px-[6.72px] bg-none inline-flex items-center justify-center gap-2 rounded-lg text-center align-baseline text-xs leading-[1] appearance-none",
+                  config.mode == "zen" ? "text-main" : "text-sub",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <TriangleIcon size={14} />
+                {" zen"}
+              </button>
+            </Tooltip>
+          </div>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="bottom">
+              <button
+                onClick={() => setConfig({ mode: "custom" })}
+                className={clsx(
+                  "h-min mr-[6.72px] py-[11.2px] px-[6.72px] bg-none inline-flex items-center justify-center gap-2 rounded-lg text-center align-baseline text-xs leading-[1] appearance-none",
+                  config.mode == "custom" ? "text-main" : "text-sub",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <WrenchIcon size={14} />
+                {" custom"}
+              </button>
+            </Tooltip>
+          </div>
         </div>
         <div className="h-auto w-[0.5em] rounded-sm bg-bg my-[0.5em] mx-0"></div>
         <div className="grid grid-flow-col justify-start">
