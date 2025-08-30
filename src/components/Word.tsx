@@ -1,7 +1,6 @@
 import { useRef, useEffect } from "react";
 import clsx from "clsx";
 import Char from "./Char";
-import { useWhyDidYouUpdate } from "../utils/debugging";
 
 type Props = {
   word: string; // The actual word text to type
@@ -12,7 +11,6 @@ type Props = {
 };
 
 const Word = ({ word, id, index, onCharacterMount, onWordMount }: Props) => {
-  useWhyDidYouUpdate("WordComponent", { word, id, index, onCharacterMount, onWordMount });
   const wordRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
