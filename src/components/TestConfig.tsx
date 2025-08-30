@@ -1,15 +1,12 @@
 import { AtSignIcon, HashIcon, QuoteIcon, TimerIcon, TriangleIcon, Type, WrenchIcon } from "lucide-react";
-import { useTestConfig } from "../store/typingStore";
 
 type Props = {};
 
 const TestConfig = (props: Props) => {
-  // const { config, setConfig, resetConfig } = useTestConfig();
-
   return (
     <div
       id="testConfig"
-      className="col-[full-width] relative grid justify-self-center w-max mb-4 justify-around h-max gap-2 grid-flow-col "
+      className="col-[full-width] invisible relative grid justify-self-center w-max mb-4 justify-around h-max gap-2 grid-flow-col "
     >
       <div className="flex bg-sub-alt rounded-lg">
         <div className="grid grid-flow-col justify-start">

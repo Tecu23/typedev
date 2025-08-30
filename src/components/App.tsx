@@ -1,5 +1,6 @@
 import Footer from "./navigation/Footer";
 import Header from "./navigation/Header";
+import Results from "./Results";
 import TestConfig from "./TestConfig";
 import TypingTest from "./TypingTest";
 
@@ -10,8 +11,8 @@ function App() {
       <main className="col-[full-width] relative content-grid h-full">
         <div className="col-[full-width] content-grid relative h-full grid grid-rows-[1fr_auto_1fr]">
           <TestConfig />
-          <TypingTest />
-          <div id="result" className=""></div>
+          {false && <TypingTest />}
+          {true && <Results />}
         </div>
       </main>
       <Footer />
