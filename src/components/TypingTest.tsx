@@ -1,11 +1,7 @@
 import { useEffect, useMemo } from "react";
-
 import { GaugeIcon, GlobeIcon, RepeatIcon, RotateCwIcon } from "lucide-react";
-
 import WordsContainer from "./WordsContainer";
-
 import { useTypingStore } from "../store/typingStore";
-
 import useWords from "../hooks/useWords";
 
 type Props = {};
@@ -13,6 +9,8 @@ type Props = {};
 const TypingTest = (props: Props) => {
   const { words } = useWords("normal");
   const initializeTest = useTypingStore((state) => state.initializeTest);
+  // const getTimeRemaining = useTypingStore((state) => state.getTimeRemaining);
+  // const getProgress = useTypingStore((state) => state.getTestProgress);
 
   const wordArray = useMemo(() => {
     return words ? words.split(" ") : [];
@@ -27,7 +25,7 @@ const TypingTest = (props: Props) => {
   return (
     <div id="typing_test" className="col-[content] content-grid relative w-full max-w-full mx-auto">
       <div id="test_modes_notice" className="col-[content] flex flex-wrap text-sub mb-2 justify-center text-[1rem]">
-        <div className="inline-flex justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2">
+        <div className="inline-flex invisible justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2">
           <RepeatIcon size={20} />
           {"repeated"}
         </div>
@@ -35,7 +33,7 @@ const TypingTest = (props: Props) => {
           <GlobeIcon size={20} />
           {"english"}
         </button>
-        <button className="inline-flex justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2">
+        <button className="inline-flex invisible justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2">
           <GaugeIcon size={20} />
           {"custom pace 32 wpm"}
         </button>

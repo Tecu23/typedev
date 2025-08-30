@@ -287,14 +287,3 @@ export const useTypingStore = create<ITypingStore>()(
     },
   })),
 );
-
-// Hook for components that only need live stats
-export const useLiveStats = () => useTypingStore((state) => state.liveStats);
-
-// Hook for timer display
-export const useTimer = () =>
-  useTypingStore((state) => ({
-    timeRemaining: state.getTimeRemaining(),
-    progress: state.getTestProgress(),
-    status: state.status,
-  }));
