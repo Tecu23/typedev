@@ -298,11 +298,3 @@ export const useTimer = () =>
     progress: state.getTestProgress(),
     status: state.status,
   }));
-
-// Hook for test configuration
-export const useTestConfig = () =>
-  useTypingStore((state) => ({
-    config: state.config,
-    setConfig: state.setConfig,
-    resetConfig: state.resetConfig,
-  }));

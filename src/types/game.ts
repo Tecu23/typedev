@@ -1,13 +1,10 @@
-import type { IKeystroke } from "./common";
-
 export interface ITestConfig {
-  mode: "time" | "words" | "quote" | "zen";
+  mode: "time" | "words" | "quote" | "zen" | "custom";
   timeLimit: number;
   wordCount: number;
   language: string;
   punctuation: boolean;
   numbers: boolean;
-  // difficulty: 'easy' | 'medium' | 'hard'
 }
 
 export interface IWordResult {
