@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import clsx from "clsx";
 import Char from "./Char";
+import { useWhyDidYouUpdate } from "../utils/debugging";
 
 type Props = {
   word: string; // The actual word text to type
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const Word = ({ word, id, index, onCharacterMount, onWordMount }: Props) => {
+  useWhyDidYouUpdate("WordComponent", { word, id, index, onCharacterMount, onWordMount });
   const wordRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -23,7 +25,7 @@ const Word = ({ word, id, index, onCharacterMount, onWordMount }: Props) => {
   // Determine word styling based on status
   const wordClasses = clsx(
     "word word-pending",
-    "relative text-[32px] leading-[32px] mx-[9.6px] my-[8px] border-b-2 transition-all duration-200",
+    "relative text-[32px] leading-[32px] mx-[9.6px] my-[8px] transition-all duration-200",
     "transition-opacity duration-200 ease-out",
   );
 

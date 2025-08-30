@@ -2,7 +2,6 @@ import { useEffect, useMemo } from "react";
 
 import { GaugeIcon, GlobeIcon, RepeatIcon, RotateCwIcon } from "lucide-react";
 
-import Caret from "./Caret";
 import WordsContainer from "./WordsContainer";
 
 import { useTypingStore } from "../store/typingStore";
@@ -41,15 +40,7 @@ const TypingTest = (props: Props) => {
           {"custom pace 32 wpm"}
         </button>
       </div>
-      <div id="words_wrapper" className="content-grid col-[full-width] h-[153px] overflow-clip relative">
-        <input
-          id="words_input"
-          className="col-[full-width] w-[77px] h-8 left-2.5 top-[9px] text-[2rem] opacity-0 mx-auto border-none outline-none block resize-none absolute z-[-1] cursor-default pointer-events-none rounded-none"
-        />
-        <div id="out-of_focus"></div>
-        <Caret />
-        <WordsContainer words={wordArray} />
-      </div>
+      <WordsContainer words={wordArray} />
       <button
         id="restart_button"
         className="col-[content] relative overflow-visible flex mt-4 mx-auto px-8 py-4 justify-center items-baseline gap-2 h-min leading-[1.25] text-center text-sub"
