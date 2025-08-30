@@ -1,14 +1,29 @@
+import { useEffect, useMemo } from "react";
+
 import { GaugeIcon, GlobeIcon, RepeatIcon, RotateCwIcon } from "lucide-react";
+
 import Caret from "./Caret";
 import WordsContainer from "./WordsContainer";
+
+import { useTypingStore } from "../store/typingStore";
+
 import useWords from "../hooks/useWords";
-import { useTestLifecycle } from "../store/typingStore";
 
 type Props = {};
 
 const TypingTest = (props: Props) => {
   const { words } = useWords("normal");
-  // const { status, initializeTest, startTest, pauseTest, resumeTest, finishTest, resetTest } = useTestLifecycle();
+  const initializeTest = useTypingStore((state) => state.initializeTest);
+
+  const wordArray = useMemo(() => {
+    return words ? words.split(" ") : [];
+  }, [words]);
+
+  useEffect(() => {
+    if (words) {
+      initializeTest(wordArray);
+    }
+  }, [wordArray]);
 
   return (
     <div id="typing_test" className="col-[content] content-grid relative w-full max-w-full mx-auto">
@@ -26,14 +41,14 @@ const TypingTest = (props: Props) => {
           {"custom pace 32 wpm"}
         </button>
       </div>
-      <div id="words_wrapper" className="content-grid col-[full-width] relative h-[153px] overflow-clip relative">
+      <div id="words_wrapper" className="content-grid col-[full-width] h-[153px] overflow-clip relative">
         <input
           id="words_input"
           className="col-[full-width] w-[77px] h-8 left-2.5 top-[9px] text-[2rem] opacity-0 mx-auto border-none outline-none block resize-none absolute z-[-1] cursor-default pointer-events-none rounded-none"
         />
         <div id="out-of_focus"></div>
         <Caret />
-        <WordsContainer words={words.split(" ")} />
+        <WordsContainer words={wordArray} />
       </div>
       <button
         id="restart_button"

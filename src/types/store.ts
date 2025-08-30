@@ -10,7 +10,7 @@ export interface ITypingStore {
   totalWords: number;
 
   // Game Status
-  status: "idle" | "pending" | "paused" | "finished";
+  status: "idle" | "pending" | "paused" | "finished" | "typing";
   startTime: number | null;
   endTime: number | null;
 

@@ -66,7 +66,7 @@ export const useTypingStore = create<ITypingStore>()(
       }),
 
     // Test Lifecycle Actions
-    initializeTest: (words) =>
+    initializeTest: (words) => {
       set((state) => {
         state.wordList = words;
         state.totalWords = words.length;
@@ -80,7 +80,8 @@ export const useTypingStore = create<ITypingStore>()(
         state.liveStats = defaultLiveStats;
         state.startTime = null;
         state.endTime = null;
-      }),
+      });
+    },
 
     startTest: () =>
       set((state) => {
@@ -108,11 +109,10 @@ export const useTypingStore = create<ITypingStore>()(
     finishTest: () =>
       set((state) => {
         state.status = "finished";
-        state.endTIme = performance.now();
+        state.endTime = performance.now();
 
-        // Trigger final stats calculation
-        const store = get();
-        store.calculateFinalStats();
+        // // Trigger final stats calculation
+        // get().calculateFinalStats();
       }),
 
     resetTest: () =>
@@ -122,7 +122,7 @@ export const useTypingStore = create<ITypingStore>()(
         state.wordsCompleted = 0;
         state.totalWordsTyped = 0;
         state.keystrokeHistory = [];
-        state.wordsCompleted = [];
+        state.wordsCompleted = 0;
         state.finalStats = defaultStats;
         state.liveStats = defaultLiveStats;
         state.startTime = null;
@@ -224,71 +224,64 @@ export const useTypingStore = create<ITypingStore>()(
 
     // Getters
     getCurrentWord: () => {
-      const state = get();
-      if (state.currentWordIndex >= state.wordList.length) return null;
-      return state.wordList[state.currentWordIndex];
+      if (get().currentWordIndex >= get().wordList.length) return null;
+      return get().wordList[get().currentWordIndex];
     },
 
     getTestProgress: () => {
-      const state = get();
-      if (state.config.mode === "words") {
-        return (state.wordsCompleted / state.config.wordCount) * 100;
-      } else if (state.config.mode === "time" && state.startTime) {
-        const elapsed = (performance.now() - state.startTime) / 1000;
-        return Math.min((elapsed / state.config.timeLimit) * 100, 100);
+      if (get().config.mode === "words") {
+        return (get().wordsCompleted / get().config.wordCount) * 100;
+      } else if (get().config.mode === "time" && get().startTime) {
+        const elapsed = (performance.now() - (get().startTime || 0)) / 1000;
+        return Math.min((elapsed / get().config.timeLimit) * 100, 100);
       }
       return 0;
     },
 
     isTestComplete: () => {
-      const state = get();
-
-      if (state.config.mode === "words") {
-        return state.wordsCompleted >= state.config.wordCount;
-      } else if (state.config.mode === "time" && state.startTime) {
-        const elapsed = (performance.now() - state.startTime) / 1000;
-        return elapsed >= state.config.timeLimit;
+      if (get().config.mode === "words") {
+        return get().wordsCompleted >= get().config.wordCount;
+      } else if (get().config.mode === "time" && get().startTime) {
+        const elapsed = (performance.now() - (get().startTime || 0)) / 1000;
+        return elapsed >= get().config.timeLimit;
       }
       return false;
     },
 
     getTimeRemaining: () => {
-      const state = get();
-      if (state.config.mode !== "time" || !state.startTime) return 0;
+      if (get().config.mode !== "time" || !get().startTime) return 0;
 
-      const elapsed = (performance.now() - state.startTime) / 1000;
-      return Math.max(0, state.config.timeLimit - elapsed);
+      const elapsed = (performance.now() - (get().startTime || 0)) / 1000;
+      return Math.max(0, get().config.timeLimit - elapsed);
     },
 
     // Utilities
     exportResults: () => {
-      const state = get();
       return {
-        config: state.config,
-        finalStats: state.finalStats,
-        wordResults: state.wordResults,
-        keystrokeHistory: state.keystrokeHistory,
-        testDuration: state.endTime && state.startTime ? (state.endTime - state.startTime) / 1000 : 0,
+        config: get().config,
+        finalStats: get().finalStats,
+        wordResults: get().wordResults,
+        keystrokeHistory: get().keystrokeHistory,
+        testDuration: get().endTime && get().startTime ? ((get().endTime || 0) - (get().startTime || 0)) / 1000 : 0,
         timestamp: new Date().toISOString(),
       };
     },
 
     getPerformanceMetrics: () => {
-      const state = get();
       return {
-        totalKeystrokes: state.keystrokeHistory.length,
-        wordsCompleted: state.wordsCompleted,
+        totalKeystrokes: get().keystrokeHistory.length,
+        wordsCompleted: get().wordsCompleted,
         averageWordTime:
-          state.wordResults.length > 0
-            ? state.wordResults.reduce((acc, w, i) => {
+          get().wordResults.length > 0
+            ? get().wordResults.reduce((acc, w, i) => {
                 if (i === 0) return 0;
-                return acc + (w.timestamp - state.wordResults[i - 1].timestamp);
+                return acc + (w.timestamp - get().wordResults[i - 1].timestamp);
               }, 0) /
-              (state.wordResults.length - 1)
+              (get().wordResults.length - 1)
             : 0,
         errorRate:
-          state.keystrokeHistory.length > 0
-            ? (state.keystrokeHistory.filter((k) => !k.correct).length / state.keystrokeHistory.length) * 100
+          get().keystrokeHistory.length > 0
+            ? (get().keystrokeHistory.filter((k) => !k.correct).length / get().keystrokeHistory.length) * 100
             : 0,
       };
     },
@@ -312,16 +305,4 @@ export const useTestConfig = () =>
     config: state.config,
     setConfig: state.setConfig,
     resetConfig: state.resetConfig,
-  }));
-
-// Hook for test lifecycle
-export const useTestLifecycle = () =>
-  useTypingStore((state) => ({
-    status: state.status,
-    initializeTest: state.initializeTest,
-    startTest: state.startTest,
-    pauseTest: state.pauseTest,
-    resumeTest: state.resumeTest,
-    finishTest: state.finishTest,
-    resetTest: state.resetTest,
   }));

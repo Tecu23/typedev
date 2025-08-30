@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import type { VisualEngineState, UseVisualEngineOptions } from "../types/engine";
+
 import { useKeyboardInput } from "./useKeyboardInput";
-import type { KeyboardEvent } from "../types/common";
+
 import { useTypingStore } from "../store/typingStore";
 
+import type { KeyboardEvent } from "../types/common";
+import type { VisualEngineState, UseVisualEngineOptions } from "../types/engine";
+
 export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
-  console.log("🔄 useVisualEngine render", {
-    enabled: options.enabled,
-    timestamp: Date.now(),
-  });
   const { enabled = true, onTestComplete, onError } = options;
 
   // Store references to DOM elements
@@ -23,7 +22,12 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     isInitialized: false,
   });
 
-  const store = useTypingStore();
+  const status = useTypingStore((state) => state.status);
+  const getCurrentWord = useTypingStore((state) => state.getCurrentWord);
+  const startTest = useTypingStore((state) => state.startTest);
+  const finishTest = useTypingStore((state) => state.finishTest);
+  const completeWord = useTypingStore((state) => state.completeWord);
+  const isTestComplete = useTypingStore((state) => state.isTestComplete);
 
   const updateCharacterVisual = useCallback((element: HTMLSpanElement, typedChar: string, isCorrect: boolean) => {
     if (isCorrect) {
@@ -36,8 +40,6 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   }, []);
 
   const updateCursorPosition = useCallback(() => {
-    console.log("📍 updateCursorPosition called");
-
     const state = stateRef.current;
     // Remove cursor from all characters and spaces
     characterRefs.current.forEach((element) => element.classList.remove("char-cursor"));
@@ -126,7 +128,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
       return true;
     },
-    [updateCharacterVisual, updateCursorPosition, store],
+    [updateCharacterVisual, updateCursorPosition],
   );
 
   const handleSpacebar = useCallback((): boolean => {
@@ -140,14 +142,14 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
     if (success) {
       // Notify Zustand store (only React state update during typing)
-      store.completeWord(state.inputBuffer, []); // Simplified keystroke data
+      completeWord(state.inputBuffer, []); // Simplified keystroke data
 
       // Reset buffer for next word
       state.inputBuffer = "";
     }
 
     return success;
-  }, [completeCurrentWord, moveToNextWord, store]);
+  }, [completeCurrentWord, moveToNextWord, completeWord]);
 
   const handleBackspace = useCallback((): boolean => {
     const state = stateRef.current;
@@ -201,10 +203,9 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   const handleKeyEvent = useCallback(
     (keyEvent: KeyboardEvent) => {
       if (keyEvent.type !== "keydown") return;
-      console.log("⌨️ handleKeyEvent called", keyEvent.key);
 
       // Get expected character from store
-      const currentWord = store.getCurrentWord();
+      const currentWord = getCurrentWord();
       if (!currentWord) return;
 
       const state = stateRef.current;
@@ -215,22 +216,22 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
       if (processed) {
         // Start test on first successful keystroke
-        if (store.status === "idle" && keyEvent.key.length === 1) {
-          store.startTest();
+        if (status === "idle" && keyEvent.key.length === 1) {
+          startTest();
         }
 
         // Check for test completion
-        if (store.isTestComplete()) {
-          store.finishTest();
+        if (isTestComplete()) {
+          finishTest();
           onTestComplete?.();
         }
       }
     },
-    [processKeystroke, onTestComplete],
+    [processKeystroke, onTestComplete, getCurrentWord, status, startTest, isTestComplete, finishTest],
   );
 
   useKeyboardInput(handleKeyEvent, {
-    disabled: !enabled || store.status === "finished",
+    disabled: !enabled || status === "finished",
     preventDefault: true,
     capture: true,
     allowedKeys: null,
@@ -295,17 +296,6 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     initialize();
   }, [initialize]);
 
-  useEffect(() => {
-    if (store.status === "idle") {
-      // Reset visual engine when test resets
-      const timer = setTimeout(() => {
-        reset();
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }
-  }, [store.status]);
-
   const api = useMemo(
     () => ({
       // Registration functions for components
@@ -325,22 +315,11 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       getInputBuffer: () => stateRef.current.inputBuffer,
 
       // Status
-      isEnabled: enabled && store.status !== "finished",
+      isEnabled: enabled && status !== "finished",
       isInitialized: stateRef.current.isInitialized,
     }),
-    [registerCharacter, registerWord, initialize, reset, enabled, store.status],
+    [registerCharacter, registerWord, initialize, reset, status],
   );
-  // Log effect runs
-  useEffect(() => {
-    console.log("🔄 Status effect triggered", store.status);
-    if (store.status === "idle") {
-      const timer = setTimeout(() => {
-        console.log("🔄 Reset called from effect");
-        reset();
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [store.status]); // ⚠️ SUSPICIOUS: `reset` in dependency array
 
   return api;
 };

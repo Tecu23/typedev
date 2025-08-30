@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useVisualEngine } from "../hooks/useVisualEngine";
 import Word from "./Word";
 import clsx from "clsx";
@@ -8,29 +8,27 @@ type Props = {
 };
 
 const WordsContainer = ({ words }: Props) => {
-  console.log(words);
-  const visualEngine = useVisualEngine({
-    enabled: true,
-    onTestComplete: () => {
-      console.log("Test completed via visual engin hook");
-    },
-    onError: (error) => {
-      console.error("Visual engine error: ", error);
-    },
-  });
+  const engineOptions = useMemo(
+    () => ({
+      enabled: true,
+      onTestComplete: () => console.log("Test completed"),
+      onError: (error: Error) => console.error("Error:", error),
+    }),
+    [],
+  );
+
+  const visualEngine = useVisualEngine(engineOptions);
 
   const isInitializedRef = useRef(false);
 
   useEffect(() => {
-    if (!isInitializedRef.current && words.length > 0) {
-      const timer = setTimeout(() => {
-        visualEngine.initialize();
-        isInitializedRef.current = true;
-      }, 100);
+    const timer = setTimeout(() => {
+      visualEngine.initialize();
+      isInitializedRef.current = true;
+    }, 100);
 
-      return () => clearTimeout(timer);
-    }
-  }, [words, visualEngine.initialize]);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (isInitializedRef.current) {
