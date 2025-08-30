@@ -25,7 +25,7 @@ const Results = (props: Props) => {
         </div>
         <div
           id="morestats"
-          className="col-start-1 col-span-2 row-start-2 row-span-1 grid grid-flow-col items-start justify-between gap-2 gap-x-8 grid-rows-2 grid-cols-[max-content_max-content_max-content] "
+          className="col-start-1 col-span-2 row-start-2 row-span-1 grid grid-flow-col items-start justify-between gap-2 gap-x-8 grid-rows-3 grid-cols-2 md:grid-rows-2 md:grid-cols-[max-content_max-content_max-content] lg:grid-cols-none lg:grid-rows-none"
         >
           <div>
             <div className="text-sub text-[1rem] leading-[1rem] mb-1">test type</div>
