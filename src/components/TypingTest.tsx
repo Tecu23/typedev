@@ -40,6 +40,12 @@ const TypingTest = (props: Props) => {
           {"custom pace 32 wpm"}
         </button>
       </div>
+      <div id="liveStatsMini" className="col-[full-width] flex justify-start -mt-5 ml-1 text-main text-[2rem]">
+        <div className="time">30</div>
+        <div className="speed hidden">0</div>
+        <div className="acc hidden">100%</div>
+        <div className="burst hidden">0</div>
+      </div>
       <WordsContainer words={wordArray} />
       <button
         id="restart_button"
