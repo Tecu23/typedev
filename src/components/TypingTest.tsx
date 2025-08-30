@@ -25,18 +25,22 @@ const TypingTest = (props: Props) => {
   return (
     <div id="typing_test" className="col-[content] content-grid relative w-full max-w-full mx-auto">
       <div id="test_modes_notice" className="col-[content] flex flex-wrap text-sub mb-2 justify-center text-[1rem]">
-        <div className="inline-flex invisible justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2">
-          <RepeatIcon size={20} />
-          {"repeated"}
-        </div>
+        {false && (
+          <div className="inline-flex justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2">
+            <RepeatIcon size={20} />
+            {"repeated"}
+          </div>
+        )}
         <button className="inline-flex justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2">
           <GlobeIcon size={20} />
           {"english"}
         </button>
-        <button className="inline-flex invisible justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2">
-          <GaugeIcon size={20} />
-          {"custom pace 32 wpm"}
-        </button>
+        {false && (
+          <button className="inline-flex justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2">
+            <GaugeIcon size={20} />
+            {"custom pace 32 wpm"}
+          </button>
+        )}
       </div>
       <div id="liveStatsMini" className="col-[full-width] flex justify-start -mt-5 ml-1 text-main text-[2rem]">
         <div className="time">30</div>
