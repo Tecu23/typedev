@@ -20,7 +20,7 @@ export const useKeyboardInput = (onKeyEvent: (event: KeyboardEvent) => void, opt
     capture = true,
     disabled = false,
     allowedKeys = null,
-    blockedKeys = ["Tab", "Alt", "Meta", "Control"],
+    blockedKeys = ["Alt", "Meta", "Control"],
   } = options;
 
   const handleKeyDown = useCallback(

@@ -11,8 +11,8 @@ function App() {
       <main className="col-[full-width] relative content-grid h-full">
         <div className="col-[full-width] content-grid relative h-full grid grid-rows-[1fr_auto_1fr]">
           <TestConfig />
-          {false && <TypingTest />}
-          {true && <Results />}
+          {true && <TypingTest />}
+          {false && <Results />}
         </div>
       </main>
       <Footer />

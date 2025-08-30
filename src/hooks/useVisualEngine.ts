@@ -235,7 +235,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     preventDefault: true,
     capture: true,
     allowedKeys: null,
-    blockedKeys: ["Tab", "Alt", "Meta", "Control", "Shift", "CapsLock"],
+    blockedKeys: ["Alt", "Meta", "Control", "Shift", "CapsLock"],
   });
 
   const registerCharacter = useCallback((element: HTMLSpanElement | null, wordIndex: number, charIndex: number) => {
