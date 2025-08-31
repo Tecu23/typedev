@@ -1,6 +1,9 @@
 import { useEffect, useMemo } from "react";
 import { GaugeIcon, GlobeIcon, RepeatIcon, RotateCwIcon } from "lucide-react";
+
+import Timer from "./Timer";
 import WordsContainer from "./WordsContainer";
+
 import { useTypingStore } from "../store/typingStore";
 import { useWords } from "../hooks/useWords";
 
@@ -9,11 +12,8 @@ type Props = {};
 const TypingTest = (props: Props) => {
   const config = useTypingStore((state) => state.config);
   const initializeTest = useTypingStore((state) => state.initializeTest);
-  // const getTimeRemaining = useTypingStore((state) => state.getTimeRemaining);
-  // const getProgress = useTypingStore((state) => state.getTestProgress);
 
   const { words } = useWords(config);
-  console.log(words);
 
   const wordArray = useMemo(() => {
     return words ? words.split(" ") : [];
@@ -45,12 +45,7 @@ const TypingTest = (props: Props) => {
           </button>
         )}
       </div>
-      <div id="liveStatsMini" className="col-[full-width] flex justify-start -mt-5 ml-1 text-main text-[2rem]">
-        <div className="time">30</div>
-        <div className="speed hidden">0</div>
-        <div className="acc hidden">100%</div>
-        <div className="burst hidden">0</div>
-      </div>
+      <Timer />
       <WordsContainer words={wordArray} />
       <button
         id="restart_button"

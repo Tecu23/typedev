@@ -13,7 +13,6 @@ const defaultConfig: ITestConfig = {
   language: "english",
   punctuation: false,
   numbers: false,
-  // difficulty: "medium",
 };
 
 const defaultStats: ITypingStats = {

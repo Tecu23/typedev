@@ -8,6 +8,8 @@ import TypingTest from "./TypingTest";
 function App() {
   const status = useTypingStore((state) => state.status);
 
+  console.log(status);
+
   return (
     <div className="content-grid min-h-screen w-full py-8 bg-bg grid-rows-[auto_1fr_auto] overflow-hidden gap-y-8">
       <Header />
