@@ -21,11 +21,7 @@ const Word = ({ word, id, index, onCharacterMount, onWordMount }: Props) => {
   }, [index, onWordMount]);
 
   // Determine word styling based on status
-  const wordClasses = clsx(
-    "word word-pending",
-    "relative text-[32px] leading-[32px] mx-[9.6px] my-[8px] transition-all duration-200",
-    "transition-opacity duration-200 ease-out",
-  );
+  const wordClasses = clsx("word");
 
   return (
     <div id={id} ref={wordRef} className={wordClasses} data-word-index={index} data-word-text={word}>

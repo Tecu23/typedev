@@ -31,10 +31,10 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
   const updateCharacterVisual = useCallback((element: HTMLSpanElement, typedChar: string, isCorrect: boolean) => {
     if (isCorrect) {
-      element.className = "char char-correct relative inline-bloc transition-colors duration-75 ease-out";
+      element.className = "char char-correct";
       element.removeAttribute("data-typed");
     } else {
-      element.className = "char char-incorrect relative inline-bloc transition-colors duration-75 ease-out";
+      element.className = "char char-incorrect";
       element.setAttribute("data-typed", typedChar);
     }
   }, []);
@@ -77,9 +77,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     const isCorrect = state.inputBuffer === expectedWord;
 
     // Update word visual state
-    wordElement.className = isCorrect
-      ? "word word-correct relative inline-block text-[32px] leading-[32px] mx-[9.6px] my-[8px] transition-opacity duration-200 ease-out opacity-60"
-      : "word word-incorrect relative inline-block text-[32px] leading-[32px] mx-[9.6px] my-[8px] transition-opacity duration-200 ease-out opacity-60";
+    wordElement.className = isCorrect ? "word word-correct" : "word word-incorrect";
   }, []);
 
   const moveToNextWord = useCallback((): boolean => {
@@ -94,7 +92,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     // Remove current styling from current word
     const currentWordElement = wordRefs.current.get(state.currentWordIndex);
     if (currentWordElement) {
-      currentWordElement.classList.remove("word-current");
+      currentWordElement.classList.remove("word-active");
     }
 
     // Move indices
@@ -102,7 +100,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     state.currentCharIndex = 0;
 
     // Add current styling to new word
-    nextWordElement.classList.add("word-current");
+    nextWordElement.classList.add("word-active");
     updateCursorPosition();
 
     return true;
@@ -163,7 +161,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
       if (charElement) {
         // Reset to pending state
-        charElement.className = "char char-pending relative inline-block transition-colors duration-75 ease-out";
+        charElement.className = "char char-pending";
         charElement.removeAttribute("data-typed");
         updateCursorPosition();
         return true;
@@ -254,7 +252,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
     const firstWordElement = wordRefs.current.get(0);
     if (firstWordElement) {
-      firstWordElement.classList.add("word-current");
+      firstWordElement.classList.add("word-active");
     }
 
     const firstCharElement = characterRefs.current.get("0-0");
@@ -275,16 +273,15 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
     // Reset all character visual states
     characterRefs.current.forEach((element) => {
-      element.className = "char char-pending relative inline-block transition-colors duration-75 ease-out";
+      element.className = "char char-pending";
       element.removeAttribute("data-typed");
       element.classList.remove("char-cursor");
     });
 
     // Reset all word visual states
     wordRefs.current.forEach((element) => {
-      element.className =
-        "word word-pending relative inline-block text-[32px] leading-[32px] mx-[9.6px] my-[8px] transition-opacity duration-200 ease-out";
-      element.classList.remove("word-current");
+      element.className = "word";
+      element.classList.remove("word-active");
 
       const spaceElement = element.querySelector(".word-space");
       if (spaceElement) {

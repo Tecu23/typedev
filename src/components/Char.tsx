@@ -23,11 +23,7 @@ const Char = ({ expected, wordIndex, charIndex, onCharacterMount }: Props) => {
   return (
     <span
       ref={charRef}
-      className={clsx(
-        "char char-pending",
-        "relative inline-block border-b-[0.05em] border-b-transparent",
-        "transition-colors duration-75 ease-out",
-      )}
+      className={clsx("char")}
       data-word-index={wordIndex}
       data-char-index={charIndex}
       data-expected={expected}

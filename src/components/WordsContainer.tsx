@@ -59,7 +59,7 @@ const WordsContainer = ({ words }: Props) => {
       <div
         id="words"
         className={clsx(
-          "col-[full-width] h-[180px] overflow-hidden w-full pb-2 flex flex-wrap content-start select-none relative",
+          "col-[full-width] w-full pb-2 flex flex-wrap content-start select-none relative",
           !visualEngine.isEnabled && "opacity-50",
           false && "opacity-25 blur-[4px]", // (out of focus)
         )}
