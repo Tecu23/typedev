@@ -105,14 +105,15 @@ export const useTypingStore = create<ITypingStore>()(
         }
       }),
 
-    finishTest: () =>
+    finishTest: () => {
       set((state) => {
         state.status = "finished";
         state.endTime = performance.now();
 
-        // // Trigger final stats calculation
-        // get().calculateFinalStats();
-      }),
+        // Trigger final stats calculation
+      });
+      get().calculateFinalStats();
+    },
 
     resetTest: () =>
       set((state) => {
@@ -184,6 +185,7 @@ export const useTypingStore = create<ITypingStore>()(
 
         state.lastStatsUpdate = currentTime;
       }),
+
     calculateFinalStats: () =>
       set((state) => {
         if (!state.startTime || !state.endTime) return;

@@ -2,10 +2,16 @@ import { AlignLeftIcon, ChevronRightIcon, ImageIcon, RotateCw, StepBackIcon, Tri
 
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { useTypingStore } from "../store/typingStore";
 
 type Props = {};
 
 const Results = (props: Props) => {
+  const stats = useTypingStore((state) => state.finalStats);
+  const liveStats = useTypingStore((state) => state.liveStats);
+
+  console.log(stats, liveStats);
+
   return (
     <div id="result" className="col-[full-width] content-grid">
       <div className="col-[content] grid gap-4 items-center grid-cols-[auto_1fr] grid-rows-2">

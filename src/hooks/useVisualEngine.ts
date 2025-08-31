@@ -139,8 +139,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     const success = moveToNextWord();
 
     if (success) {
-      // Notify Zustand store (only React state update during typing)
-      completeWord(state.inputBuffer, []); // Simplified keystroke data
+      completeWord(state.inputBuffer, []);
 
       // Reset buffer for next word
       state.inputBuffer = "";
