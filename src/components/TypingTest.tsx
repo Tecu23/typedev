@@ -4,20 +4,32 @@ import { GaugeIcon, GlobeIcon, RepeatIcon, RotateCwIcon } from "lucide-react";
 import Timer from "./Timer";
 import WordsContainer from "./WordsContainer";
 
-import { useTypingStore } from "../store/typingStore";
 import { useWords } from "../hooks/useWords";
+import { useVisualEngine } from "../hooks/useVisualEngine";
+import { useTypingStore } from "../store/typingStore";
 
 type Props = {};
 
 const TypingTest = (props: Props) => {
   const config = useTypingStore((state) => state.config);
   const initializeTest = useTypingStore((state) => state.initializeTest);
+  const restartTest = useTypingStore((state) => state.resetTest);
 
-  const { words } = useWords(config);
+  const { words, updateWords } = useWords(config);
 
   const wordArray = useMemo(() => {
     return words ? words.split(" ") : [];
   }, [words]);
+
+  const engineOptions = useMemo(
+    () => ({
+      enabled: true,
+      onTestComplete: () => console.log("Test completed"),
+      onError: (error: Error) => console.error("Error:", error),
+    }),
+    [],
+  );
+  const visualEngine = useVisualEngine(engineOptions);
 
   useEffect(() => {
     if (words) {
@@ -46,10 +58,23 @@ const TypingTest = (props: Props) => {
         )}
       </div>
       <Timer />
-      <WordsContainer words={wordArray} />
+      <WordsContainer
+        words={wordArray}
+        initializeEngine={visualEngine.initialize}
+        resetEngine={visualEngine.reset}
+        getCurrentPosition={visualEngine.getCurrentPosition}
+        isEngineEnabled={visualEngine.isEnabled}
+        registerCharacter={visualEngine.registerCharacter}
+        registerWord={visualEngine.registerWord}
+      />
       <button
         id="restart_button"
-        className="col-[content] relative overflow-visible flex mt-4 mx-auto px-8 py-4 justify-center items-baseline gap-2 h-min leading-[1.25] text-center text-sub"
+        onClick={() => {
+          updateWords();
+          restartTest();
+          visualEngine.reset();
+        }}
+        className="col-[content] relative overflow-visible flex mt-4 mx-auto px-8 py-4 justify-center items-baseline gap-2 h-min leading-[1.25] text-center text-sub cursor-pointer"
       >
         <RotateCwIcon size={20} />
       </button>

@@ -1,37 +1,38 @@
 import { useEffect, useMemo, useRef, useCallback } from "react";
 
-import { MousePointer } from "lucide-react";
-
 import clsx from "clsx";
+import { MousePointer } from "lucide-react";
 
 import Word from "./Word";
 
-import { useVisualEngine } from "../hooks/useVisualEngine";
-
 type Props = {
   words: string[];
+  initializeEngine: () => void;
+  resetEngine: () => void;
+  getCurrentPosition: () => { wordIndex: number; charIndex: number };
+  isEngineEnabled: boolean;
+  registerCharacter: (element: HTMLSpanElement | null, wordIndex: number, charIndex: number) => void;
+  registerWord: (element: HTMLDivElement | null, wordIndex: number) => void;
 };
 
-const WordsContainer = ({ words }: Props) => {
+const WordsContainer = ({
+  words,
+  isEngineEnabled,
+  initializeEngine,
+  resetEngine,
+  getCurrentPosition,
+  registerCharacter,
+  registerWord,
+}: Props) => {
   const wordsContainerRef = useRef<HTMLDivElement>(null);
   const wordsRef = useRef<HTMLDivElement>(null);
   const lastScrolledWordRef = useRef<number>(-1);
-
-  const engineOptions = useMemo(
-    () => ({
-      enabled: true,
-      onTestComplete: () => console.log("Test completed"),
-      onError: (error: Error) => console.error("Error:", error),
-    }),
-    [],
-  );
-  const visualEngine = useVisualEngine(engineOptions);
 
   const isInitializedRef = useRef(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      visualEngine.initialize();
+      initializeEngine();
       isInitializedRef.current = true;
     }, 100);
 
@@ -40,15 +41,15 @@ const WordsContainer = ({ words }: Props) => {
 
   useEffect(() => {
     if (isInitializedRef.current) {
-      visualEngine.reset();
+      resetEngine();
     }
-  }, [words, visualEngine.reset]);
+  }, [words, resetEngine]);
 
   // Function to handle scrolling
   const scrollToActiveWord = useCallback(() => {
     if (!wordsContainerRef.current || !wordsRef.current) return;
 
-    const position = visualEngine.getCurrentPosition();
+    const position = getCurrentPosition();
     const currentWordIndex = position.wordIndex;
 
     // Only scroll if we've moved to a new word
@@ -85,7 +86,7 @@ const WordsContainer = ({ words }: Props) => {
       wordsContainerRef.current.scrollTop = Math.max(0, targetScrollTop);
       lastScrolledWordRef.current = currentWordIndex;
     }
-  }, [visualEngine]);
+  }, [getCurrentPosition]);
 
   // Set up MutationObserver to watch for class changes
   useEffect(() => {
@@ -136,7 +137,7 @@ const WordsContainer = ({ words }: Props) => {
         ref={wordsRef}
         className={clsx(
           "col-[full-width] h-fit w-full pb-2 flex flex-wrap content-start select-none",
-          !visualEngine.isEnabled && "opacity-50",
+          !isEngineEnabled && "opacity-50",
           false && "opacity-25 blur-[4px]", // (out of focus)
         )}
       >
@@ -147,8 +148,8 @@ const WordsContainer = ({ words }: Props) => {
               word={word}
               index={wordIndex}
               id={`word-${wordIndex}`}
-              onCharacterMount={visualEngine.registerCharacter}
-              onWordMount={visualEngine.registerWord}
+              onCharacterMount={registerCharacter}
+              onWordMount={registerWord}
             />
           );
         })}
