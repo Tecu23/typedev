@@ -26,6 +26,7 @@ const TestConfig = ({ status }: Props) => {
             onClick={() => setConfig({ punctuation: !config.punctuation })}
             className={clsx(
               "h-min ml-[6.72px] py-[11.2px] px-[6.72px] bg-none inline-flex items-start justify-center gap-2 rounded-lg text-center align-baseline text-xs leading-[1] appearance-none cursor-pointer",
+              "hover:text-text",
               config.punctuation ? "text-main" : "text-sub",
             )}
           >
@@ -36,6 +37,7 @@ const TestConfig = ({ status }: Props) => {
             onClick={() => setConfig({ numbers: !config.numbers })}
             className={clsx(
               "h-min mr-[6.72px] py-[11.2px] px-[6.72px] bg-none inline-flex items-start justify-center gap-2 rounded-lg text-center align-baseline text-xs leading-[1] appearance-none cursor-pointer",
+              "hover:text-text",
               config.numbers ? "text-main" : "text-sub",
             )}
           >
@@ -49,6 +51,7 @@ const TestConfig = ({ status }: Props) => {
             onClick={() => setConfig({ mode: "time" })}
             className={clsx(
               "h-min ml-[6.72px] py-[11.2px] px-[6.72px] bg-none inline-flex items-center justify-center gap-2 rounded-lg text-center align-baseline text-xs leading-[1] appearance-none cursor-pointer",
+              "hover:text-text",
               config.mode == "time" ? "text-main" : "text-sub",
             )}
           >
@@ -59,6 +62,7 @@ const TestConfig = ({ status }: Props) => {
             onClick={() => setConfig({ mode: "words" })}
             className={clsx(
               "h-min py-[11.2px] px-[6.72px] bg-none inline-flex items-center justify-center gap-2 rounded-lg text-center align-baseline text-xs leading-[1] appearance-none cursor-pointer",
+              "hover:text-text",
               config.mode == "words" ? "text-main" : "text-sub",
             )}
           >
@@ -120,6 +124,7 @@ const TestConfig = ({ status }: Props) => {
                 onClick={() => setConfig({ timeLimit: 15 })}
                 className={clsx(
                   "h-min ml-[6.72px] py-[11.2px] px-[6.72px] bg-none inline-flex gap-2 items-center justify-center rounded-lg text-center text-xs leading-[1.25] appearance-none cursor-pointer ",
+                  "hover:text-text",
                   config.timeLimit == 15 ? "text-main" : "text-sub",
                 )}
               >
@@ -129,6 +134,7 @@ const TestConfig = ({ status }: Props) => {
                 onClick={() => setConfig({ timeLimit: 30 })}
                 className={clsx(
                   "h-min py-[11.2px] px-[6.72px] bg-none inline-flex gap-2 items-center justify-center rounded-lg text-center text-xs leading-[1.25] appearance-none cursor-pointer ",
+                  "hover:text-text",
                   config.timeLimit == 30 ? "text-main" : "text-sub",
                 )}
               >
@@ -138,6 +144,7 @@ const TestConfig = ({ status }: Props) => {
                 onClick={() => setConfig({ timeLimit: 60 })}
                 className={clsx(
                   "h-min py-[11.2px] px-[6.72px] bg-none inline-flex gap-2 items-center justify-center rounded-lg text-center text-xs leading-[1.25] appearance-none cursor-pointer ",
+                  "hover:text-text",
                   config.timeLimit == 60 ? "text-main" : "text-sub",
                 )}
               >
@@ -147,6 +154,7 @@ const TestConfig = ({ status }: Props) => {
                 onClick={() => setConfig({ timeLimit: 120 })}
                 className={clsx(
                   "h-min mr-[6.72px] py-[11.2px] px-[6.72px] bg-none inline-flex gap-2 items-center justify-center rounded-lg text-center text-xs leading-[1.25] appearance-none cursor-pointer ",
+                  "hover:text-text",
                   config.timeLimit == 120 ? "text-main" : "text-sub",
                 )}
               >
@@ -159,6 +167,7 @@ const TestConfig = ({ status }: Props) => {
                 onClick={() => setConfig({ wordCount: 10 })}
                 className={clsx(
                   "h-min ml-[6.72px] py-[11.2px] px-[6.72px] bg-none inline-flex gap-2 items-center justify-center rounded-lg text-center text-xs leading-[1.25] appearance-none cursor-pointer ",
+                  "hover:text-text",
                   config.wordCount == 15 ? "text-main" : "text-sub",
                 )}
               >
@@ -168,6 +177,7 @@ const TestConfig = ({ status }: Props) => {
                 onClick={() => setConfig({ wordCount: 30 })}
                 className={clsx(
                   "h-min py-[11.2px] px-[6.72px] bg-none inline-flex gap-2 items-center justify-center rounded-lg text-center text-xs leading-[1.25] appearance-none cursor-pointer ",
+                  "hover:text-text",
                   config.wordCount == 30 ? "text-main" : "text-sub",
                 )}
               >
@@ -177,6 +187,7 @@ const TestConfig = ({ status }: Props) => {
                 onClick={() => setConfig({ wordCount: 50 })}
                 className={clsx(
                   "h-min py-[11.2px] px-[6.72px] bg-none inline-flex gap-2 items-center justify-center rounded-lg text-center text-xs leading-[1.25] appearance-none cursor-pointer ",
+                  "hover:text-text",
                   config.wordCount == 50 ? "text-main" : "text-sub",
                 )}
               >
@@ -186,6 +197,7 @@ const TestConfig = ({ status }: Props) => {
                 onClick={() => setConfig({ wordCount: 100 })}
                 className={clsx(
                   "h-min mr-[6.72px] py-[11.2px] px-[6.72px] bg-none inline-flex gap-2 items-center justify-center rounded-lg text-center text-xs leading-[1.25] appearance-none cursor-pointer ",
+                  "hover:text-text",
                   config.wordCount == 100 ? "text-main" : "text-sub",
                 )}
               >

@@ -1,12 +1,15 @@
 import { useEffect, useMemo } from "react";
 import { GaugeIcon, GlobeIcon, RepeatIcon, RotateCwIcon } from "lucide-react";
 
+import clsx from "clsx";
+
 import Timer from "./Timer";
 import WordsContainer from "./WordsContainer";
 
 import { useWords } from "../hooks/useWords";
 import { useVisualEngine } from "../hooks/useVisualEngine";
 import { useTypingStore } from "../store/typingStore";
+import Tooltip from "./standalone/Tooltip";
 
 type Props = {};
 
@@ -46,10 +49,19 @@ const TypingTest = (props: Props) => {
             {"repeated"}
           </div>
         )}
-        <button className="inline-flex justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2">
-          <GlobeIcon size={20} />
-          {"english"}
-        </button>
+        <div className="relative">
+          <Tooltip content="Feature not implemented yet." position="top">
+            <button
+              className={clsx(
+                "inline-flex justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2",
+                true ? "cursor-not-allowed" : "cursor-pointer",
+              )}
+            >
+              <GlobeIcon size={20} />
+              {"english"}
+            </button>
+          </Tooltip>
+        </div>
         {false && (
           <button className="inline-flex justify-center items-center gap-2 h-min appearance-none border-none text-[1rem] leading-[1.25] rounded-lg px-4 py-2">
             <GaugeIcon size={20} />
