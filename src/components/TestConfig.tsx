@@ -2,10 +2,13 @@ import { AtSignIcon, HashIcon, QuoteIcon, TimerIcon, TriangleIcon, Type, WrenchI
 import clsx from "clsx";
 import { useTypingStore } from "../store/typingStore";
 import Tooltip from "./standalone/Tooltip";
+import type { TestStatus } from "../types/store";
 
-type Props = {};
+type Props = {
+  status: TestStatus;
+};
 
-const TestConfig = (props: Props) => {
+const TestConfig = ({ status }: Props) => {
   const config = useTypingStore((state) => state.config);
   const setConfig = useTypingStore((state) => state.setConfig);
 
@@ -14,7 +17,7 @@ const TestConfig = (props: Props) => {
       id="testConfig"
       className={clsx(
         "col-[full-width] relative grid justify-self-center w-max mb-4 justify-around h-max gap-2 grid-flow-col",
-        false && "invisible",
+        status == "finished" && "invisible",
       )}
     >
       <div className="flex bg-sub-alt rounded-lg">

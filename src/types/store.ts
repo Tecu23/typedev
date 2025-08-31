@@ -1,6 +1,8 @@
 import type { IKeystroke } from "./common";
 import type { ILiveStats, ITestConfig, ITypingStats, IWordResult } from "./game";
 
+export type TestStatus = "idle" | "pending" | "paused" | "finished" | "typing";
+
 export interface ITypingStore {
   // Test Configuration
   config: ITestConfig;
@@ -10,7 +12,7 @@ export interface ITypingStore {
   totalWords: number;
 
   // Game Status
-  status: "idle" | "pending" | "paused" | "finished" | "typing";
+  status: TestStatus;
   startTime: number | null;
   endTime: number | null;
 
