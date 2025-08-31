@@ -1,21 +1,19 @@
+import clsx from "clsx";
 import {
-  Camera,
-  CodeIcon,
   FileIcon,
   GitBranchIcon,
-  GithubIcon,
   HandHelpingIcon,
   HeadsetIcon,
   LockIcon,
   MailIcon,
   PaletteIcon,
+  GithubIcon,
   ShieldBanIcon,
   TwitterIcon,
 } from "lucide-react";
+import Tooltip from "../standalone/Tooltip";
 
-type Props = {};
-
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
     <footer className="col-[content] relative text-center leading-4 text-xs text-sub">
       <div className="mb-8 leading-[2]">
@@ -47,48 +45,158 @@ const Footer = (props: Props) => {
       </div>
       <div className="grid grid-cols-[1fr_max-content] gap-8">
         <div className="grid grid-cols-[repeat(4,auto)] lg:flex lg:flex-row justify-start w-max">
-          <button className="flex gap-1 py-[3px] px-1.5 justify-start items-center h-min w-max text-xs leading-3">
-            <MailIcon size={15} />
-            <p>contact</p>
-          </button>
-          <button className="flex gap-1 py-[3px] px-1.5 justify-start items-center h-min w-max text-xs leading-3">
-            <HandHelpingIcon size={15} />
-            <p>support</p>
-          </button>
-          <button className="flex gap-1 py-[3px] px-1.5 justify-start items-center h-min w-max text-xs leading-3">
-            <CodeIcon size={15} />
-            <p>github</p>
-          </button>
-          <button className="flex gap-1 py-[3px] px-1.5 justify-start items-center h-min w-max text-xs leading-3">
-            <HeadsetIcon size={15} />
-            <p>discord</p>
-          </button>
-          <button className="flex gap-1 py-[3px] px-1.5 justify-start items-center h-min w-max text-xs leading-3">
-            <TwitterIcon size={15} />
-            <p>twitter</p>
-          </button>
-          <button className="flex gap-1 py-[3px] px-1.5 justify-start items-center h-min w-max text-xs leading-3">
-            <FileIcon size={15} />
-            <p>terms</p>
-          </button>
-          <button className="flex gap-1 py-[3px] px-1.5 justify-start items-center h-min w-max text-xs leading-3">
-            <ShieldBanIcon size={15} />
-            <p>security</p>
-          </button>
-          <button className="flex gap-1 py-[3px] px-1.5 justify-start items-center h-min w-max text-xs leading-3">
-            <LockIcon size={15} />
-            <p>privacy</p>
-          </button>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="top">
+              <button
+                className={clsx(
+                  "relative h-min w-max py-[3px] px-1.5",
+                  "flex gap-1 justify-start items-center",
+                  "text-xs leading-3",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <MailIcon size={15} />
+                <p>contact</p>
+              </button>
+            </Tooltip>
+          </div>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="top">
+              <button
+                className={clsx(
+                  "relative h-min w-max py-[3px] px-1.5",
+                  "flex gap-1 justify-start items-center",
+                  "text-xs leading-3",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <HandHelpingIcon size={15} />
+                <p>support</p>
+              </button>
+            </Tooltip>
+          </div>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="top">
+              <button
+                className={clsx(
+                  "relative h-min w-max py-[3px] px-1.5",
+                  "flex gap-1 justify-start items-center",
+                  "text-xs leading-3",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <GithubIcon size={15} />
+                <p>github</p>
+              </button>
+            </Tooltip>
+          </div>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="top">
+              <button
+                className={clsx(
+                  "relative h-min w-max py-[3px] px-1.5",
+                  "flex gap-1 justify-start items-center",
+                  "text-xs leading-3",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <HeadsetIcon size={15} />
+                <p>discord</p>
+              </button>
+            </Tooltip>
+          </div>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="top">
+              <button
+                className={clsx(
+                  "relative h-min w-max py-[3px] px-1.5",
+                  "flex gap-1 justify-start items-center",
+                  "text-xs leading-3",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <TwitterIcon size={15} />
+                <p>twitter</p>
+              </button>
+            </Tooltip>
+          </div>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="top">
+              <button
+                className={clsx(
+                  "relative h-min w-max py-[3px] px-1.5",
+                  "flex gap-1 justify-start items-center",
+                  "text-xs leading-3",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <FileIcon size={15} />
+                <p>terms</p>
+              </button>
+            </Tooltip>
+          </div>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="top">
+              <button
+                className={clsx(
+                  "relative h-min w-max py-[3px] px-1.5",
+                  "flex gap-1 justify-start items-center",
+                  "text-xs leading-3",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <ShieldBanIcon size={15} />
+                <p>security</p>
+              </button>
+            </Tooltip>
+          </div>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="top">
+              <button
+                className={clsx(
+                  "relative h-min w-max py-[3px] px-1.5",
+                  "flex gap-1 justify-start items-center",
+                  "text-xs leading-3",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <LockIcon size={15} />
+                <p>privacy</p>
+              </button>
+            </Tooltip>
+          </div>
         </div>
         <div className="grid grid-cols-1 lg:flex justify-self-end text-right w-max h-max">
-          <button className="flex gap-1 py-[3px] px-1.5 justify-start items-center h-min w-max text-xs leading-3">
-            <PaletteIcon size={15} />
-            <p>catpuccin</p>
-          </button>
-          <button className="flex gap-1 py-[3px] px-1.5 justify-start items-center h-min w-max text-xs leading-3">
-            <GitBranchIcon size={15} />
-            <p>v1.0.0</p>
-          </button>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="top">
+              <button
+                className={clsx(
+                  "relative h-min w-max py-[3px] px-1.5",
+                  "flex gap-1 justify-start items-center",
+                  "text-xs leading-3",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <PaletteIcon size={15} />
+                <p>catpuccin</p>
+              </button>
+            </Tooltip>
+          </div>
+          <div className="relative">
+            <Tooltip content="Feature not implemented yet." position="top">
+              <button
+                className={clsx(
+                  "relative h-min w-max py-[3px] px-1.5",
+                  "flex gap-1 justify-start items-center",
+                  "text-xs leading-3",
+                  true ? "cursor-not-allowed" : "cursor-pointer",
+                )}
+              >
+                <GitBranchIcon size={15} />
+                <p>v1.0.0</p>
+              </button>
+            </Tooltip>
+          </div>
         </div>
       </div>
     </footer>
