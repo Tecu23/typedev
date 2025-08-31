@@ -43,15 +43,13 @@ const Tooltip = ({ content, position, children }: Props) => {
   };
 
   return (
-    <div className="relative inline-block">
-      <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="inline-block">
-        {children}
-      </div>
+    <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} className="relative inline">
+      {children}
 
       {isVisible && (
         <div
           className={clsx(
-            "absolute px-3 py-2 rounded-lg shadow-lg",
+            "absolute px-3 py-2 rounded-lg shadow-lg pointer-events-none",
             "bg-sub-alt",
             "text-sm font-medium text-white whitespace-nowrap",
             "transition-all duration-300 ease-out",
