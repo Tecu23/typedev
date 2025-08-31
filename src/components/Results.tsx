@@ -6,6 +6,8 @@ import { useTypingStore } from "../store/typingStore";
 
 type Props = {};
 
+// TODO: Handle results
+
 const Results = (props: Props) => {
   const stats = useTypingStore((state) => state.finalStats);
   const liveStats = useTypingStore((state) => state.liveStats);
