@@ -2,15 +2,18 @@ import { useEffect, useMemo } from "react";
 import { GaugeIcon, GlobeIcon, RepeatIcon, RotateCwIcon } from "lucide-react";
 import WordsContainer from "./WordsContainer";
 import { useTypingStore } from "../store/typingStore";
-import useWords from "../hooks/useWords";
+import { useWords } from "../hooks/useWords";
 
 type Props = {};
 
 const TypingTest = (props: Props) => {
-  const { words } = useWords("normal");
+  const config = useTypingStore((state) => state.config);
   const initializeTest = useTypingStore((state) => state.initializeTest);
   // const getTimeRemaining = useTypingStore((state) => state.getTimeRemaining);
   // const getProgress = useTypingStore((state) => state.getTestProgress);
+
+  const { words } = useWords(config);
+  console.log(words);
 
   const wordArray = useMemo(() => {
     return words ? words.split(" ") : [];
