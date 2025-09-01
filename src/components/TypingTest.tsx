@@ -6,33 +6,36 @@ import clsx from "clsx";
 import Timer from "./Timer";
 import WordsContainer from "./WordsContainer";
 
-import { useWords } from "../hooks/useWords";
-import { useVisualEngine } from "../hooks/useVisualEngine";
-import { useTypingStore } from "../store/typingStore";
 import Tooltip from "./standalone/Tooltip";
 
-type Props = {};
+import { useWords } from "../hooks/useWords";
+import { useTypingStore } from "../store/typingStore";
 
-const TypingTest = (props: Props) => {
+type Props = {
+  initializeEngine: () => void;
+  resetEngine: () => void;
+  getCurrentPosition: () => { wordIndex: number; charIndex: number };
+  isEngineEnabled: boolean;
+  registerCharacter: (element: HTMLSpanElement | null, wordIndex: number, charIndex: number) => void;
+  registerWord: (element: HTMLDivElement | null, wordIndex: number) => void;
+};
+
+const TypingTest = ({
+  initializeEngine,
+  resetEngine,
+  isEngineEnabled,
+  getCurrentPosition,
+  registerCharacter,
+  registerWord,
+}: Props) => {
   const config = useTypingStore((state) => state.config);
+  const { words, updateWords } = useWords(config);
   const initializeTest = useTypingStore((state) => state.initializeTest);
   const restartTest = useTypingStore((state) => state.resetTest);
-
-  const { words, updateWords } = useWords(config);
 
   const wordArray = useMemo(() => {
     return words ? words.split(" ") : [];
   }, [words]);
-
-  const engineOptions = useMemo(
-    () => ({
-      enabled: true,
-      onTestComplete: () => console.log("Test completed"),
-      onError: (error: Error) => console.error("Error:", error),
-    }),
-    [],
-  );
-  const visualEngine = useVisualEngine(engineOptions);
 
   useEffect(() => {
     if (words) {
@@ -72,19 +75,19 @@ const TypingTest = (props: Props) => {
       <Timer />
       <WordsContainer
         words={wordArray}
-        initializeEngine={visualEngine.initialize}
-        resetEngine={visualEngine.reset}
-        getCurrentPosition={visualEngine.getCurrentPosition}
-        isEngineEnabled={visualEngine.isEnabled}
-        registerCharacter={visualEngine.registerCharacter}
-        registerWord={visualEngine.registerWord}
+        initializeEngine={initializeEngine}
+        resetEngine={resetEngine}
+        getCurrentPosition={getCurrentPosition}
+        isEngineEnabled={isEngineEnabled}
+        registerCharacter={registerCharacter}
+        registerWord={registerWord}
       />
       <button
         id="restart_button"
         onClick={() => {
           updateWords();
           restartTest();
-          visualEngine.reset();
+          resetEngine();
         }}
         className="col-[content] relative overflow-visible flex mt-4 mx-auto px-8 py-4 justify-center items-baseline gap-2 h-min leading-[1.25] text-center text-sub cursor-pointer"
       >

@@ -2,15 +2,25 @@ import { AlignLeftIcon, ChevronRightIcon, ImageIcon, RotateCw, StepBackIcon, Tri
 
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { useTypingStore } from "../store/typingStore";
 
-type Props = {};
+import { useWords } from "../hooks/useWords";
+import { useTypingStore } from "../store/typingStore";
+import Tooltip from "./standalone/Tooltip";
+import clsx from "clsx";
+
+type Props = {
+  resetEngine: () => void;
+};
 
 // TODO: Handle results
 
-const Results = (props: Props) => {
+const Results = ({ resetEngine }: Props) => {
+  const config = useTypingStore((state) => state.config);
   const stats = useTypingStore((state) => state.finalStats);
   const liveStats = useTypingStore((state) => state.liveStats);
+  const resetTest = useTypingStore((state) => state.resetTest);
+
+  const { updateWords } = useWords(config);
 
   console.log(stats, liveStats);
 
@@ -151,23 +161,80 @@ const Results = (props: Props) => {
         </div>
         <div id="bottom" className="col-start-1 col-span-full">
           <div id="buttons" className="grid gap-4 justify-center grid-flow-col">
-            <button className="relative h-min inline-flex gap-2 items-baseline justify-center text-sub text-[1em] leading-[1.25] text-center px-8 py-4">
-              <ChevronRightIcon size={20} />
+            <button
+              onClick={() => {
+                updateWords();
+                resetTest();
+                resetEngine();
+              }}
+              className={clsx(
+                "relative h-min inline-flex gap-2 items-baseline justify-center  px-8 py-4",
+                "text-sub text-[1em] leading-[1.25] text-center hover:text-test",
+                "cursor-pointer",
+              )}
+            >
+              <Tooltip position="bottom" content="Next Test">
+                <ChevronRightIcon size={20} />
+              </Tooltip>
             </button>
-            <button className="relative h-min inline-flex gap-2 items-baseline justify-center text-sub text-[1em] leading-[1.25] text-center px-8 py-4">
-              <RotateCw size={20} />
+            <button
+              onClick={() => {
+                resetTest();
+                resetEngine();
+              }}
+              className={clsx(
+                "relative h-min inline-flex gap-2 items-baseline justify-center  px-8 py-4",
+                "text-sub text-[1em] leading-[1.25] text-center hover:text-test",
+                "cursor-pointer",
+              )}
+            >
+              <Tooltip position="bottom" content="Repeat Test">
+                <RotateCw size={20} />
+              </Tooltip>
             </button>
-            <button className="relative h-min inline-flex gap-2 items-baseline justify-center text-sub text-[1em] leading-[1.25] text-center px-8 py-4">
-              <TriangleAlertIcon size={20} />
+            <button
+              className={clsx(
+                "relative h-min inline-flex gap-2 items-baseline justify-center  px-8 py-4",
+                "text-sub text-[1em] leading-[1.25] text-center hover:text-test",
+                true ? "cursor-not-allowed" : "cursor-pointer",
+              )}
+            >
+              <Tooltip position="bottom" content="Feature not implemented yet.">
+                <TriangleAlertIcon size={20} />
+              </Tooltip>
             </button>
-            <button className="relative h-min inline-flex gap-2 items-baseline justify-center text-sub text-[1em] leading-[1.25] text-center px-8 py-4">
-              <AlignLeftIcon size={20} />
+            <button
+              className={clsx(
+                "relative h-min inline-flex gap-2 items-baseline justify-center  px-8 py-4",
+                "text-sub text-[1em] leading-[1.25] text-center hover:text-test",
+                true ? "cursor-not-allowed" : "cursor-pointer",
+              )}
+            >
+              <Tooltip position="bottom" content="Feature not implemented yet.">
+                <AlignLeftIcon size={20} />
+              </Tooltip>
             </button>
-            <button className="relative h-min inline-flex gap-2 items-baseline justify-center text-sub text-[1em] leading-[1.25] text-center px-8 py-4">
-              <StepBackIcon size={20} />
+            <button
+              className={clsx(
+                "relative h-min inline-flex gap-2 items-baseline justify-center  px-8 py-4",
+                "text-sub text-[1em] leading-[1.25] text-center hover:text-test",
+                true ? "cursor-not-allowed" : "cursor-pointer",
+              )}
+            >
+              <Tooltip position="bottom" content="Feature not implemented yet.">
+                <StepBackIcon size={20} />
+              </Tooltip>
             </button>
-            <button className="relative h-min inline-flex gap-2 items-baseline justify-center text-sub text-[1em] leading-[1.25] text-center px-8 py-4">
-              <ImageIcon size={20} />
+            <button
+              className={clsx(
+                "relative h-min inline-flex gap-2 items-baseline justify-center  px-8 py-4",
+                "text-sub text-[1em] leading-[1.25] text-center hover:text-test",
+                true ? "cursor-not-allowed" : "cursor-pointer",
+              )}
+            >
+              <Tooltip position="bottom" content="Feature not implemented yet.">
+                <ImageIcon size={20} />
+              </Tooltip>
             </button>
           </div>
         </div>
