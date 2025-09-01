@@ -29,7 +29,7 @@ function App() {
       <main className="col-[full-width] relative content-grid h-full">
         <div className="col-[full-width] content-grid relative h-full grid grid-rows-[1fr_auto_1fr]">
           <TestConfig status={status} />
-          {status == "finished" || true ? (
+          {status == "finished" ? (
             <Results resetEngine={visualEngine.reset} />
           ) : (
             <TypingTest
