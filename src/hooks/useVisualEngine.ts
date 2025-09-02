@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import { useKeyboardInput } from "./useKeyboardInput";
 
@@ -19,6 +19,9 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   const cursorRef = useRef<HTMLSpanElement | null>(null);
   const cursorContainerRef = useRef<HTMLElement | null>(null);
 
+  // Focus management state
+  const [isFocused, setIsFocused] = useState(true);
+
   // Internal state
   const stateRef = useRef<VisualEngineState>({
     currentWordIndex: 0,
@@ -33,6 +36,19 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   const finishTest = useTypingStore((state) => state.finishTest);
   const completeWord = useTypingStore((state) => state.completeWord);
   const isTestComplete = useTypingStore((state) => state.isTestComplete);
+
+  // Focus management functions
+  const handleFocus = useCallback(() => {
+    setIsFocused(true);
+
+    if (cursorContainerRef.current) {
+      cursorContainerRef.current.focus();
+    }
+  }, []);
+
+  const handleBlur = useCallback(() => {
+    setIsFocused(false);
+  }, []);
 
   const updateCharacterVisual = useCallback((element: HTMLSpanElement, typedChar: string, isCorrect: boolean) => {
     if (isCorrect) {
@@ -313,6 +329,15 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
   const handleKeyEvent = useCallback(
     (keyEvent: KeyboardEvent) => {
+      console.log(keyEvent.type, isFocused);
+      // If not focused, any key press should refocus
+      if (!isFocused) {
+        handleFocus();
+        return; // Don't process the key for typing, just refocus
+      }
+
+      console.log(keyEvent.type, isFocused);
+
       if (keyEvent.type !== "keydown") return;
 
       // Get expected character from store
@@ -377,14 +402,35 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     }
   }, []);
 
-  const registerCursorContainer = useCallback((element: HTMLElement | null) => {
-    if (element) {
-      cursorContainerRef.current = element;
+  const registerCursorContainer = useCallback(
+    (element: HTMLElement | null) => {
+      if (element) {
+        cursorContainerRef.current = element;
 
-      // Ensure container has posiion relative for absolute positioning to work
-      element.style.position = "relative";
-    }
-  }, []);
+        // Ensure container has posiion relative for absolute positioning to work
+        element.style.position = "relative";
+
+        // Make container focusable
+        element.tabIndex = -1;
+        element.style.outline = "none";
+
+        // Add focus/blur event listeners
+        element.addEventListener("focus", handleFocus);
+        element.addEventListener("blur", handleBlur);
+
+        element.focus();
+      }
+
+      // Cleanup function
+      return () => {
+        if (cursorContainerRef.current) {
+          cursorContainerRef.current.removeEventListener("focus", handleFocus);
+          cursorContainerRef.current.removeEventListener("blur", handleBlur);
+        }
+      };
+    },
+    [handleFocus, handleBlur],
+  );
 
   const initialize = useCallback(() => {
     const state = stateRef.current;
@@ -464,8 +510,24 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       // Status
       isEnabled: enabled && status !== "finished",
       isInitialized: stateRef.current.isInitialized,
+
+      // Focus state
+      isFocused,
+      handleFocus,
+      handleBlur,
     }),
-    [registerCharacter, registerWord, registerCursor, registerCursorContainer, initialize, reset, status],
+    [
+      registerCharacter,
+      registerWord,
+      registerCursor,
+      registerCursorContainer,
+      initialize,
+      reset,
+      status,
+      isFocused,
+      handleBlur,
+      handleFocus,
+    ],
   );
 
   return api;

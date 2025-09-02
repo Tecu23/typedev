@@ -20,6 +20,8 @@ type Props = {
   registerWord: (element: HTMLDivElement | null, wordIndex: number) => void;
   registerCursor: (element: HTMLSpanElement | null) => void;
   registerCursorContainer: (element: HTMLElement | null) => void;
+  isFocused: boolean;
+  handleFocus: () => void;
 };
 
 const TypingTest = ({
@@ -31,6 +33,8 @@ const TypingTest = ({
   registerWord,
   registerCursor,
   registerCursorContainer,
+  isFocused,
+  handleFocus,
 }: Props) => {
   const config = useTypingStore((state) => state.config);
   const { words, updateWords } = useWords(config);
@@ -87,6 +91,8 @@ const TypingTest = ({
         registerWord={registerWord}
         registerCursor={registerCursor}
         registerCursorContainer={registerCursorContainer}
+        isFocused={isFocused}
+        handleFocus={handleFocus}
       />
       <button
         id="restart_button"

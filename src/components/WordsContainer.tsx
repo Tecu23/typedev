@@ -15,6 +15,8 @@ type Props = {
   registerCharacter: (element: HTMLSpanElement | null, wordIndex: number, charIndex: number) => void;
   registerCursor: (element: HTMLSpanElement | null) => void;
   registerCursorContainer: (element: HTMLElement | null) => void;
+  isFocused: boolean;
+  handleFocus: () => void;
 };
 
 const WordsContainer = ({
@@ -27,6 +29,8 @@ const WordsContainer = ({
   registerWord,
   registerCursor,
   registerCursorContainer,
+  isFocused,
+  handleFocus,
 }: Props) => {
   const wordsContainerRef = useRef<HTMLDivElement>(null);
   const wordsRef = useRef<HTMLDivElement>(null);
@@ -35,6 +39,13 @@ const WordsContainer = ({
   const cursorRef = useRef<HTMLSpanElement>(null);
 
   const isInitializedRef = useRef(false);
+
+  // Handle click on overlay or container
+  const handleContainerClick = useCallback(() => {
+    if (!isFocused) {
+      handleFocus();
+    }
+  }, [isFocused, handleFocus]);
 
   useEffect(() => {
     if (wordsContainerRef.current) {
@@ -137,13 +148,14 @@ const WordsContainer = ({
     <div
       id="words_wrapper"
       ref={wordsContainerRef}
+      onClick={handleContainerClick}
       className="content-grid col-[full-width] h-[153px] overflow-y-hidden overflow-x-visible relative"
     >
       <input
         id="words_input"
         className="col-[full-width] w-[77px] h-8 left-2.5 top-[9px] text-[2rem] opacity-0 mx-auto border-none outline-none block resize-none absolute z-[-1] cursor-default pointer-events-none rounded-none"
       />
-      {false && (
+      {!isFocused && (
         <div
           id="out-of_focus"
           className="col-[content] max-h-[153px] w-full h-full absolute content-center z-50 text-center text-[1rem] text-sub flex-center gap-2"
@@ -159,7 +171,7 @@ const WordsContainer = ({
         className={clsx(
           "col-[full-width] h-fit w-full pb-2 flex flex-wrap content-start select-none",
           !isEngineEnabled && "opacity-50",
-          false && "opacity-25 blur-[4px]", // (out of focus)
+          !isFocused && "opacity-25 blur-[4px]", // (out of focus)
         )}
       >
         {words.map((word: string, wordIndex: number) => {

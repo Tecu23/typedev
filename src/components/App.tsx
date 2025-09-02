@@ -41,6 +41,8 @@ function App() {
               registerCharacter={visualEngine.registerCharacter}
               registerCursor={visualEngine.registerCursor}
               registerCursorContainer={visualEngine.registerCursorContainer}
+              handleFocus={visualEngine.handleFocus}
+              isFocused={visualEngine.isFocused}
             />
           )}
         </div>
