@@ -68,7 +68,7 @@
     @apply text-error;
   }
 
-  .char-extra {
+  .char-incorrect-extra {
     @apply text-error-extra;
   }
 

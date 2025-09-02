@@ -7,7 +7,7 @@ import { useTypingStore } from "../store/typingStore";
 import type { KeyboardEvent } from "../types/common";
 import type { VisualEngineState, UseVisualEngineOptions } from "../types/engine";
 
-// TODO: Update this hook to handle extra characters and caret
+// TODO: Update this hook to handle wpm and stats after
 
 export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   const { enabled = true, onTestComplete, onError } = options;
@@ -15,6 +15,8 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   // Store references to DOM elements
   const characterRefs = useRef<Map<string, HTMLSpanElement>>(new Map());
   const wordRefs = useRef<Map<number, HTMLSpanElement>>(new Map());
+  // New ref to trck extra haracter element
+  const extraCharRefs = useRef<Map<string, HTMLSpanElement>>(new Map());
 
   // Internal state
   const stateRef = useRef<VisualEngineState>({
@@ -41,10 +43,28 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     }
   }, []);
 
+  const createExtraCharacterElement = useCallback(
+    (typedChar: string, wordIndex: number, extraIndex: number): HTMLSpanElement => {
+      const span = document.createElement("span");
+      span.className = "char char-incorrect-extra";
+      span.textContent = typedChar;
+      span.setAttribute("data-typed", typedChar);
+      span.setAttribute("data-extra-index", extraIndex.toString());
+
+      // Store reference
+      const key = `${wordIndex}-extra-${extraIndex}`;
+      extraCharRefs.current.set(key, span);
+
+      return span;
+    },
+    [],
+  );
+
   const updateCursorPosition = useCallback(() => {
     const state = stateRef.current;
     // Remove cursor from all characters and spaces
     characterRefs.current.forEach((element) => element.classList.remove("char-cursor"));
+    extraCharRefs.current.forEach((element) => element.classList.remove("char-cursor"));
     wordRefs.current.forEach((wordElement) => {
       const spaceElement = wordElement.querySelector(".word-space");
       if (spaceElement) {
@@ -52,19 +72,43 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       }
     });
 
-    // Add cursor to current position
-    const currentCharKey = `${state.currentWordIndex}-${state.currentCharIndex}`;
-    const currentCharElement = characterRefs.current.get(currentCharKey);
+    const currentWord = getCurrentWord();
+    const expectedLength = currentWord?.length || 0;
 
-    if (currentCharElement) {
-      currentCharElement.classList.add("char-cursor");
+    // Check if we're in extra chararcter territory
+    if (state.currentCharIndex >= expectedLength) {
+      // Check if we have an extra character at this position
+      const extraIndex = state.currentCharIndex - expectedLength;
+      const extraCharKey = `${state.currentCharIndex}-extra-${extraIndex}`;
+      const extraCharElement = extraCharRefs.current.get(extraCharKey);
+
+      if (extraCharElement) {
+        extraCharElement.classList.add("char-cursor");
+      } else {
+        // Cursor at end of word (including any extras) - show on word space
+        const wordElement = wordRefs.current.get(state.currentWordIndex);
+        if (wordElement) {
+          const spaceElement = wordElement.querySelector(".word-space");
+          if (spaceElement) {
+            spaceElement.classList.add("char-cursor");
+          }
+        }
+      }
     } else {
-      // Cursor at end of word - show on word space
-      const wordElement = wordRefs.current.get(state.currentWordIndex);
-      if (wordElement) {
-        const spaceElement = wordElement.querySelector(".word-space");
-        if (spaceElement) {
-          spaceElement.classList.add("char-cursor");
+      //   Normal character position
+      const currentCharKey = `${state.currentWordIndex}-${state.currentCharIndex}`;
+      const currentCharElement = characterRefs.current.get(currentCharKey);
+
+      if (currentCharElement) {
+        currentCharElement.classList.add("char-cursor");
+      } else {
+        // Cursor at end of word - show on word space
+        const wordElement = wordRefs.current.get(state.currentWordIndex);
+        if (wordElement) {
+          const spaceElement = wordElement.querySelector(".word-space");
+          if (spaceElement) {
+            spaceElement.classList.add("char-cursor");
+          }
         }
       }
     }
@@ -95,6 +139,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     const currentWordElement = wordRefs.current.get(state.currentWordIndex);
     if (currentWordElement) {
       currentWordElement.classList.remove("word-active");
+      // NOTE: We keep the extra characters vsible - ther-re part of what was typed
     }
 
     // Move indices
@@ -111,6 +156,37 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   const handleCharacter = useCallback(
     (typedChar: string, expectedChar: string): boolean => {
       const state = stateRef.current;
+      const currentWord = getCurrentWord();
+      const expectedLength = currentWord?.length || 0;
+
+      // Check if we'ew typing beyond the expected word length
+      if (state.currentCharIndex >= expectedLength) {
+        // Handle extra character
+        const wordElement = wordRefs.current.get(state.currentWordIndex);
+        if (!wordElement) return false;
+
+        // Find the container the characters (before the space)
+        const charContainer = wordElement.querySelector(".word-chars") || wordElement;
+
+        // Create and append extra character
+        const extraIndex = state.currentCharIndex - expectedLength;
+        const extraElement = createExtraCharacterElement(typedChar, state.currentWordIndex, extraIndex);
+
+        // Insert before the space element if it exists
+        const spaceElement = wordElement.querySelector(".word-space");
+        if (spaceElement) {
+          wordElement.insertBefore(extraElement, spaceElement);
+        } else {
+          charContainer.appendChild(extraElement);
+        }
+
+        // Move to next postion
+        state.currentCharIndex++;
+        updateCursorPosition();
+
+        return true;
+      }
+
       const charKey = `${state.currentWordIndex}-${state.currentCharIndex}`;
       const charElement = characterRefs.current.get(charKey);
 
@@ -156,6 +232,24 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     if (state.currentCharIndex > 0) {
       state.currentCharIndex--;
       state.inputBuffer = state.inputBuffer.slice(0, -1);
+
+      const currentWord = getCurrentWord();
+      const expectedLength = currentWord?.length || 0;
+
+      // Check if we're deleting an extra character
+      if (state.currentCharIndex >= expectedLength) {
+        const extraIndex = state.currentCharIndex - expectedLength;
+        const extraCharKey = `${state.currentWordIndex}-extra-${extraIndex}`;
+        const extraElement = extraCharRefs.current.get(extraCharKey);
+
+        if (extraElement) {
+          extraElement.remove();
+          extraCharRefs.current.delete(extraCharKey);
+        }
+
+        updateCursorPosition();
+        return true;
+      }
 
       const charKey = `${state.currentWordIndex}-${state.currentCharIndex}`;
       const charElement = characterRefs.current.get(charKey);
@@ -208,6 +302,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       if (!currentWord) return;
 
       const state = stateRef.current;
+      // Whem beyond word length, we don't have an expected char
       const expectedChar = currentWord[state.currentCharIndex] || "";
 
       // Process keystroke
@@ -284,11 +379,17 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       element.className = "word";
       element.classList.remove("word-active");
 
+      // Remove any extra characters
+      const extraChars = element.querySelectorAll("[data-extra-index]");
+      extraChars.forEach((el) => el.remove());
+
       const spaceElement = element.querySelector(".word-space");
       if (spaceElement) {
         spaceElement.classList.remove("char-cursor");
       }
     });
+
+    extraCharRefs.current.clear();
 
     // Re-initialize
     initialize();
