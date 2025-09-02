@@ -7,8 +7,6 @@ import { useTypingStore } from "../store/typingStore";
 import type { KeyboardEvent } from "../types/common";
 import type { VisualEngineState, UseVisualEngineOptions } from "../types/engine";
 
-// TODO: Update this hook to handle wpm and stats after
-
 export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   const { enabled = true, onTestComplete, onError } = options;
 

@@ -12,8 +12,6 @@ type Props = {
   resetEngine: () => void;
 };
 
-// TODO: Handle results
-
 const Results = ({ resetEngine }: Props) => {
   const config = useTypingStore((state) => state.config);
   const stats = useTypingStore((state) => state.finalStats);
