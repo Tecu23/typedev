@@ -18,6 +18,8 @@ type Props = {
   isEngineEnabled: boolean;
   registerCharacter: (element: HTMLSpanElement | null, wordIndex: number, charIndex: number) => void;
   registerWord: (element: HTMLDivElement | null, wordIndex: number) => void;
+  registerCursor: (element: HTMLSpanElement | null) => void;
+  registerCursorContainer: (element: HTMLElement | null) => void;
 };
 
 const TypingTest = ({
@@ -27,6 +29,8 @@ const TypingTest = ({
   getCurrentPosition,
   registerCharacter,
   registerWord,
+  registerCursor,
+  registerCursorContainer,
 }: Props) => {
   const config = useTypingStore((state) => state.config);
   const { words, updateWords } = useWords(config);
@@ -81,6 +85,8 @@ const TypingTest = ({
         isEngineEnabled={isEngineEnabled}
         registerCharacter={registerCharacter}
         registerWord={registerWord}
+        registerCursor={registerCursor}
+        registerCursorContainer={registerCursorContainer}
       />
       <button
         id="restart_button"

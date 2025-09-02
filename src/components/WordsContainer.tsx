@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
 
 import clsx from "clsx";
 import { MousePointer } from "lucide-react";
@@ -11,8 +11,10 @@ type Props = {
   resetEngine: () => void;
   getCurrentPosition: () => { wordIndex: number; charIndex: number };
   isEngineEnabled: boolean;
-  registerCharacter: (element: HTMLSpanElement | null, wordIndex: number, charIndex: number) => void;
   registerWord: (element: HTMLDivElement | null, wordIndex: number) => void;
+  registerCharacter: (element: HTMLSpanElement | null, wordIndex: number, charIndex: number) => void;
+  registerCursor: (element: HTMLSpanElement | null) => void;
+  registerCursorContainer: (element: HTMLElement | null) => void;
 };
 
 const WordsContainer = ({
@@ -23,12 +25,30 @@ const WordsContainer = ({
   getCurrentPosition,
   registerCharacter,
   registerWord,
+  registerCursor,
+  registerCursorContainer,
 }: Props) => {
   const wordsContainerRef = useRef<HTMLDivElement>(null);
   const wordsRef = useRef<HTMLDivElement>(null);
   const lastScrolledWordRef = useRef<number>(-1);
 
+  const cursorRef = useRef<HTMLSpanElement>(null);
+
   const isInitializedRef = useRef(false);
+
+  useEffect(() => {
+    if (wordsContainerRef.current) {
+      // Register the cursor container element with the visual engine
+      registerCursorContainer(wordsContainerRef.current);
+    }
+  }, [registerCursorContainer]);
+
+  useEffect(() => {
+    if (cursorRef.current) {
+      // Register the cursor element with the visual engine
+      registerCursor(cursorRef.current);
+    }
+  }, [registerCursor]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -132,6 +152,7 @@ const WordsContainer = ({
           {" Click here or press any key to focus"}
         </div>
       )}
+      <span ref={cursorRef} className="typing-cursor"></span>
       <div
         id="words"
         ref={wordsRef}

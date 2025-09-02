@@ -57,7 +57,7 @@
   }
 
   .char {
-    @apply inline-block text-sub;
+    @apply inline-block text-sub border-b-[2px] border-transparent;
   }
 
   .char-correct {
@@ -76,32 +76,8 @@
     @apply relative;
   }
 
-  .char-pending {
-    @apply border-b-[2px] border-transparent;
-  }
-
-  .char-cursor::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-color: var(--caret-color, #e2b714);
+  .typing-cursor {
     animation: blink 1s infinite;
-    z-index: 5;
-  }
-
-  .word-space.char-cursor::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background-color: var(--caret-color, #e2b714);
-    animation: blink 1s infinite;
-    z-index: 5;
   }
 
   .word {

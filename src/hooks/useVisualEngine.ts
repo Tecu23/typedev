@@ -17,6 +17,9 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   const wordRefs = useRef<Map<number, HTMLSpanElement>>(new Map());
   // New ref to trck extra haracter element
   const extraCharRefs = useRef<Map<string, HTMLSpanElement>>(new Map());
+  // Ref for the cursor element
+  const cursorRef = useRef<HTMLSpanElement | null>(null);
+  const cursorContainerRef = useRef<HTMLElement | null>(null);
 
   // Internal state
   const stateRef = useRef<VisualEngineState>({
@@ -61,58 +64,73 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   );
 
   const updateCursorPosition = useCallback(() => {
-    const state = stateRef.current;
-    // Remove cursor from all characters and spaces
-    characterRefs.current.forEach((element) => element.classList.remove("char-cursor"));
-    extraCharRefs.current.forEach((element) => element.classList.remove("char-cursor"));
-    wordRefs.current.forEach((wordElement) => {
-      const spaceElement = wordElement.querySelector(".word-space");
-      if (spaceElement) {
-        spaceElement.classList.remove("char-cursor");
-      }
-    });
+    if (!cursorRef.current || !cursorContainerRef.current) return;
 
+    const state = stateRef.current;
     const currentWord = getCurrentWord();
     const expectedLength = currentWord?.length || 0;
 
-    // Check if we're in extra chararcter territory
+    let targetElement: HTMLElement | null = null;
+
+    // Check if we're in extra character territory
     if (state.currentCharIndex >= expectedLength) {
       // Check if we have an extra character at this position
       const extraIndex = state.currentCharIndex - expectedLength;
-      const extraCharKey = `${state.currentCharIndex}-extra-${extraIndex}`;
+      const extraCharKey = `${state.currentWordIndex}-extra-${extraIndex}`;
       const extraCharElement = extraCharRefs.current.get(extraCharKey);
 
       if (extraCharElement) {
-        extraCharElement.classList.add("char-cursor");
+        targetElement = extraCharElement;
       } else {
         // Cursor at end of word (including any extras) - show on word space
+        // Position cursor after the last character or extra character
         const wordElement = wordRefs.current.get(state.currentWordIndex);
         if (wordElement) {
-          const spaceElement = wordElement.querySelector(".word-space");
-          if (spaceElement) {
-            spaceElement.classList.add("char-cursor");
+          // Try to find the last character or extra character
+          const allChars = wordElement.querySelectorAll(".char");
+          if (allChars?.length > 0) {
+            const lastChar = allChars[allChars.length - 1] as HTMLElement;
+            const containerRect = cursorContainerRef.current.getBoundingClientRect();
+            const lastCharRect = lastChar.getBoundingClientRect();
+
+            // Position cursor at the right edge of the last character
+            const x = lastCharRect.right - containerRect.left;
+            const y = lastCharRect.top - containerRect.top;
+
+            cursorRef.current.style.transform = `translate(${x}px, ${y}px)`;
+            cursorRef.current.style.height = `${lastCharRect.height}px`;
+            cursorRef.current.style.display = "block";
+            return; // Early return since we handled this case
           }
         }
       }
     } else {
-      //   Normal character position
+      // Normal character position
       const currentCharKey = `${state.currentWordIndex}-${state.currentCharIndex}`;
       const currentCharElement = characterRefs.current.get(currentCharKey);
 
       if (currentCharElement) {
-        currentCharElement.classList.add("char-cursor");
-      } else {
-        // Cursor at end of word - show on word space
-        const wordElement = wordRefs.current.get(state.currentWordIndex);
-        if (wordElement) {
-          const spaceElement = wordElement.querySelector(".word-space");
-          if (spaceElement) {
-            spaceElement.classList.add("char-cursor");
-          }
-        }
+        targetElement = currentCharElement;
       }
     }
-  }, []);
+
+    if (targetElement) {
+      const containerRect = cursorContainerRef.current.getBoundingClientRect();
+      const targetRect = targetElement.getBoundingClientRect();
+
+      // Calculate position relative to container
+      const x = targetRect.left - containerRect.left;
+      const y = targetRect.top - containerRect.top;
+
+      // Use transform to position cursor without causing layout shifts
+      cursorRef.current.style.transform = `translate(${x}px, ${y}px)`;
+      cursorRef.current.style.height = `${targetRect.height}px`;
+      cursorRef.current.style.display = "block";
+    } else {
+      // Hide cursor if no target
+      cursorRef.current.style.display = "none";
+    }
+  }, [getCurrentWord]);
 
   const completeCurrentWord = useCallback(() => {
     const state = stateRef.current;
@@ -187,6 +205,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
         return true;
       }
 
+      // Normal character handling
       const charKey = `${state.currentWordIndex}-${state.currentCharIndex}`;
       const charElement = characterRefs.current.get(charKey);
 
@@ -251,12 +270,13 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
         return true;
       }
 
+      // Normal character deletion
       const charKey = `${state.currentWordIndex}-${state.currentCharIndex}`;
       const charElement = characterRefs.current.get(charKey);
 
       if (charElement) {
         // Reset to pending state
-        charElement.className = "char char-pending";
+        charElement.className = "char";
         charElement.removeAttribute("data-typed");
         updateCursorPosition();
         return true;
@@ -343,6 +363,31 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     wordRefs.current.set(wordIndex, element);
   }, []);
 
+  const registerCursor = useCallback((element: HTMLSpanElement | null) => {
+    if (element) {
+      cursorRef.current = element;
+
+      // SetInitialStyles
+      element.style.position = "absolute";
+      element.style.top = "2px";
+      element.style.left = "0";
+      element.style.width = "2px";
+      element.style.backgroundColor = "var(--color-caret, #f2cdcd)";
+      element.style.pointerEvents = "none";
+      element.style.zIndex = "10";
+      element.style.transition = "transform 100ms ease-out";
+    }
+  }, []);
+
+  const registerCursorContainer = useCallback((element: HTMLElement | null) => {
+    if (element) {
+      cursorContainerRef.current = element;
+
+      // Ensure container has posiion relative for absolute positioning to work
+      element.style.position = "relative";
+    }
+  }, []);
+
   const initialize = useCallback(() => {
     const state = stateRef.current;
 
@@ -350,6 +395,9 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     if (firstWordElement) {
       firstWordElement.classList.add("word-active");
     }
+
+    // Position cursor at first character
+    updateCursorPosition();
 
     const firstCharElement = characterRefs.current.get("0-0");
     if (firstCharElement) {
@@ -369,7 +417,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
     // Reset all character visual states
     characterRefs.current.forEach((element) => {
-      element.className = "char char-pending";
+      element.className = "char";
       element.removeAttribute("data-typed");
       element.classList.remove("char-cursor");
     });
@@ -400,6 +448,8 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       // Registration functions for components
       registerCharacter,
       registerWord,
+      registerCursor,
+      registerCursorContainer,
 
       // Lifecycle management
       initialize,
@@ -417,7 +467,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       isEnabled: enabled && status !== "finished",
       isInitialized: stateRef.current.isInitialized,
     }),
-    [registerCharacter, registerWord, initialize, reset, status],
+    [registerCharacter, registerWord, registerCursor, registerCursorContainer, initialize, reset, status],
   );
 
   return api;

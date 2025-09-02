@@ -36,9 +36,11 @@ function App() {
               initializeEngine={visualEngine.initialize}
               resetEngine={visualEngine.reset}
               isEngineEnabled={visualEngine.isEnabled}
-              registerCharacter={visualEngine.registerCharacter}
-              registerWord={visualEngine.registerWord}
               getCurrentPosition={visualEngine.getCurrentPosition}
+              registerWord={visualEngine.registerWord}
+              registerCharacter={visualEngine.registerCharacter}
+              registerCursor={visualEngine.registerCursor}
+              registerCursorContainer={visualEngine.registerCursorContainer}
             />
           )}
         </div>
