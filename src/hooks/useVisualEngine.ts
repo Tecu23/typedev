@@ -111,9 +111,13 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
             const containerRect = cursorContainerRef.current.getBoundingClientRect();
             const lastCharRect = lastChar.getBoundingClientRect();
 
+            // Account for container scroll position
+            const scrollTop = cursorContainerRef.current.scrollTop;
+            const scrollLeft = cursorContainerRef.current.scrollLeft || 0;
+
             // Position cursor at the right edge of the last character
-            const x = lastCharRect.right - containerRect.left;
-            const y = lastCharRect.top - containerRect.top;
+            const x = lastCharRect.right - containerRect.left + scrollLeft;
+            const y = lastCharRect.top - containerRect.top + scrollTop;
 
             cursorRef.current.style.transform = `translate(${x}px, ${y}px)`;
             cursorRef.current.style.height = `${lastCharRect.height}px`;
@@ -136,9 +140,13 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       const containerRect = cursorContainerRef.current.getBoundingClientRect();
       const targetRect = targetElement.getBoundingClientRect();
 
+      // Account for container scroll position
+      const scrollTop = cursorContainerRef.current.scrollTop;
+      const scrollLeft = cursorContainerRef.current.scrollLeft || 0;
+
       // Calculate position relative to container
-      const x = targetRect.left - containerRect.left;
-      const y = targetRect.top - containerRect.top;
+      const x = targetRect.left - containerRect.left + scrollLeft;
+      const y = targetRect.top - containerRect.top + scrollTop;
 
       // Use transform to position cursor without causing layout shifts
       cursorRef.current.style.transform = `translate(${x}px, ${y}px)`;
