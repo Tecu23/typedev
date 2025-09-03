@@ -7,7 +7,6 @@ with modern web technologies and a clean architecture.
 ![React](https://img.shields.io/badge/React-19.1.1-blue)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-blue)
 ![Vite](https://img.shields.io/badge/Vite-7.1.2-purple)
-![License](https://img.shields.io/badge/License-MIT-green)
 
 ## 🐵 About This Project
 
@@ -258,8 +257,11 @@ are encouraged.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
-for details.
+This project is licensed under the GNU General Public License v3.0 - see the
+LICENSE file for details.
+This project is a derivative work of Monkeytype, which is also licensed
+under GPL-3.0. As per the GPL license terms, this clone maintains the same license
+to ensure the software remains free and open source.
 
 ## 🙏 Acknowledgments
 
