@@ -1,3 +1,5 @@
+import type { IKeystroke } from "./common";
+
 export interface UseVisualEngineOptions {
   enabled?: boolean;
   onTestComplete?: () => void;
@@ -9,4 +11,5 @@ export interface VisualEngineState {
   currentCharIndex: number;
   inputBuffer: string;
   isInitialized: boolean;
+  currentWordKeystrokes: IKeystroke[];
 }

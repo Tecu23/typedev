@@ -4,7 +4,7 @@ import { useKeyboardInput } from "./useKeyboardInput";
 
 import { useTypingStore } from "../store/typingStore";
 
-import type { KeyboardEvent } from "../types/common";
+import type { IKeystroke, KeyboardEvent } from "../types/common";
 import type { VisualEngineState, UseVisualEngineOptions } from "../types/engine";
 
 export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
@@ -29,6 +29,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     currentCharIndex: 0,
     inputBuffer: "",
     isInitialized: false,
+    currentWordKeystrokes: [],
   });
 
   const status = useTypingStore((state) => state.status);
@@ -38,6 +39,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   const completeWord = useTypingStore((state) => state.completeWord);
   const undoCompleteWord = useTypingStore((state) => state.undoCompleteWord);
   const isTestComplete = useTypingStore((state) => state.isTestComplete);
+  const updateLiveStats = useTypingStore((state) => state.updateLiveStats);
 
   // Focus management functions
   const handleFocus = useCallback(() => {
@@ -203,6 +205,23 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       const currentWord = getCurrentWord();
       const expectedLength = currentWord?.length || 0;
 
+      // Track the keystroke
+      const keystroke: IKeystroke = {
+        key: typedChar,
+        expected: expectedChar,
+        correct: typedChar === expectedChar,
+        timestamp: performance.now(),
+        wordIndex: state.currentWordIndex,
+        charIndex: state.currentCharIndex,
+      };
+
+      // Add to current word's keystroke buffer
+      if (!state.currentWordKeystrokes) {
+        state.currentWordKeystrokes = [];
+      }
+
+      state.currentWordKeystrokes.push(keystroke);
+
       // Check if we'ew typing beyond the expected word length
       if (state.currentCharIndex >= expectedLength) {
         // Handle extra character
@@ -228,6 +247,9 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
         state.currentCharIndex++;
         updateCursorPosition();
 
+        // Update live stats after each character
+        updateLiveStats();
+
         return true;
       }
 
@@ -247,9 +269,12 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       state.currentCharIndex++;
       updateCursorPosition();
 
+      // Update live stats after each character
+      updateLiveStats();
+
       return true;
     },
-    [updateCharacterVisual, updateCursorPosition],
+    [updateCharacterVisual, updateCursorPosition, updateLiveStats],
   );
 
   const handleSpacebar = useCallback((): boolean => {
@@ -266,6 +291,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
       // Reset buffer for next word
       state.inputBuffer = "";
+      state.currentWordKeystrokes = [];
     }
 
     return success;
@@ -273,6 +299,22 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
   const handleBackspace = useCallback((): boolean => {
     const state = stateRef.current;
+
+    // Track backspace keystroke
+    const backstroke: IKeystroke = {
+      key: "Backspace",
+      expected: "",
+      correct: false,
+      timestamp: performance.now(),
+      wordIndex: state.currentWordIndex,
+      charIndex: state.currentCharIndex,
+    };
+
+    if (!state.currentWordKeystrokes) {
+      state.currentWordKeystrokes = [];
+    }
+
+    state.currentWordKeystrokes.push(backstroke);
 
     // If we have characters in the current word, delete then
     if (state.currentCharIndex > 0) {
@@ -294,6 +336,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
         }
 
         updateCursorPosition();
+        updateLiveStats();
         return true;
       }
 
@@ -306,6 +349,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
         charElement.className = "char";
         charElement.removeAttribute("data-typed");
         updateCursorPosition();
+        updateLiveStats();
         return true;
       }
     }
@@ -384,15 +428,20 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
         // Remove the word completion status from previous word
         previousWordElement.classList.remove("word-correct", "word-incorrect");
 
+        // Important: When going back, we need to restore the keystroke buffer
+        // This is tricky - we might need to store it differently
+        state.currentWordKeystrokes = [];
+
         // Update cursor position
         updateCursorPosition();
+        updateLiveStats();
 
         return true;
       }
     }
 
     return false;
-  }, [getCurrentWord, updateCursorPosition]);
+  }, [getCurrentWord, updateCursorPosition, undoCompleteWord, updateLiveStats]);
 
   const processKeystroke = useCallback(
     (keyEvent: KeyboardEvent, expectedChar: string): boolean => {

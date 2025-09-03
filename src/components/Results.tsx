@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { AlignLeftIcon, ChevronRightIcon, ImageIcon, RotateCw, StepBackIcon, TriangleAlertIcon } from "lucide-react";
 
 import Highcharts from "highcharts";
@@ -15,12 +17,55 @@ type Props = {
 const Results = ({ resetEngine }: Props) => {
   const config = useTypingStore((state) => state.config);
   const stats = useTypingStore((state) => state.finalStats);
-  const liveStats = useTypingStore((state) => state.liveStats);
+  const wordResults = useTypingStore((state) => state.wordResults);
+  const testDuration = useTypingStore((state) => {
+    if (state.endTime && state.startTime) {
+      return (state.endTime - state.startTime) / 1000; // in seconds
+    }
+    return 0;
+  });
   const resetTest = useTypingStore((state) => state.resetTest);
 
   const { updateWords } = useWords(config);
 
-  console.log(stats, liveStats);
+  // Calculate chart data from wordResults
+  const chartData = useMemo(() => {
+    if (!wordResults || wordResults.length === 0) {
+      return [
+        { id: "wpm", data: [] },
+        { id: "raw", data: [] },
+      ];
+    }
+
+    const wpmData = wordResults.map((result, index) => ({
+      x: index + 1,
+      y: Math.round(result.wpm || 0),
+    }));
+
+    // Calculate raw WPM (including errors)
+    const rawData = wordResults.map((result, index) => {
+      const totalChars = result.word.length + result.errors;
+      const timeFromStart = result.timestamp - (wordResults[0]?.timestamp || 0);
+      const minutesElapsed = Math.max(timeFromStart / 60000, 0.001); // avoid division by zero
+      const rawWpm = Math.round(totalChars / 5 / minutesElapsed);
+      return {
+        x: index + 1,
+        y: rawWpm,
+      };
+    });
+
+    return [
+      { id: "wpm", data: wpmData },
+      { id: "raw", data: rawData },
+    ];
+  }, [wordResults]);
+
+  // Format time duration
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  };
 
   return (
     <div id="result" className="col-[full-width] content-grid">
@@ -31,11 +76,11 @@ const Results = ({ resetEngine }: Props) => {
         >
           <div>
             <div className="text-[2rem] leading-[1.5rem] flex text-sub mb-1">wpm</div>
-            <div className="text-[4rem] leading-[4rem] text-main">38</div>
+            <div className="text-[4rem] leading-[4rem] text-main">{stats.wpm}</div>
           </div>
           <div>
             <div className="text-[2rem] leading-[1.5rem] flex text-sub mb-1">acc</div>
-            <div className="text-[4rem] leading-[4rem] text-main">83%</div>
+            <div className="text-[4rem] leading-[4rem] text-main">{stats.accuracy}%</div>
           </div>
         </div>
         <div
@@ -45,9 +90,9 @@ const Results = ({ resetEngine }: Props) => {
           <div>
             <div className="text-sub text-[1rem] leading-[1rem] mb-1">test type</div>
             <div className="text-main text-[1rem] leading-[1.25]">
-              {"words 50"}
+              {config.mode === "words" ? `words ${config.wordCount}` : `time ${config.timeLimit}s`}
               <br />
-              {"english"}
+              {config.language}
             </div>
           </div>
           <div className="hidden">
@@ -56,20 +101,23 @@ const Results = ({ resetEngine }: Props) => {
           </div>
           <div className="">
             <div className="text-sub text-[1rem] leading-[1rem] mb-1 flex items-center">raw</div>
-            <div className="text-main text-[2rem] leading-[2rem]">47</div>
+            <div className="text-main text-[2rem] leading-[2rem]">{stats.rawWpm}</div>
           </div>
           <div className="">
             <div className="text-sub text-[1rem] leading-[1rem] mb-1 flex items-center">characters</div>
-            <div className="text-main text-[2rem] leading-[2rem]">227/14/2/3</div>
+            <div className="text-main text-[2rem] leading-[2rem]">
+              {stats.correctChars}/{stats.incorrectChars}/{stats.totalChars - stats.correctChars - stats.incorrectChars}
+              /{wordResults.filter((w) => w.errors > 0).length}
+            </div>
           </div>
           <div className="">
             <div className="text-sub text-[1rem] leading-[1rem] mb-1 flex items-center">consistency</div>
-            <div className="text-main text-[2rem] leading-[2rem]">48%</div>
+            <div className="text-main text-[2rem] leading-[2rem]">{stats.consistency}%</div>
           </div>
           <div className="">
             <div className="text-sub text-[1rem] leading-[1rem] mb-1 flex items-center">time</div>
             <div className="text-main text-[2rem] leading-[2rem]">
-              <div>01:12</div>
+              <div>{formatTime(testDuration)}</div>
               <div className="text-sub text-[0.75rem] leading-[0.75rem] ml-[0.2rem]">6.96% afk</div>
               <div className="text-sub text-[0.75rem] leading-[0.75rem] ml-[0.2rem]">00:01:20 session</div>
             </div>
@@ -141,7 +189,7 @@ const Results = ({ resetEngine }: Props) => {
                   fillColor: "#181825AC",
                 },
               },
-              series: data.map((s) => {
+              series: chartData.map((s) => {
                 return {
                   color: s.id == "wpm" ? "#cba6f7" : "#7f849c",
                   name: s.id,
@@ -241,138 +289,5 @@ const Results = ({ resetEngine }: Props) => {
     </div>
   );
 };
-
-const data = [
-  {
-    id: "wpm",
-    data: [
-      { x: 1, y: 91 },
-      { x: 2, y: 82 },
-      { x: 3, y: 83 },
-      { x: 4, y: 51 },
-      { x: 5, y: 41 },
-      { x: 6, y: 36 },
-      { x: 7, y: 33 },
-      { x: 8, y: 28 },
-      { x: 9, y: 25 },
-      { x: 10, y: 23 },
-      { x: 11, y: 21 },
-      { x: 12, y: 17 },
-      { x: 13, y: 18 },
-      { x: 14, y: 20 },
-      { x: 15, y: 25 },
-      { x: 16, y: 26 },
-      { x: 17, y: 29 },
-      { x: 18, y: 31 },
-      { x: 19, y: 32 },
-      { x: 20, y: 32 },
-      { x: 21, y: 35 },
-      { x: 22, y: 36 },
-      { x: 23, y: 38 },
-      { x: 24, y: 39 },
-      { x: 25, y: 40 },
-      { x: 26, y: 41 },
-      { x: 27, y: 42 },
-      { x: 28, y: 41 },
-      { x: 29, y: 41 },
-      { x: 30, y: 40 },
-      { x: 31, y: 39 },
-      { x: 32, y: 39 },
-      { x: 33, y: 40 },
-      { x: 34, y: 40 },
-      { x: 35, y: 41 },
-      { x: 36, y: 40 },
-      { x: 37, y: 41 },
-      { x: 38, y: 41 },
-      { x: 39, y: 42 },
-      { x: 40, y: 42 },
-      { x: 41, y: 43 },
-      { x: 42, y: 43 },
-      { x: 43, y: 43 },
-      { x: 44, y: 44 },
-      { x: 45, y: 43 },
-      { x: 46, y: 44 },
-      { x: 47, y: 43 },
-      { x: 48, y: 43 },
-      { x: 49, y: 43 },
-      { x: 50, y: 42 },
-      { x: 51, y: 43 },
-      { x: 52, y: 43 },
-      { x: 53, y: 42 },
-      { x: 54, y: 43 },
-      { x: 55, y: 43 },
-      { x: 56, y: 44 },
-      { x: 57, y: 44 },
-      { x: 58, y: 43 },
-      { x: 59, y: 42 },
-      { x: 60, y: 41 },
-    ],
-  },
-  {
-    id: "raw",
-    data: [
-      { x: 1, y: 84 },
-      { x: 2, y: 84 },
-      { x: 3, y: 56 },
-      { x: 4, y: 32 },
-      { x: 5, y: 16 },
-      { x: 6, y: 12 },
-      { x: 7, y: 16 },
-      { x: 8, y: 8 },
-      { x: 9, y: 0 },
-      { x: 10, y: 0 },
-      { x: 11, y: 12 },
-      { x: 12, y: 36 },
-      { x: 13, y: 48 },
-      { x: 14, y: 68 },
-      { x: 15, y: 60 },
-      { x: 16, y: 76 },
-      { x: 17, y: 76 },
-      { x: 18, y: 80 },
-      { x: 19, y: 76 },
-      { x: 20, y: 72 },
-      { x: 21, y: 72 },
-      { x: 22, y: 72 },
-      { x: 23, y: 72 },
-      { x: 24, y: 72 },
-      { x: 25, y: 72 },
-      { x: 26, y: 68 },
-      { x: 27, y: 60 },
-      { x: 28, y: 56 },
-      { x: 29, y: 44 },
-      { x: 30, y: 44 },
-      { x: 31, y: 40 },
-      { x: 32, y: 48 },
-      { x: 33, y: 52 },
-      { x: 34, y: 60 },
-      { x: 35, y: 44 },
-      { x: 36, y: 52 },
-      { x: 37, y: 48 },
-      { x: 38, y: 64 },
-      { x: 39, y: 60 },
-      { x: 40, y: 68 },
-      { x: 41, y: 64 },
-      { x: 42, y: 64 },
-      { x: 43, y: 60 },
-      { x: 44, y: 64 },
-      { x: 45, y: 56 },
-      { x: 46, y: 44 },
-      { x: 47, y: 60 },
-      { x: 48, y: 60 },
-      { x: 49, y: 76 },
-      { x: 50, y: 56 },
-      { x: 51, y: 52 },
-      { x: 52, y: 52 },
-      { x: 53, y: 52 },
-      { x: 54, y: 52 },
-      { x: 55, y: 64 },
-      { x: 56, y: 60 },
-      { x: 57, y: 48 },
-      { x: 58, y: 20 },
-      { x: 59, y: 20 },
-      { x: 60, y: 16 },
-    ],
-  },
-];
 
 export default Results;
