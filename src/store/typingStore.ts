@@ -162,7 +162,7 @@ export const useTypingStore = create<ITypingStore>()(
       set((state) => {
         if (state.wordsCompleted > 0 && state.wordResults.length > 0) {
           // Remove the last word result
-          const lastWordResult = state.wordResults.pop();
+          state.wordResults.pop();
 
           // Remove keystrokes for this word from the end of keystrokeHistory
           // This is complex because we need to identify which keystrokes belong to this word

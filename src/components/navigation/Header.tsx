@@ -2,9 +2,7 @@ import { Bell, CodeXmlIcon, Crown, Info, Keyboard, SettingsIcon, User } from "lu
 import Tooltip from "../standalone/Tooltip";
 import clsx from "clsx";
 
-type Props = {};
-
-const Header = (props: Props) => {
+const Header = () => {
   return (
     <header className="col-[content] grid grid-cols-[auto_1fr] grid-flow-col items-center gap-0.5 leading-[2.3rem] text-[2.3rem]">
       <a
