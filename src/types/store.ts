@@ -45,6 +45,7 @@ export interface ITypingStore {
 
   // Actions - Progress Tracking (called by Visual Engine)
   completeWord: (typedWord: string, keystrokesForWord: IKeystroke[]) => void;
+  undoCompleteWord: () => void;
 
   // Actions - Statistics
   updateLiveStats: () => void;

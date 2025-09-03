@@ -36,6 +36,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   const startTest = useTypingStore((state) => state.startTest);
   const finishTest = useTypingStore((state) => state.finishTest);
   const completeWord = useTypingStore((state) => state.completeWord);
+  const undoCompleteWord = useTypingStore((state) => state.undoCompleteWord);
   const isTestComplete = useTypingStore((state) => state.isTestComplete);
 
   // Focus management functions
@@ -265,6 +266,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   const handleBackspace = useCallback((): boolean => {
     const state = stateRef.current;
 
+    // If we have characters in the current word, delete then
     if (state.currentCharIndex > 0) {
       state.currentCharIndex--;
       state.inputBuffer = state.inputBuffer.slice(0, -1);
@@ -299,8 +301,90 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
         return true;
       }
     }
+
+    // If at the start of a word and not the first word, go back to previour word
+    if (state.currentCharIndex === 0 && state.currentWordIndex > 0) {
+      // Move to previous word
+      const currentWordElement = wordRefs.current.get(state.currentWordIndex);
+      const previousWordElement = wordRefs.current.get(state.currentWordIndex - 1);
+
+      if (currentWordElement && previousWordElement) {
+        // Remove active state from current word
+        currentWordElement.classList.remove("word-active");
+
+        // Move to previous word
+        state.currentWordIndex--;
+
+        // Undo store word completion
+        undoCompleteWord();
+
+        // Add active state to previous word
+        previousWordElement.classList.add("word-active");
+
+        // Get the previous word's text to restore the input buffer
+        const previousWordText = previousWordElement.getAttribute("data-word-text") || "";
+
+        // Count how many characters were typed in the previous word
+        // This includes both normal and extra characters
+        let typedLength = 0;
+        let restoredBuffer = "";
+
+        // Check normal characters first
+        for (let i = 0; i < previousWordText.length; i++) {
+          const charKey = `${state.currentWordIndex}-${i}`;
+          const charElement = characterRefs.current.get(charKey);
+
+          if (charElement) {
+            const hasCorrect = charElement.classList.contains("char-correct");
+            const hasIncorrect = charElement.classList.contains("char-incorrect");
+
+            if (hasCorrect || hasIncorrect) {
+              typedLength++;
+              // Restore the actual typed character
+              if (hasIncorrect) {
+                const typed = charElement.getAttribute("data-typed");
+                restoredBuffer += typed || previousWordText[i];
+              } else {
+                restoredBuffer += previousWordText[i];
+              }
+            } else {
+              break; // Stop at first untyped character
+            }
+          }
+        }
+
+        // Check for extra characters
+        let extraIndex = 0;
+        while (true) {
+          const extraCharKey = `${state.currentWordIndex}-extra-${extraIndex}`;
+          const extraElement = extraCharRefs.current.get(extraCharKey);
+
+          if (extraElement) {
+            typedLength++;
+            const typed = extraElement.getAttribute("data-typed");
+            restoredBuffer += typed || "";
+            extraIndex++;
+          } else {
+            break;
+          }
+        }
+
+        // Set position to end of typed content in previous word
+        state.currentCharIndex = typedLength;
+        state.inputBuffer = restoredBuffer;
+
+        // Remove the word completion status from previous word
+        previousWordElement.classList.remove("word-correct", "word-incorrect");
+
+        // Update cursor position
+        updateCursorPosition();
+
+        return true;
+      }
+    }
+
     return false;
-  }, [updateCursorPosition]);
+  }, [getCurrentWord, updateCursorPosition]);
 
   const processKeystroke = useCallback(
     (keyEvent: KeyboardEvent, expectedChar: string): boolean => {
