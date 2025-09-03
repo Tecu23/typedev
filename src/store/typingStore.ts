@@ -115,7 +115,7 @@ export const useTypingStore = create<ITypingStore>()(
       get().calculateFinalStats();
     },
 
-    resetTest: () =>
+    resetTest: () => {
       set((state) => {
         state.status = "idle";
         state.currentWordIndex = 0;
@@ -127,7 +127,8 @@ export const useTypingStore = create<ITypingStore>()(
         state.startTime = null;
         state.endTime = null;
         state.lastStatsUpdate = 0;
-      }),
+      });
+    },
 
     // Progress Tracking Actions (called by Visual Engine)
     completeWord: (typedWord, keystrokesForWord) =>
@@ -147,7 +148,6 @@ export const useTypingStore = create<ITypingStore>()(
         };
 
         state.wordResults.push(wordResult);
-        state.keystrokeHistory.push(...keystrokesForWord);
         state.wordsCompleted += 1;
         state.totalWordsTyped += 1;
         state.currentWordIndex += 1;
@@ -160,22 +160,34 @@ export const useTypingStore = create<ITypingStore>()(
 
     undoCompleteWord: () =>
       set((state) => {
-        // Only undo if we have completed words
         if (state.wordsCompleted > 0 && state.wordResults.length > 0) {
           // Remove the last word result
           const lastWordResult = state.wordResults.pop();
 
-          // Remove keystrokes associated with this word from history
-          // We need to identify how many keystrokes belong to the last word
-          // This is tricky without tracking, so we might need to enhance completeWord
-          // For now, we'll just decrement counters
+          // Remove keystrokes for this word from the end of keystrokeHistory
+          // This is complex because we need to identify which keystrokes belong to this word
+          // A better approach might be to store keystroke count per word or mark keystrokes with word completion status
+
+          // For now, we'll remove keystrokes that match the current word index
+          // This is imperfect but should work for most cases
+          const targetWordIndex = state.currentWordIndex - 1;
+          let keystrokesToRemove = 0;
+
+          // Count keystrokes from the end that belong to this word
+          for (let i = state.keystrokeHistory.length - 1; i >= 0; i--) {
+            if (state.keystrokeHistory[i].wordIndex === targetWordIndex) {
+              keystrokesToRemove++;
+            } else {
+              break; // Stop when we hit keystrokes from a different word
+            }
+          }
+
+          // Remove those keystrokes
+          state.keystrokeHistory.splice(-keystrokesToRemove, keystrokesToRemove);
 
           state.wordsCompleted -= 1;
           state.totalWordsTyped -= 1;
           state.currentWordIndex -= 1;
-
-          // Note: keystrokeHistory cleanup would need more tracking
-          // You might want to store keystroke count per word
         }
       }),
 
@@ -275,6 +287,11 @@ export const useTypingStore = create<ITypingStore>()(
       const elapsed = (performance.now() - (get().startTime || 0)) / 1000;
       return Math.max(0, get().config.timeLimit - elapsed);
     },
+
+    addKeystroke: (keystroke) =>
+      set((state) => {
+        state.keystrokeHistory.push(keystroke);
+      }),
 
     // Utilities
     exportResults: () => {

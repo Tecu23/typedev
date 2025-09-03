@@ -36,6 +36,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   const getCurrentWord = useTypingStore((state) => state.getCurrentWord);
   const startTest = useTypingStore((state) => state.startTest);
   const finishTest = useTypingStore((state) => state.finishTest);
+  const addKeystroke = useTypingStore((state) => state.addKeystroke);
   const completeWord = useTypingStore((state) => state.completeWord);
   const undoCompleteWord = useTypingStore((state) => state.undoCompleteWord);
   const isTestComplete = useTypingStore((state) => state.isTestComplete);
@@ -219,8 +220,9 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       if (!state.currentWordKeystrokes) {
         state.currentWordKeystrokes = [];
       }
-
       state.currentWordKeystrokes.push(keystroke);
+
+      addKeystroke(keystroke);
 
       // Check if we'ew typing beyond the expected word length
       if (state.currentCharIndex >= expectedLength) {
@@ -243,13 +245,9 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
           charContainer.appendChild(extraElement);
         }
 
-        // Move to next postion
         state.currentCharIndex++;
         updateCursorPosition();
-
-        // Update live stats after each character
         updateLiveStats();
-
         return true;
       }
 
@@ -262,19 +260,14 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
       state.inputBuffer += typedChar;
       const isCorrect = typedChar === expectedChar;
 
-      // Direct DOM manipulation
       updateCharacterVisual(charElement, typedChar, isCorrect);
-
-      // Move to next character position
       state.currentCharIndex++;
       updateCursorPosition();
-
-      // Update live stats after each character
       updateLiveStats();
 
       return true;
     },
-    [updateCharacterVisual, updateCursorPosition, updateLiveStats],
+    [updateCharacterVisual, updateCursorPosition, updateLiveStats, addKeystroke],
   );
 
   const handleSpacebar = useCallback((): boolean => {
@@ -313,8 +306,8 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     if (!state.currentWordKeystrokes) {
       state.currentWordKeystrokes = [];
     }
-
     state.currentWordKeystrokes.push(backstroke);
+    addKeystroke(backstroke);
 
     // If we have characters in the current word, delete then
     if (state.currentCharIndex > 0) {
@@ -441,7 +434,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
     }
 
     return false;
-  }, [getCurrentWord, updateCursorPosition, undoCompleteWord, updateLiveStats]);
+  }, [getCurrentWord, updateCursorPosition, undoCompleteWord, updateLiveStats, addKeystroke]);
 
   const processKeystroke = useCallback(
     (keyEvent: KeyboardEvent, expectedChar: string): boolean => {

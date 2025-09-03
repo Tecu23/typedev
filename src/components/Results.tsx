@@ -17,6 +17,7 @@ type Props = {
 const Results = ({ resetEngine }: Props) => {
   const config = useTypingStore((state) => state.config);
   const stats = useTypingStore((state) => state.finalStats);
+  const startTime = useTypingStore((state) => state.startTime);
   const wordResults = useTypingStore((state) => state.wordResults);
   const testDuration = useTypingStore((state) => {
     if (state.endTime && state.startTime) {
@@ -45,7 +46,7 @@ const Results = ({ resetEngine }: Props) => {
     // Calculate raw WPM (including errors)
     const rawData = wordResults.map((result, index) => {
       const totalChars = result.word.length + result.errors;
-      const timeFromStart = result.timestamp - (wordResults[0]?.timestamp || 0);
+      const timeFromStart = result.timestamp - (wordResults[index - 1]?.timestamp || startTime || 0);
       const minutesElapsed = Math.max(timeFromStart / 60000, 0.001); // avoid division by zero
       const rawWpm = Math.round(totalChars / 5 / minutesElapsed);
       return {
@@ -118,8 +119,8 @@ const Results = ({ resetEngine }: Props) => {
             <div className="text-sub text-[1rem] leading-[1rem] mb-1 flex items-center">time</div>
             <div className="text-main text-[2rem] leading-[2rem]">
               <div>{formatTime(testDuration)}</div>
-              <div className="text-sub text-[0.75rem] leading-[0.75rem] ml-[0.2rem]">6.96% afk</div>
-              <div className="text-sub text-[0.75rem] leading-[0.75rem] ml-[0.2rem]">00:01:20 session</div>
+              {/* <div className="text-sub text-[0.75rem] leading-[0.75rem] ml-[0.2rem]">6.96% afk</div> */}
+              {/* <div className="text-sub text-[0.75rem] leading-[0.75rem] ml-[0.2rem]">00:01:20 session</div> */}
             </div>
           </div>
         </div>

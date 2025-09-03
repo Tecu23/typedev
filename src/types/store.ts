@@ -50,6 +50,7 @@ export interface ITypingStore {
   // Actions - Statistics
   updateLiveStats: () => void;
   calculateFinalStats: () => void;
+  addKeystroke: (keystroke: IKeystroke) => void;
 
   // Getters
   getCurrentWord: () => string | null;
