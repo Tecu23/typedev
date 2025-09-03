@@ -21,6 +21,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
   // Focus management state
   const [isFocused, setIsFocused] = useState(true);
+  const isFocusedRef = useRef(true);
 
   // Internal state
   const stateRef = useRef<VisualEngineState>({
@@ -40,6 +41,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
   // Focus management functions
   const handleFocus = useCallback(() => {
     setIsFocused(true);
+    isFocusedRef.current = true; // Update ref immediately
 
     if (cursorContainerRef.current) {
       cursorContainerRef.current.focus();
@@ -48,6 +50,7 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
   const handleBlur = useCallback(() => {
     setIsFocused(false);
+    isFocusedRef.current = false; // Update ref immediately
   }, []);
 
   const updateCharacterVisual = useCallback((element: HTMLSpanElement, typedChar: string, isCorrect: boolean) => {
@@ -329,14 +332,11 @@ export const useVisualEngine = (options: UseVisualEngineOptions = {}) => {
 
   const handleKeyEvent = useCallback(
     (keyEvent: KeyboardEvent) => {
-      console.log(keyEvent.type, isFocused);
       // If not focused, any key press should refocus
-      if (!isFocused) {
+      if (!isFocusedRef.current) {
         handleFocus();
         return; // Don't process the key for typing, just refocus
       }
-
-      console.log(keyEvent.type, isFocused);
 
       if (keyEvent.type !== "keydown") return;
 

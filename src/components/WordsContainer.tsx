@@ -148,7 +148,6 @@ const WordsContainer = ({
     <div
       id="words_wrapper"
       ref={wordsContainerRef}
-      onClick={handleContainerClick}
       className="content-grid col-[full-width] h-[153px] overflow-y-hidden overflow-x-visible relative"
     >
       <input
